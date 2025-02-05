@@ -11,7 +11,7 @@ const HIDE_SUB_MESSAGE = "哎呀你找到了我，但是我就是不给你看，
 
 let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev',
-  'www.wto.org@notls',
+  'www.wto.org',
   'visa.cn',
 ]; // 格式: 127.0.0.1:443#US@notls 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称，@notls 不填则默认使用 TLS
 let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
