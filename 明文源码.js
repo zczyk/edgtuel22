@@ -9,9 +9,10 @@ const PRIVATE_KEY = ""; // 提高隐秘性安全性，就算别人扫到你的�
 
 let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev#晓夜1',
+  'xiaoyetech-v1ess.pages.dev#晓夜1@notls',
   'www.wto.org#晓夜2',
   'visa.cn#晓夜3',
-]; // 格式: 127.0.0.1:443#US 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US
+]; // 格式: 127.0.0.1:443#US@notls 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称，@notls 不填则默认使用 TLS
 let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能【总开关】
