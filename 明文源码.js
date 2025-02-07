@@ -9,7 +9,6 @@ const PRIVATE_KEY = ""; // 提高隐秘性安全性，就算别人扫到你的�
 
 let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev#晓夜1',
-  'xiaoyetech-v1ess.pages.dev#晓夜1@notls',
   'www.wto.org#晓夜2',
   'visa.cn#晓夜3',
 ]; // 格式: 127.0.0.1:443#US@notls 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称，@notls 不填则默认使用 TLS
