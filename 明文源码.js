@@ -11,7 +11,7 @@ let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev#晓夜1',
   'www.wto.org#晓夜2',
   'visa.cn#晓夜3',
-]; // 格式: 127.0.0.1:443#US@notls 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称，@notls 不填则默认使用 TLS
+]; // 格式: 127.0.0.1:443#US 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称
 let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能【总开关】
@@ -33,80 +33,80 @@ export default {
     const { pathname } = url;
 
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
-         // 加载优选节点
+      // 加载优选节点
       if (PREFERRED_NODES_TXT_URL) {
         const response = await fetch(PREFERRED_NODES_TXT_URL);
         const text = await response.text();
-         PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
+        PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
       }
-        
+
       if (pathname === `/${SUB_PATH}`) {
         return new Response(generateSubPage(SUB_PATH, request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
       }
-        
+
       if (pathname === `/${SUB_PATH}/vless`) {
-              return new Response(generateVlessConfig(request.headers.get('Host')), {
-                status: 200,
-                 headers: { "Content-Type": "text/plain;charset=utf-8" },
-              });
-        }
-        
-       if (pathname === `/${SUB_PATH}/clash`) {
-             return new Response(generateClashConfig(request.headers.get('Host')), {
-              status: 200,
-              headers: { "Content-Type": "text/plain;charset=utf-8" },
-             });
-         }
-          
+        return new Response(generateVlessConfig(request.headers.get('Host')), {
+          status: 200,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+        });
+      }
+
+      if (pathname === `/${SUB_PATH}/clash`) {
+        return new Response(generateClashConfig(request.headers.get('Host')), {
+          status: 200,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+        });
+      }
+
       // 默认伪装网站
       url.hostname = FAKE_WEBSITE;
       url.protocol = 'https:';
       return fetch(new Request(url, request));
 
     } else if (upgradeHeader === 'websocket') {
-        const envProxyIp = env.PROXYIP || PROXY_ADDRESS;
-        const envSocks5 = env.SOCKS5 || SOCKS5_CREDENTIALS;
-        const envSocks5Open = (env.SOCKS5OPEN === 'true' ? true : (env.SOCKS5OPEN === 'false' ? false : SOCKS5_PROXY_ENABLED));
-        const envSocks5Global = (env.SOCKS5GLOBAL === 'true' ? true : (env.SOCKS5GLOBAL === 'false' ? false : SOCKS5_GLOBAL_PROXY_ENABLED));
+      const envProxyIp = env.PROXYIP || PROXY_ADDRESS;
+      const envSocks5 = env.SOCKS5 || SOCKS5_CREDENTIALS;
+      const envSocks5Open = (env.SOCKS5OPEN === 'true' ? true : (env.SOCKS5OPEN === 'false' ? false : SOCKS5_PROXY_ENABLED));
+      const envSocks5Global = (env.SOCKS5GLOBAL === 'true' ? true : (env.SOCKS5GLOBAL === 'false' ? false : SOCKS5_GLOBAL_PROXY_ENABLED));
 
 
       if (PRIVATE_KEY_ENABLED) {
         const requestPrivateKey = request.headers.get('my-key');
-          if(requestPrivateKey === PRIVATE_KEY) {
-                return upgradeWebSocketRequest(request,envProxyIp,envSocks5,envSocks5Open,envSocks5Global);
-            }
+        if (requestPrivateKey === PRIVATE_KEY) {
+          return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
+        }
       } else {
-        return upgradeWebSocketRequest(request,envProxyIp,envSocks5,envSocks5Open,envSocks5Global);
+        return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
       }
     }
   },
 };
 //////////////////////////////////////////////////////////////////////// 脚本主要架构 //////////////////////////////////////////////////////////////////////
 
-async function upgradeWebSocketRequest(request,envProxyIp,envSocks5,envSocks5Open,envSocks5Global) {
-    const webSocketPair = new WebSocketPair();
-    const [client, webSocket] = Object.values(webSocketPair);
-    webSocket.accept();
+async function upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
+  const webSocketPair = new WebSocketPair();
+  const [client, webSocket] = Object.values(webSocketPair);
+  webSocket.accept();
 
-    const encodedTarget = request.headers.get('sec-websocket-protocol');
-    const decodedTarget = decodeBase64(encodedTarget);
-    const { tcpSocket, initialData } = await parseVLHeader(decodedTarget,envProxyIp,envSocks5,envSocks5Open,envSocks5Global);
+  const encodedTarget = request.headers.get('sec-websocket-protocol');
+  const decodedTarget = decodeBase64(encodedTarget);
+  const { tcpSocket, initialData } = await parseVLHeader(decodedTarget, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
 
-    establishPipeline(webSocket, tcpSocket, initialData);
+  establishPipeline(webSocket, tcpSocket, initialData);
 
-    return new Response(null, { status: 101, webSocket: client });
+  return new Response(null, { status: 101, webSocket: client });
 }
 
 function decodeBase64(encoded) {
-    const base64String = encoded.replace(/-/g, '+').replace(/_/g, '/');
-    const decodedString = atob(base64String);
-    return Uint8Array.from(decodedString, (c) => c.charCodeAt(0)).buffer;
+  const base64String = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  const decodedString = atob(base64String);
+  return Uint8Array.from(decodedString, (c) => c.charCodeAt(0)).buffer;
 }
 
-async function parseVLHeader(vlData,envProxyIp,envSocks5,envSocks5Open,envSocks5Global) {
+async function parseVLHeader(vlData, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
   if (!PRIVATE_KEY_ENABLED && verifyUUID(new Uint8Array(vlData.slice(1, 17))) !== SUB_UUID) {
     return null;
   }
@@ -118,7 +118,7 @@ async function parseVLHeader(vlData,envProxyIp,envSocks5,envSocks5Open,envSocks5
   const addressStartIndex = portStartIndex + 2;
   const addressTypeBuffer = new Uint8Array(vlData.slice(addressStartIndex, addressStartIndex + 1));
   const addressType = addressTypeBuffer[0];
-    
+
   let addressLength = 0;
   let targetAddress = '';
   let addressInfoStartIndex = addressStartIndex + 1;
@@ -126,16 +126,16 @@ async function parseVLHeader(vlData,envProxyIp,envSocks5,envSocks5Open,envSocks5
   switch (addressType) {
     case 1:
       addressLength = 4;
-      targetAddress = new Uint8Array( vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength) ).join('.');
+      targetAddress = new Uint8Array(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength)).join('.');
       break;
     case 2:
-      addressLength = new Uint8Array( vlData.slice(addressInfoStartIndex, addressInfoStartIndex + 1) )[0];
+      addressLength = new Uint8Array(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + 1))[0];
       addressInfoStartIndex += 1;
-      targetAddress = new TextDecoder().decode( vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength) );
+      targetAddress = new TextDecoder().decode(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength));
       break;
     case 3:
       addressLength = 16;
-      const dataView = new DataView( vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength) );
+      const dataView = new DataView(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength));
       const ipv6Parts = [];
       for (let i = 0; i < 8; i++) { ipv6Parts.push(dataView.getUint16(i * 2).toString(16)); }
       targetAddress = ipv6Parts.join(':');
@@ -143,28 +143,28 @@ async function parseVLHeader(vlData,envProxyIp,envSocks5,envSocks5Open,envSocks5
   }
 
   const initialData = vlData.slice(addressInfoStartIndex + addressLength);
-    let tcpSocket;
-     
-    if (PROXY_ENABLED && envSocks5Open && envSocks5Global) {
-       tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort,envProxyIp,envSocks5);
-        return { tcpSocket, initialData };
-    } else {
-      try {
-            tcpSocket = connect({ hostname: targetAddress, port: targetPort });
-            await tcpSocket.opened;
-      } catch {
-          if (PROXY_ENABLED) {
-                if (envSocks5Open) {
-                    tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort,envProxyIp,envSocks5);
-                } else {
-                  let [proxyHost, proxyPort] = envProxyIp.split(':');
-                    tcpSocket = connect({ hostname: proxyHost, port: proxyPort || targetPort });
-                  }
-              }
-       } finally {
-        return { tcpSocket, initialData };
-       }
+  let tcpSocket;
+
+  if (PROXY_ENABLED && envSocks5Open && envSocks5Global) {
+    tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5);
+    return { tcpSocket, initialData };
+  } else {
+    try {
+      tcpSocket = connect({ hostname: targetAddress, port: targetPort });
+      await tcpSocket.opened;
+    } catch {
+      if (PROXY_ENABLED) {
+        if (envSocks5Open) {
+          tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5);
+        } else {
+          let [proxyHost, proxyPort] = envProxyIp.split(':');
+          tcpSocket = connect({ hostname: proxyHost, port: proxyPort || targetPort });
+        }
+      }
+    } finally {
+      return { tcpSocket, initialData };
     }
+  }
 }
 
 function verifyUUID(arr, offset = 0) {
@@ -182,115 +182,115 @@ const formatUUID = [];
 for (let i = 0; i < 256; ++i) { formatUUID.push((i + 256).toString(16).slice(1)); }
 
 async function establishPipeline(webSocket, tcpSocket, initialData, tcpBuffer = [], wsBuffer = []) {
-    const tcpWriter = tcpSocket.writable.getWriter();
-    await webSocket.send(new Uint8Array([0, 0]).buffer); // 发送 WS 握手认证信息
+  const tcpWriter = tcpSocket.writable.getWriter();
+  await webSocket.send(new Uint8Array([0, 0]).buffer); // 发送 WS 握手认证信息
 
-    tcpSocket.readable.pipeTo(new WritableStream({
-        async write(chunk) {
-        wsBuffer.push(chunk);
-        const wsData = wsBuffer.shift();
-        webSocket.send(wsData);
-        }
-    }));
+  tcpSocket.readable.pipeTo(new WritableStream({
+    async write(chunk) {
+      wsBuffer.push(chunk);
+      const wsData = wsBuffer.shift();
+      webSocket.send(wsData);
+    }
+  }));
 
-   const wsDataStream = new ReadableStream({
-      async start(controller) {
-        if (initialData) { controller.enqueue(initialData);  initialData = null}
-        webSocket.addEventListener('message', (event) => { controller.enqueue(event.data) });
-        webSocket.addEventListener('close', () => { controller.close() });
-        webSocket.addEventListener('error', () => { controller.close() });
-      }
-    });
+  const wsDataStream = new ReadableStream({
+    async start(controller) {
+      if (initialData) { controller.enqueue(initialData); initialData = null }
+      webSocket.addEventListener('message', (event) => { controller.enqueue(event.data) });
+      webSocket.addEventListener('close', () => { controller.close() });
+      webSocket.addEventListener('error', () => { controller.close() });
+    }
+  });
 
-    wsDataStream.pipeTo(new WritableStream({
-        async write(chunk) {
-          tcpBuffer.push(chunk)
-          const tcpData = tcpBuffer.shift();
-          tcpWriter.write(tcpData)
-        },
-    }));
+  wsDataStream.pipeTo(new WritableStream({
+    async write(chunk) {
+      tcpBuffer.push(chunk)
+      const tcpData = tcpBuffer.shift();
+      tcpWriter.write(tcpData)
+    },
+  }));
 }
 ////////////////////////////////////////////////////////////////////////// SOCKS5 部分 //////////////////////////////////////////////////////////////////////
-async function createSocks5Socket(addressType, targetAddress, targetPort,envProxyIp,envSocks5) {
-    const { username, password, hostname, port } = await parseSocks5Credentials(envSocks5);
-    const socket = connect({ hostname, port });
-    try {
-      await socket.opened;
-    } catch (e) {
-      return new Response('SOCKS5 连接失败', { status: 400 });
+async function createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5) {
+  const { username, password, hostname, port } = await parseSocks5Credentials(envSocks5);
+  const socket = connect({ hostname, port });
+  try {
+    await socket.opened;
+  } catch (e) {
+    return new Response('SOCKS5 连接失败', { status: 400 });
+  }
+
+  const writer = socket.writable.getWriter();
+  const reader = socket.readable.getReader();
+  const encoder = new TextEncoder();
+
+  // SOCKS5 认证请求
+  const socksGreeting = new Uint8Array([5, 2, 0, 2]); // 支持无认证和用户名/密码认证
+  await writer.write(socksGreeting);
+  let response = (await reader.read()).value;
+
+  if (response[1] === 0x02) { // 需要用户名/密码认证
+    if (!username || !password) {
+      return closeAndReject(writer, reader, socket, 'SOCKS5 认证失败,缺少账号密码');
     }
-
-    const writer = socket.writable.getWriter();
-    const reader = socket.readable.getReader();
-    const encoder = new TextEncoder();
-
-    // SOCKS5 认证请求
-    const socksGreeting = new Uint8Array([5, 2, 0, 2]); // 支持无认证和用户名/密码认证
-    await writer.write(socksGreeting);
-    let response = (await reader.read()).value;
-  
-    if (response[1] === 0x02) { // 需要用户名/密码认证
-      if (!username || !password) {
-        return closeAndReject(writer,reader,socket,'SOCKS5 认证失败,缺少账号密码');
-      }
-      const authRequest = new Uint8Array([
-        1, username.length, ...encoder.encode(username), password.length, ...encoder.encode(password),
-      ]);
-      await writer.write(authRequest);
-      response = (await reader.read()).value;
-      if (response[0] !== 0x01 || response[1] !== 0x00) {
-         return closeAndReject(writer,reader,socket,'SOCKS5 认证失败');
-      }
-    }
-
-    // SOCKS5 连接请求
-    let convertedAddress;
-    switch (addressType) {
-      case 1: // IPv4
-        convertedAddress = new Uint8Array([1, ...targetAddress.split('.').map(Number)]);
-        break;
-      case 2: // 域名
-        convertedAddress = new Uint8Array([3, targetAddress.length, ...encoder.encode(targetAddress)]);
-        break;
-      case 3: // IPv6
-        convertedAddress = new Uint8Array([4, ...targetAddress.split(':').flatMap(x => [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2), 16)])]);
-        break;
-      default:
-        return closeAndReject(writer,reader,socket,'SOCKS5 地址类型错误');
-    }
-
-    const socksRequest = new Uint8Array([5, 1, 0, ...convertedAddress, targetPort >> 8, targetPort & 0xff]);
-    await writer.write(socksRequest);
+    const authRequest = new Uint8Array([
+      1, username.length, ...encoder.encode(username), password.length, ...encoder.encode(password),
+    ]);
+    await writer.write(authRequest);
     response = (await reader.read()).value;
-    if (response[0] !== 0x05 || response[1] !== 0x00) {
-        return closeAndReject(writer,reader,socket,'SOCKS5 连接失败')
+    if (response[0] !== 0x01 || response[1] !== 0x00) {
+      return closeAndReject(writer, reader, socket, 'SOCKS5 认证失败');
     }
+  }
 
-    writer.releaseLock();
-    reader.releaseLock();
-    return socket;
+  // SOCKS5 连接请求
+  let convertedAddress;
+  switch (addressType) {
+    case 1: // IPv4
+      convertedAddress = new Uint8Array([1, ...targetAddress.split('.').map(Number)]);
+      break;
+    case 2: // 域名
+      convertedAddress = new Uint8Array([3, targetAddress.length, ...encoder.encode(targetAddress)]);
+      break;
+    case 3: // IPv6
+      convertedAddress = new Uint8Array([4, ...targetAddress.split(':').flatMap(x => [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2), 16)])]);
+      break;
+    default:
+      return closeAndReject(writer, reader, socket, 'SOCKS5 地址类型错误');
+  }
+
+  const socksRequest = new Uint8Array([5, 1, 0, ...convertedAddress, targetPort >> 8, targetPort & 0xff]);
+  await writer.write(socksRequest);
+  response = (await reader.read()).value;
+  if (response[0] !== 0x05 || response[1] !== 0x00) {
+    return closeAndReject(writer, reader, socket, 'SOCKS5 连接失败')
+  }
+
+  writer.releaseLock();
+  reader.releaseLock();
+  return socket;
 }
-async function closeAndReject(writer,reader,socket,message) {
-    writer.releaseLock();
-    reader.releaseLock();
-    socket.close();
-    return new Response(message, { status: 400 });
+async function closeAndReject(writer, reader, socket, message) {
+  writer.releaseLock();
+  reader.releaseLock();
+  socket.close();
+  return new Response(message, { status: 400 });
 }
 async function parseSocks5Credentials(socks5String) {
-    const [latter, former] = socks5String.split("@").reverse();
-    let username = null, password = null, hostname = null, port = null;
-  
-    if (former) {
-      const formers = former.split(":");
-      username = formers[0];
-      password = formers[1];
-    }
-  
-    const latters = latter.split(":");
-    port = Number(latters.pop());
-    hostname = latters.join(":");
-  
-    return { username, password, hostname, port };
+  const [latter, former] = socks5String.split("@").reverse();
+  let username = null, password = null, hostname = null, port = null;
+
+  if (former) {
+    const formers = former.split(":");
+    username = formers[0];
+    password = formers[1];
+  }
+
+  const latters = latter.split(":");
+  port = Number(latters.pop());
+  hostname = latters.join(":");
+
+  return { username, password, hostname, port };
 }
 ////////////////////////////////////////////////////////////////////////// 订阅页面 ////////////////////////////////////////////////////////////////////////
 const PROTOCOL = 'vless';
@@ -306,42 +306,40 @@ V2的：https${SEPARATOR}${hostName}/${subPath}/${PROTOCOL}
 }
 
 function generateVlessConfig(hostName) {
-    if (PREFERRED_NODES.length === 0) {
-        PREFERRED_NODES = [`${hostName}:443`];
-    }
-    if (PRIVATE_KEY_ENABLED) {
-        return `请先关闭私钥功能`
-    } else {
-        return PREFERRED_NODES.map(node => {
-            const [mainPart, tlsOption] = node.split("@");
-            const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
-            const [address, portStr] = addressPort.split(":");
-             const port =  portStr ? Number(portStr) : 443;
-            const securityOption = tlsOption === 'notls' ? 'security=none' : 'security=tls';
-            return `${PROTOCOL}${SEPARATOR}${SUB_UUID}@${address}:${port}?encryption=none&${securityOption}&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
-        }).join("\n");
-    }
+  if (PREFERRED_NODES.length === 0) {
+    PREFERRED_NODES = [`${hostName}:443`];
+  }
+  if (PRIVATE_KEY_ENABLED) {
+    return `请先关闭私钥功能`
+  } else {
+    return PREFERRED_NODES.map(node => {
+      const [mainPart] = node.split("@");
+      const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
+      const [address, portStr] = addressPort.split(":");
+      const port = portStr ? Number(portStr) : 443;
+      return `${PROTOCOL}${SEPARATOR}${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
+    }).join("\n");
+  }
 }
 function generateClashConfig(hostName) {
-    if (PREFERRED_NODES.length === 0) {
-        PREFERRED_NODES = [`${hostName}:443`];
-    }
-    const generateNodes = (nodes) => {
-        return nodes.map(node => {
-            const [mainPart, tlsOption] = node.split("@");
-            const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
-            const [address, portStr] = addressPort.split(":");
-            const port = portStr ? Number(portStr) : 443;
-           const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
-             const tlsEnabled = tlsOption === 'notls' ? 'false' : 'true';
-            return {
-                nodeConfig: `- name: ${nodeName}
+  if (PREFERRED_NODES.length === 0) {
+    PREFERRED_NODES = [`${hostName}:443`];
+  }
+  const generateNodes = (nodes) => {
+    return nodes.map(node => {
+      const [mainPart] = node.split("@");
+      const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
+      const [address, portStr] = addressPort.split(":");
+      const port = portStr ? Number(portStr) : 443;
+      const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
+      return {
+        nodeConfig: `- name: ${nodeName}
   type: ${PROTOCOL}
   server: ${cleanAddress}
   port: ${port}
   uuid: ${SUB_UUID}
   udp: false
-  tls: ${tlsEnabled}
+  tls: true
   sni: ${hostName}
   network: ws
   ws-opts:
@@ -349,15 +347,15 @@ function generateClashConfig(hostName) {
     headers:
       Host: ${hostName}
       ${PRIVATE_KEY_HEADER}`,
-                proxyConfig: `    - ${nodeName}-${cleanAddress}-${port}`
-            };
-        });
-    };
+        proxyConfig: `    - ${nodeName}-${cleanAddress}-${port}`
+      };
+    });
+  };
 
-    const nodeConfigs = generateNodes(PREFERRED_NODES).map(node => node.nodeConfig).join("\n");
-    const proxyConfigs = generateNodes(PREFERRED_NODES).map(node => node.proxyConfig).join("\n");
+  const nodeConfigs = generateNodes(PREFERRED_NODES).map(node => node.nodeConfig).join("\n");
+  const proxyConfigs = generateNodes(PREFERRED_NODES).map(node => node.proxyConfig).join("\n");
 
-    return `
+  return `
 dns:
   nameserver:
     - 180.76.76.76
