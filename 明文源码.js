@@ -6,8 +6,6 @@ const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 U
 
 const PRIVATE_KEY_ENABLED = false; // 是否启用私钥功能，true 启用，false 不启用。 私钥功能仅支持 clash
 const PRIVATE_KEY = ""; // 提高隐秘性安全性，就算别人扫到你的域名也无法链接
-const HIDE_SUB = false; // 是否隐藏订阅页面，false 不隐藏，true 隐藏
-const HIDE_SUB_MESSAGE = "敢用我的订阅，你妈死了"; // 隐藏订阅后的显示信息
 
 let PREFERRED_NODES = [
   //'www.wto.org',
@@ -49,31 +47,17 @@ export default {
       }
         
       if (pathname === `/${SUB_PATH}/vless`) {
-            if (HIDE_SUB) {
-              return new Response(`${HIDE_SUB_MESSAGE}`, {
-                 status: 200,
-                 headers: { "Content-Type": "text/plain;charset=utf-8" },
-              });
-           } else {
               return new Response(generateVlessConfig(request.headers.get('Host')), {
                 status: 200,
                  headers: { "Content-Type": "text/plain;charset=utf-8" },
               });
-            }
         }
         
        if (pathname === `/${SUB_PATH}/clash`) {
-          if (HIDE_SUB) {
-             return new Response(`${HIDE_SUB_MESSAGE}`, {
-               status: 200,
-               headers: { "Content-Type": "text/plain;charset=utf-8" },
-             });
-           } else {
              return new Response(generateClashConfig(request.headers.get('Host')), {
               status: 200,
               headers: { "Content-Type": "text/plain;charset=utf-8" },
              });
-           }
          }
           
       // 默认伪装网站
