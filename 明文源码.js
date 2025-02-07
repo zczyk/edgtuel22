@@ -6,8 +6,8 @@ const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 U
 
 const PRIVATE_KEY_ENABLED = false; // 是否启用私钥功能，true 启用，false 不启用。 私钥功能仅支持 clash
 const PRIVATE_KEY = ""; // 提高隐秘性安全性，就算别人扫到你的域名也无法链接
-const HIDE_SUB = false; // 是否隐藏订阅页面，false 不隐藏，true 隐藏
-const HIDE_SUB_MESSAGE = "哎呀你找到了我，但是我就是不给你看，气不气，嘿嘿嘿"; // 隐藏订阅后的显示信息
+const HIDE_SUB = true; // 是否隐藏订阅页面，false 不隐藏，true 隐藏
+const HIDE_SUB_MESSAGE = "敢用我的订阅，你妈死了"; // 隐藏订阅后的显示信息
 
 let PREFERRED_NODES = [
   //'www.wto.org',
