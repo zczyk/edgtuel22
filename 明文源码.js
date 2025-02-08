@@ -364,7 +364,7 @@ ${proxyConfigs}
   type: fallback
   health-check:
     enable: true
-    interval: 200
+    interval: 150
     url: https://www.google.com/generate_204
   proxies:
 ${proxyConfigs}
