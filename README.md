@@ -3,4 +3,6 @@
 
 Clash用户部署建议搭配这个[规则](https://github.com/ImLTHQ/ProxyRule)
 
-我的订阅免费分享给大家用->https://xiaoyetech-sub.pages.dev/auto
+订阅免费分享给大家用->https://xiaoyetech-sub.pages.dev/auto
+
+感谢[shulng](https://github.com/shulng)提供的节点
