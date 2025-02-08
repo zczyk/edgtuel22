@@ -347,7 +347,7 @@ function generateClashConfig(hostName) {
     headers:
       Host: ${hostName}
       ${PRIVATE_KEY_HEADER}`,
-        proxyConfig: `    - ${nodeName}-${cleanAddress}-${port}`
+        proxyConfig: `    - ${nodeName}`
       };
     });
   };
