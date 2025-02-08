@@ -2,6 +2,8 @@ import { connect } from 'cloudflare:sockets';
 
 ////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
+const PROTOCOL = 'vless';
+const CLASH_TYPE = 'clash';
 const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 UUID，建议修改为自己的规范化 UUID
 
 let PREFERRED_NODES = [
@@ -44,14 +46,14 @@ export default {
         });
       }
 
-      if (pathname === `/${SUB_PATH}/vless`) {
+      if (pathname === `/${SUB_PATH}/${PROTOCOL}`) {
         return new Response(generateVlessConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
       }
 
-      if (pathname === `/${SUB_PATH}/clash`) {
+      if (pathname === `/${SUB_PATH}/${CLASH_TYPE}`) {
         return new Response(generateClashConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -282,14 +284,11 @@ async function parseSocks5Credentials(socks5String) {
   return { username, password, hostname, port };
 }
 ////////////////////////////////////////////////////////////////////////// 订阅页面 ////////////////////////////////////////////////////////////////////////
-const PROTOCOL = 'vless';
-const SEPARATOR = '://';
-const CLASH_TYPE = 'clash';
 
 function generateSubPage(subPath, hostName) {
   return `
-V2的：https${SEPARATOR}${hostName}/${subPath}/${PROTOCOL}
-猫咪的：https${SEPARATOR}${hostName}/${subPath}/${CLASH_TYPE}
+v2ray的：https://${hostName}/${subPath}/${PROTOCOL}
+Clash的：https://${hostName}/${subPath}/${CLASH_TYPE}
 `;
 }
 
@@ -302,7 +301,7 @@ function generateVlessConfig(hostName) {
     const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
     const [address, portStr] = addressPort.split(":");
     const port = portStr ? Number(portStr) : 443;
-    return `${PROTOCOL}${SEPARATOR}${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
+    return `vless://${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
   }).join("\n");
 }
 function generateClashConfig(hostName) {
@@ -318,7 +317,7 @@ function generateClashConfig(hostName) {
       const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
       return {
         nodeConfig: `- name: ${nodeName}
-  type: ${PROTOCOL}
+  type: vless
   server: ${cleanAddress}
   port: ${port}
   uuid: ${SUB_UUID}
