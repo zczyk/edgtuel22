@@ -349,7 +349,7 @@ ${proxyConfigs}
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
-  interval: 100
+  interval: 150
   tolerance: 50
   proxies:
 ${proxyConfigs}
@@ -357,7 +357,7 @@ ${proxyConfigs}
   type: fallback
   health-check:
     enable: true
-    interval: 150
+    interval: 300
     url: https://www.google.com/generate_204
   proxies:
 ${proxyConfigs}
