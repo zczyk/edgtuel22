@@ -337,6 +337,13 @@ function generateClashConfig(hostName) {
   const proxyConfigs = generateNodes(PREFERRED_NODES).map(node => node.proxyConfig).join("\n");
 
   return `
+dns:
+  nameserver:
+    - 1.1.1.1
+    - 2606:4700:4700::1111
+  fallback:
+    - 8.8.8.8
+    - 2001:4860:4860::8888
 proxies:
 ${nodeConfigs}
 proxy-groups:
