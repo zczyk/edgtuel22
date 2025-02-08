@@ -4,9 +4,6 @@ import { connect } from 'cloudflare:sockets';
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 UUID，建议修改为自己的规范化 UUID
 
-const PRIVATE_KEY_ENABLED = false; // 是否启用私钥功能，true 启用，false 不启用。 私钥功能仅支持 clash
-const PRIVATE_KEY = ""; // 提高隐秘性安全性，就算别人扫到你的域名也无法链接
-
 let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev#晓夜1',
   'www.wto.org#晓夜2',
@@ -72,15 +69,7 @@ export default {
       const envSocks5Open = (env.SOCKS5OPEN === 'true' ? true : (env.SOCKS5OPEN === 'false' ? false : SOCKS5_PROXY_ENABLED));
       const envSocks5Global = (env.SOCKS5GLOBAL === 'true' ? true : (env.SOCKS5GLOBAL === 'false' ? false : SOCKS5_GLOBAL_PROXY_ENABLED));
 
-
-      if (PRIVATE_KEY_ENABLED) {
-        const requestPrivateKey = request.headers.get('my-key');
-        if (requestPrivateKey === PRIVATE_KEY) {
-          return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
-        }
-      } else {
-        return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
-      }
+      return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
     }
   },
 };
@@ -107,7 +96,7 @@ function decodeBase64(encoded) {
 }
 
 async function parseVLHeader(vlData, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
-  if (!PRIVATE_KEY_ENABLED && verifyUUID(new Uint8Array(vlData.slice(1, 17))) !== SUB_UUID) {
+  if (verifyUUID(new Uint8Array(vlData.slice(1, 17))) !== SUB_UUID) {
     return null;
   }
 
@@ -296,7 +285,6 @@ async function parseSocks5Credentials(socks5String) {
 const PROTOCOL = 'vless';
 const SEPARATOR = '://';
 const CLASH_TYPE = 'clash';
-const PRIVATE_KEY_HEADER = PRIVATE_KEY_ENABLED ? `my-key: ${PRIVATE_KEY}` : "";
 
 function generateSubPage(subPath, hostName) {
   return `
@@ -309,17 +297,13 @@ function generateVlessConfig(hostName) {
   if (PREFERRED_NODES.length === 0) {
     PREFERRED_NODES = [`${hostName}:443`];
   }
-  if (PRIVATE_KEY_ENABLED) {
-    return `请先关闭私钥功能`
-  } else {
-    return PREFERRED_NODES.map(node => {
-      const [mainPart] = node.split("@");
-      const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
-      const [address, portStr] = addressPort.split(":");
-      const port = portStr ? Number(portStr) : 443;
-      return `${PROTOCOL}${SEPARATOR}${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
-    }).join("\n");
-  }
+  return PREFERRED_NODES.map(node => {
+    const [mainPart] = node.split("@");
+    const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
+    const [address, portStr] = addressPort.split(":");
+    const port = portStr ? Number(portStr) : 443;
+    return `${PROTOCOL}${SEPARATOR}${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
+  }).join("\n");
 }
 function generateClashConfig(hostName) {
   if (PREFERRED_NODES.length === 0) {
@@ -345,8 +329,7 @@ function generateClashConfig(hostName) {
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
-      ${PRIVATE_KEY_HEADER}`,
+      Host: ${hostName}`,
         proxyConfig: `    - ${nodeName}`
       };
     });
