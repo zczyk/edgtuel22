@@ -2,8 +2,8 @@ import { connect } from 'cloudflare:sockets';
 
 ////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
-const PROTOCOL = 'vless';
-const CLASH_TYPE = 'clash';
+const V2RAY_PATH = 'v2ray';
+const CLASH_PATH = 'clash';
 const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 UUID，建议修改为自己的规范化 UUID
 
 let PREFERRED_NODES = [
@@ -46,14 +46,14 @@ export default {
         });
       }
 
-      if (pathname === `/${SUB_PATH}/${PROTOCOL}`) {
+      if (pathname === `/${SUB_PATH}/${V2RAY_PATH}`) {
         return new Response(generateVlessConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
       }
 
-      if (pathname === `/${SUB_PATH}/${CLASH_TYPE}`) {
+      if (pathname === `/${SUB_PATH}/${CLASH_PATH}`) {
         return new Response(generateClashConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -287,8 +287,8 @@ async function parseSocks5Credentials(socks5String) {
 
 function generateSubPage(subPath, hostName) {
   return `
-v2ray的：https://${hostName}/${subPath}/${PROTOCOL}
-Clash的：https://${hostName}/${subPath}/${CLASH_TYPE}
+v2ray的：https://${hostName}/${subPath}/${V2RAY_PATH}
+Clash的：https://${hostName}/${subPath}/${CLASH_PATH}
 `;
 }
 
