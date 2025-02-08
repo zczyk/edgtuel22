@@ -4,24 +4,24 @@ import { connect } from 'cloudflare:sockets';
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
-const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 通用订阅验证 UUID，建议修改为自己的规范化 UUID
+const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES = [
   'xiaoyetech-v1ess.pages.dev#晓夜1',
   'www.wto.org#晓夜2',
   'www.shopify.com#晓夜3',
-]; // 格式: 127.0.0.1:443#US 或 [2606:4700:3030:0:4563:5696:a36f:cdc5]:2096#US，#US 不填则使用统一名称
+]; // 格式: IP(v6也可以哦)/域名:443#US #US不填则使用统一名称 任何都不填使用自身域名
 let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
-const PROXY_ENABLED = true; // 是否启用反代功能【总开关】
-const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：ip:port 或 domain:port
+const PROXY_ENABLED = true; // 是否启用反代功能 (总开关）
+const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
 
 const SOCKS5_PROXY_ENABLED = false; // 是否启用 SOCKS5 反代，启用后原始反代将失效
 const SOCKS5_GLOBAL_PROXY_ENABLED = false; // 是否启用 SOCKS5 全局反代
 const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 
 const NODE_NAME = '晓夜'; // 节点名称【统一名称】
-const FAKE_WEBSITE = 'www.baidu.com'; // 伪装网页，如 'www.youku.com'
+const FAKE_WEBSITE = 'www.baidu.com'; // 伪装网页，如 'www.baidu.com'
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
 
@@ -351,9 +351,9 @@ proxy-groups:
 - name: 🚀 节点选择
   type: select
   proxies:
-    - 自动选择
+    - ♻️ 自动选择
 ${proxyConfigs}
-- name: 自动选择
+- name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
   interval: 100
