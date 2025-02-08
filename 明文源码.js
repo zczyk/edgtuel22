@@ -387,8 +387,7 @@ rules:
 - GEOIP,LAN,DIRECT,no-resolve #局域网IP直连规则
 - GEOSITE,cn,DIRECT #国内域名直连规则
 - GEOIP,CN,DIRECT,no-resolve #国内IP直连规则
-- GEOSITE,cloudflare,DIRECT #CF域名直连规则
-- GEOIP,CLOUDFLARE,DIRECT,no-resolve #CFIP直连规则
+- DOMAIN-SUFFIX,cn,DIRECT #cn域名直连规则
 - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
 - GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
 - GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
