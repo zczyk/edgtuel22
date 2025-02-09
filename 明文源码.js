@@ -349,65 +349,65 @@ dns:
     - 223.5.5.5
     - 2400:3200::1
 proxies:
-${nodeConfigs}
+  ${nodeConfigs}
 proxy-groups:
-- name: 🚀 节点选择
-  type: select
-  proxies:
-    - ♻️ 自动选择
-    - 🔯 故障转移
-${proxyConfigs}
-- name: 🐟 漏网之鱼
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
-- name: 🎯 全球直连
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
-- name: 🛑 广告屏蔽
-  type: select
-  proxies:
-    - REJECT
-    - DIRECT
-- name: ♻️ 自动选择
-  type: url-test
-  url: https://www.google.com/generate_204
-  interval: 150
-  tolerance: 50
-  proxies:
-${proxyConfigs}
-- name: 🔯 故障转移
-  type: fallback
-  health-check:
-    enable: true
-    interval: 300
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - ♻️ 自动选择
+      - 🔯 故障转移
+      ${proxyConfigs}
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+  - name: 🛑 广告屏蔽
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+  - name: ♻️ 自动选择
+    type: url-test
     url: https://www.google.com/generate_204
-  proxies:
-${proxyConfigs}
+    interval: 150
+    tolerance: 50
+    proxies:
+      ${proxyConfigs}
+  - name: 🔯 故障转移
+    type: fallback
+    health-check:
+      enable: true
+      interval: 300
+      url: https://www.google.com/generate_204
+    proxies:
+      ${proxyConfigs}
 rules:
 # edgeTunnel没有使用反代就去除注释
 # - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve
 # - GEOSITE,cloudflare,🎯 全球直连
-- GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
-- GEOSITE,cn,🎯 全球直连 #国内域名直连规则
-- GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
-- DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
-- GEOSITE,gfw,🚀 节点选择 #GFW域名规则
-- GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
-- GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
-- GEOSITE,netflix,🚀 节点选择 #奈飞域名规则
-- GEOIP,NETFLIX,🚀 节点选择,no-resolve #奈飞IP规则
-- GEOSITE,telegram,🚀 节点选择 #TG域名规则
-- GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
-- GEOSITE,openai,🚀 节点选择 #GPT规则
-- GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
-- RULE-SET,BanDoaminAD,🛑 广告屏蔽
-- RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
-- RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
-- MATCH,🐟 漏网之鱼
+  - GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
+  - GEOSITE,cn,🎯 全球直连 #国内域名直连规则
+  - GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
+  - DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
+  - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
+  - GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
+  - GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
+  - GEOSITE,netflix,🚀 节点选择 #奈飞域名规则
+  - GEOIP,NETFLIX,🚀 节点选择,no-resolve #奈飞IP规则
+  - GEOSITE,telegram,🚀 节点选择 #TG域名规则
+  - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
+  - GEOSITE,openai,🚀 节点选择 #GPT规则
+  - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
+  - RULE-SET,BanDoaminAD,🛑 广告屏蔽
+  - RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
+  - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
+  - MATCH,🐟 漏网之鱼
 rule-providers:
   BanDoaminAD:
     type: http
