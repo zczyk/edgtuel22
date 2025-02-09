@@ -408,7 +408,6 @@ rules:
 - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
 - MATCH,🐟 漏网之鱼
 rule-providers:
-  - 晓夜
   BanAD:
     type: http
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanAD.yaml"
