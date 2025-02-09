@@ -378,6 +378,9 @@ ${proxyConfigs}
     - DIRECT
     - 🚀 节点选择
 rules:
+# edgeTunnel没有使用反代就去除注释
+# - GEOIP,CLOUDFLARE,DIRECT,no-resolve
+# - GEOSITE,cloudflare,DIRECT
 - GEOIP,LAN,DIRECT,no-resolve #局域网IP直连规则
 - GEOSITE,cn,DIRECT #国内域名直连规则
 - GEOIP,CN,DIRECT,no-resolve #国内IP直连规则
