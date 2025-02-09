@@ -347,16 +347,22 @@ dns:
     - 2001:4860:4860::8888
   fallback:
     - 223.5.5.5
-    - 223.6.6.6
     - 2400:3200::1
-    - 2400:3200:baba::1
 proxies:
 ${nodeConfigs}
 proxy-groups:
 - name: 🚀 节点选择
   type: select
   proxies:
+    - ♻️ 自动选择
     - 🔯 故障转移
+${proxyConfigs}
+- name: ♻️ 自动选择
+  type: url-test
+  url: https://www.google.com/generate_204
+  interval: 150
+  tolerance: 50
+  proxies:
 ${proxyConfigs}
 - name: 🔯 故障转移
   type: fallback
