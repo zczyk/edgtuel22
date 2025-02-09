@@ -391,23 +391,23 @@ rules:
 # edgeTunnel没有使用反代就去除注释
 # - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve
 # - GEOSITE,cloudflare,🎯 全球直连
-  - GEOIP,LAN,🎯 全球直连,no-resolve
-  - GEOSITE,cn,🎯 全球直连
-  - GEOIP,CN,🎯 全球直连,no-resolve
-  - DOMAIN-SUFFIX,cn,🎯 全球直连
-  - GEOSITE,gfw,🚀 节点选择
-  - GEOSITE,google,🚀 节点选择
-  - GEOIP,GOOGLE,🚀 节点选择,no-resolve
-  - GEOSITE,netflix,🚀 节点选择
-  - GEOIP,NETFLIX,🚀 节点选择,no-resolve
-  - GEOSITE,telegram,🚀 节点选择
-  - GEOIP,TELEGRAM,🚀 节点选择,no-resolve
-  - GEOSITE,openai,🚀 节点选择
-  - GEOSITE,category-ads-all,🛑 广告屏蔽
-  - RULE-SET,BanDoaminAD,🛑 广告屏蔽
-  - RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
-  - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
-  - MATCH,🐟 漏网之鱼
+- GEOIP,LAN,🎯 全球直连,no-resolve
+- GEOSITE,cn,🎯 全球直连
+- GEOIP,CN,🎯 全球直连,no-resolve
+- DOMAIN-SUFFIX,cn,🎯 全球直连
+- GEOSITE,gfw,🚀 节点选择
+- GEOSITE,google,🚀 节点选择
+- GEOIP,GOOGLE,🚀 节点选择,no-resolve
+- GEOSITE,netflix,🚀 节点选择
+- GEOIP,NETFLIX,🚀 节点选择,no-resolve
+- GEOSITE,telegram,🚀 节点选择
+- GEOIP,TELEGRAM,🚀 节点选择,no-resolve
+- GEOSITE,openai,🚀 节点选择
+- GEOSITE,category-ads-all,🛑 广告屏蔽
+- RULE-SET,BanDoaminAD,🛑 广告屏蔽
+- RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
+- RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
+- MATCH,🐟 漏网之鱼
 rule-providers:
   BanDoaminAD:
     type: http
