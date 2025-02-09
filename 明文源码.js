@@ -343,9 +343,11 @@ dns:
   nameserver:
     - 1.1.1.1
     - 2606:4700:4700::1111
-  fallback:
     - 8.8.8.8
     - 2001:4860:4860::8888
+  fallback:
+    - 223.5.5.5
+    - 2400:3200::1
 proxies:
 ${nodeConfigs}
 proxy-groups:
