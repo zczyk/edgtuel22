@@ -11,7 +11,7 @@ let PREFERRED_NODES = [
 ];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
 
 let PREFERRED_NODES_TXT_URL = [
-  'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/Domain.txt',
+  'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
 ];  // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
@@ -404,15 +404,25 @@ rules:
 - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
 - GEOSITE,openai,🚀 节点选择 #GPT规则
 - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
-- RULE-SET,BanAD,🛑 广告屏蔽
-- RULE-SET,BanSpotifyAD,🛑 广告屏蔽
+- RULE-SET,BanDoaminAD,🛑 广告屏蔽
+- RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
+- RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
 - MATCH,🐟 漏网之鱼
 rule-providers:
-  BanAD:
+  BanDoaminAD:
     type: http
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanAD.yaml"
-  BanSpotifyAD:
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanDoaminAD.yaml"
+    format: yaml
+  BanDomainSpotifyAD:
     type: http
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanSpotifyAD.yaml"
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanDomainSpotifyAD.yaml"
+    format: yaml
+  BanIPSpotifyAD:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanIPSpotifyAD.yaml"
+    format: yaml
 `;
 }
