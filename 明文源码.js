@@ -10,7 +10,7 @@ let PREFERRED_NODES = [
   //'www.wto.org',
   //'www.shopify.com',
 ];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  节点名称不填则使用统一名称，任何都不填使用自身域名
-let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
+let PREFERRED_NODES_TXT_URL = []; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能 (总开关）
 const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
@@ -32,10 +32,10 @@ export default {
 
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
       // 加载优选节点
-      if (PREFERRED_NODES_TXT_URL) {
-        const response = await fetch(PREFERRED_NODES_TXT_URL);
-        const text = await response.text();
-        PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
+      if (PREFERRED_NODES_TXT_URL.length > 0) {
+        const response = await Promise.all(PREFERRED_NODES_TXT_URL.map(url => fetch(url).then(response => response.ok ? response.text() : '')));
+        const text = response.flat();
+        PREFERRED_NODES = text.map(text => text.split('\n').map(line => line.trim()).filter(line => line)).flat();
       }
 
       if (pathname === `/${SUB_PATH}`) {
