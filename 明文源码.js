@@ -412,10 +412,8 @@ rule-providers:
   BanAD:
     type: http
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanAD.yaml"
-    format: yaml
   BanSpotifyAD:
     type: http
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanSpotifyAD.yaml"
-    format: yaml
 `;
 }
