@@ -351,42 +351,42 @@ dns:
 proxies:
   ${nodeConfigs}
 proxy-groups:
-  - name: 🚀 节点选择
-    type: select
-    proxies:
-      - ♻️ 自动选择
-      - 🔯 故障转移
-      ${proxyConfigs}
-  - name: 🐟 漏网之鱼
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
-  - name: 🎯 全球直连
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
-  - name: 🛑 广告屏蔽
-    type: select
-    proxies:
-      - REJECT
-      - DIRECT
-  - name: ♻️ 自动选择
-    type: url-test
+- name: 🚀 节点选择
+  type: select
+  proxies:
+    - ♻️ 自动选择
+    - 🔯 故障转移
+${proxyConfigs}
+- name: 🐟 漏网之鱼
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🎯 全球直连
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🛑 广告屏蔽
+  type: select
+  proxies:
+    - REJECT
+    - DIRECT
+- name: ♻️ 自动选择
+  type: url-test
+  url: https://www.google.com/generate_204
+  interval: 150
+  tolerance: 50
+  proxies:
+${proxyConfigs}
+- name: 🔯 故障转移
+  type: fallback
+  health-check:
+    enable: true
+    interval: 300
     url: https://www.google.com/generate_204
-    interval: 150
-    tolerance: 50
-    proxies:
-      ${proxyConfigs}
-  - name: 🔯 故障转移
-    type: fallback
-    health-check:
-      enable: true
-      interval: 300
-      url: https://www.google.com/generate_204
-    proxies:
-      ${proxyConfigs}
+  proxies:
+${proxyConfigs}
 rules:
 # edgeTunnel没有使用反代就去除注释
 # - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve
