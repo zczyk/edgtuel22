@@ -4,8 +4,7 @@ import { connect } from 'cloudflare:sockets';
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
-const DEFAULT_UUID = '550e8400-e29b-41d4-a716-446655440000';
-const SUB_UUID = env.SUB_UUID || DEFAULT_UUID; // 订阅验证 UUID，建议修改为自己的UUID
+const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES = [
     //'www.wto.org',
@@ -345,8 +344,8 @@ dns:
     - 1.1.1.1
     - 2606:4700:4700::1111
   fallback:
-    - 223.5.5.5
-    - 2400:3200::1
+    - 8.8.8.8
+    - 2001:4860:4860::8888
 proxies:
 ${nodeConfigs}
 proxy-groups:
