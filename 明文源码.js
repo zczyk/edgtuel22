@@ -360,15 +360,7 @@ proxy-groups:
 - name: 🚀 节点选择
   type: select
   proxies:
-    - ♻️ 自动选择
     - 🔯 故障转移
-${proxyConfigs}
-- name: ♻️ 自动选择
-  type: url-test
-  url: https://www.google.com/generate_204
-  interval: 150
-  tolerance: 50
-  proxies:
 ${proxyConfigs}
 - name: 🔯 故障转移
   type: fallback
