@@ -4,17 +4,14 @@ import { connect } from 'cloudflare:sockets';
 const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
-
-const DEFAULT_UUID = '550e8400-e29b-41d4-a716-446655440000';
-const SUB_UUID = env.SUB_UUID || DEFAULT_UUID;
+const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES = [
   //'www.wto.org',
   //'www.shopify.com',
 ];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  节点名称不填则使用统一名称，任何都不填使用自身域名
 
-// 从环境变量获取优选节点 TXT 文件路径，如果未设置则为空
-const PREFERRED_NODES_TXT_URL = (ENVIRONMENT_VARIABLES?.PREFERRED_NODES_TXT_URL?.split(',') || []); // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
+let PREFERRED_NODES_TXT_URL = []; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
 const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
