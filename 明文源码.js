@@ -407,13 +407,15 @@ rules:
 - RULE-SET,BanAD,🛑 广告屏蔽
 - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
 - MATCH,🐟 漏网之鱼
-my-rules:
-  type: http
-  url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanAD.yaml"
-  format: yaml
-my-rules:
-  type: http
-  url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanSpotifyAD.yaml"
-  format: yaml
+rule-providers:
+  晓夜
+  BanAD:
+    type: http
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanAD.yaml"
+    format: yaml
+  BanSpotifyAD:
+    type: http
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/refs/heads/main/ClashRule/BanSpotifyAD.yaml"
+    format: yaml
 `;
 }
