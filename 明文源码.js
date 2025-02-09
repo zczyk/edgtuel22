@@ -7,8 +7,7 @@ const CLASH_PATH = 'clash';
 const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES = [
-  //'www.wto.org',
-  //'www.shopify.com',
+    //'www.wto.org',
 ];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
 
 let PREFERRED_NODES_TXT_URL = [
