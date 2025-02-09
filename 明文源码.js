@@ -357,6 +357,21 @@ proxy-groups:
     - ♻️ 自动选择
     - 🔯 故障转移
 ${proxyConfigs}
+- name: 🐟 漏网之鱼
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🎯 全球直连
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🛑 广告屏蔽
+  type: select
+  proxies:
+    - REJECT
+    - DIRECT
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
@@ -372,19 +387,14 @@ ${proxyConfigs}
     url: https://www.google.com/generate_204
   proxies:
 ${proxyConfigs}
-- name: 漏网之鱼
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
 rules:
 # edgeTunnel没有使用反代就去除注释
-# - GEOIP,CLOUDFLARE,DIRECT,no-resolve
-# - GEOSITE,cloudflare,DIRECT
-- GEOIP,LAN,DIRECT,no-resolve #局域网IP直连规则
-- GEOSITE,cn,DIRECT #国内域名直连规则
-- GEOIP,CN,DIRECT,no-resolve #国内IP直连规则
-- DOMAIN-SUFFIX,cn,DIRECT #cn域名直连规则
+# - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve
+# - GEOSITE,cloudflare,🎯 全球直连
+- GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
+- GEOSITE,cn,🎯 全球直连 #国内域名直连规则
+- GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
+- DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
 - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
 - GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
 - GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
@@ -393,7 +403,7 @@ rules:
 - GEOSITE,telegram,🚀 节点选择 #TG域名规则
 - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
 - GEOSITE,openai,🚀 节点选择 #GPT规则
-- GEOSITE,category-ads-all,REJECT #简单广告过滤规则
-- MATCH,漏网之鱼
+- GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
+- MATCH,🐟 漏网之鱼
 `;
 }
