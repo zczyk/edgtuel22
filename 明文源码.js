@@ -371,6 +371,7 @@ ${proxyConfigs}
   type: select
   proxies:
     - BLOCK
+    - REJECT
     - DIRECT
 - name: ♻️ 自动选择
   type: url-test
@@ -404,25 +405,21 @@ rules:
   - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
   - GEOSITE,openai,🚀 节点选择 #GPT规则
   - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
-  - RULE-SET,BanDoaminAD,🛑 广告屏蔽
-  - RULE-SET,BanDomainSpotifyAD,🛑 广告屏蔽
-  - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
+  - RULE-SET,BanAD,🛑 广告屏蔽
+  - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
   - MATCH,🐟 漏网之鱼
 rule-providers:
-  BanDoaminAD:
+  BanAD:
     type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanDoaminAD.yaml"
-    format: yaml
-  BanDomainSpotifyAD:
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanAD.txt"
+    path: ./rules/BanAD.txt
+    interval: 43200
+    format: "plain"
+  BanSpotifyAD:
     type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanDomainSpotifyAD.yaml"
-    format: yaml
-  BanIPSpotifyAD:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanIPSpotifyAD.yaml"
-    format: yaml
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.txt"
+    path: ./rules/BanSpotifyAD.txt
+    interval: 43200
+    format: "plain"
 `;
 }
