@@ -404,20 +404,21 @@ rules:
   - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
   - GEOSITE,openai,🚀 节点选择 #GPT规则
   - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
-  - RULE-SET,BanAD,🛑 广告屏蔽
   - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
   - MATCH,🐟 漏网之鱼
 rule-providers:
-  BanAD:
-    type: http
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanAD.yaml"
-    path: ./rules/BanAD.yaml
-    interval: 43200
-    format: yaml
   BanSpotifyAD:
     type: http
+    behavior: domain
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.yaml"
     path: ./rules/BanSpotifyAD.yaml
+    interval: 43200
+    format: yaml
+  BanIPSpotifyAD:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanIPSpotifyAD.yaml"
+    path: ./rules/BanIPSpotifyAD.yaml
     interval: 43200
     format: yaml
 `;

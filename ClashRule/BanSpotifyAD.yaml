@@ -1029,8 +1029,6 @@
 - DOMAIN,10.138.204.35.bc.googleusercontent.com
 - DOMAIN,101.8.194.35.bc.googleusercontent.com
 - DOMAIN,102.96.202.35.bc.googleusercontent.com
-- IP-CIDR,104.199.64.104/32
-- IP-CIDR,104.199.65.206/32
 - DOMAIN,104.253.200.35.bc.googleusercontent.com
 - DOMAIN,108.196.222.35.bc.googleusercontent.com
 - DOMAIN,108.239.185.35.bc.googleusercontent.com
@@ -1082,7 +1080,6 @@
 - DOMAIN,148.196.185.35.bc.googleusercontent.com
 - DOMAIN,149.189.203.35.bc.googleusercontent.com
 - DOMAIN,151.46.204.35.bc.googleusercontent.com
-- IP-CIDR,151.101.38.248/32
 - DOMAIN,152.71.148.146.bc.googleusercontent.com
 - DOMAIN,153.64.199.104.bc.googleusercontent.com
 - DOMAIN,154.79.188.35.bc.googleusercontent.com
@@ -1100,7 +1097,6 @@
 - DOMAIN,170.156.200.35.bc.googleusercontent.com
 - DOMAIN,170.243.201.35.bc.googleusercontent.com
 - DOMAIN,172.148.240.35.bc.googleusercontent.com
-- IP-CIDR,172.217.20.98/32
 - DOMAIN,173.96.87.34.bc.googleusercontent.com
 - DOMAIN,176.72.185.35.bc.googleusercontent.com
 - DOMAIN,17.91.97.34.bc.googleusercontent.com
@@ -1115,7 +1111,6 @@
 - DOMAIN,191.10.244.35.bc.googleusercontent.com
 - DOMAIN,191.191.238.35.bc.googleusercontent.com
 - DOMAIN,19.162.247.35.bc.googleusercontent.com
-- IP-CIDR,192.121.140.177/32
 - DOMAIN,194.18.245.35.bc.googleusercontent.com
 - DOMAIN,194.233.228.35.bc.googleusercontent.com
 - DOMAIN,194.48.92.34.bc.googleusercontent.com
@@ -1185,7 +1180,6 @@
 - DOMAIN,255.6.189.35.bc.googleusercontent.com
 - DOMAIN,2.86.227.35.bc.googleusercontent.com
 - DOMAIN,28.64.199.104.bc.googleusercontent.com
-- IP-CIDR,35.186.224.53/32
 - DOMAIN,36.131.102.34.bc.googleusercontent.com
 - DOMAIN,36.146.239.35.bc.googleusercontent.com
 - DOMAIN,3.6.196.104.bc.googleusercontent.com
