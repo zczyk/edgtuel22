@@ -412,15 +412,11 @@ rule-providers:
     type: http
     behavior: domain
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.yaml"
-    path: ./rules/BanSpotifyAD.yaml
-    interval: 43200
     format: yaml
   BanIPSpotifyAD:
     type: http
     behavior: ipcidr
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanIPSpotifyAD.yaml"
-    path: ./rules/BanIPSpotifyAD.yaml
-    interval: 43200
     format: yaml
 `;
 }
