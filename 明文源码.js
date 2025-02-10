@@ -405,6 +405,7 @@ rules:
   - GEOSITE,openai,🚀 节点选择 #GPT规则
   - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
   - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
+  - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
   - MATCH,🐟 漏网之鱼
 rule-providers:
   BanSpotifyAD:
