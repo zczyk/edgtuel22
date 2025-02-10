@@ -370,7 +370,6 @@ ${proxyConfigs}
 - name: 🛑 广告屏蔽
   type: select
   proxies:
-    - BLOCK
     - REJECT
     - DIRECT
 - name: ♻️ 自动选择
