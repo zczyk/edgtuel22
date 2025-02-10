@@ -395,7 +395,6 @@ rules:
   - GEOSITE,cn,🎯 全球直连 #国内域名直连规则
   - GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
   - DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
-  - GEOSITE,category-ads-all,🛑 广告屏蔽 #简单广告过滤规则
   - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
   - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
   - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
