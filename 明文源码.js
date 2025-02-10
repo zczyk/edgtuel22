@@ -410,12 +410,14 @@ rules:
 rule-providers:
   BanAD:
     type: http
+    behavior: rule
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanAD.txt"
     path: ./rules/BanAD.txt
     interval: 43200
     format: "plain"
   BanSpotifyAD:
     type: http
+    behavior: rule
     url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.txt"
     path: ./rules/BanSpotifyAD.txt
     interval: 43200
