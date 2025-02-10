@@ -370,7 +370,7 @@ ${proxyConfigs}
 - name: 🛑 广告屏蔽
   type: select
   proxies:
-    - DROP
+    - BLACKHOLE
     - DIRECT
 - name: ♻️ 自动选择
   type: url-test
