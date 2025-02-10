@@ -410,17 +410,15 @@ rules:
 rule-providers:
   BanAD:
     type: http
-    behavior: rule
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanAD.txt"
-    path: ./rules/BanAD.txt
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanAD.yaml"
+    path: ./rules/BanAD.yaml
     interval: 43200
-    format: "plain"
+    format: yaml
   BanSpotifyAD:
     type: http
-    behavior: rule
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.txt"
-    path: ./rules/BanSpotifyAD.txt
+    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.yaml"
+    path: ./rules/BanSpotifyAD.yaml
     interval: 43200
-    format: "plain"
+    format: yaml
 `;
 }
