@@ -367,11 +367,6 @@ ${proxyConfigs}
   proxies:
     - DIRECT
     - 🚀 节点选择
-- name: 🛑 广告屏蔽
-  type: select
-  proxies:
-    - REJECT
-    - DIRECT
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
@@ -395,8 +390,6 @@ rules:
   - GEOSITE,cn,🎯 全球直连 #国内域名直连规则
   - GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
   - DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
-  - RULE-SET,BanSpotifyAD,🛑 广告屏蔽
-  - RULE-SET,BanIPSpotifyAD,🛑 广告屏蔽
   - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
   - GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
   - GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
@@ -406,16 +399,5 @@ rules:
   - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
   - GEOSITE,openai,🚀 节点选择 #GPT规则
   - MATCH,🐟 漏网之鱼
-rule-providers:
-  BanSpotifyAD:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanSpotifyAD.yaml"
-    format: yaml
-  BanIPSpotifyAD:
-    type: http
-    behavior: ipcidr
-    url: "https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/ClashRule/BanIPSpotifyAD.yaml"
-    format: yaml
 `;
 }
