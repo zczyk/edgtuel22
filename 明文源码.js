@@ -349,7 +349,7 @@ dns:
     - 223.5.5.5
     - 2400:3200::1
 proxies:
-  ${nodeConfigs}
+${nodeConfigs}
 proxy-groups:
 - name: 🚀 节点选择
   type: select
