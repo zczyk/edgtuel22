@@ -11,7 +11,7 @@ let PREFERRED_NODES = [
 ];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
 
 let PREFERRED_NODES_TXT_URL = [
-  'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
+    //'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
 ];  // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
 const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
@@ -341,7 +341,7 @@ function generateClashConfig(hostName) {
   const cloudflareRules = PROXY_ENABLED ? [] : [
     '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
     '  - GEOSITE,cloudflare,🎯 全球直连',
-    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连'
+    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连',
   ];
 
   return `
