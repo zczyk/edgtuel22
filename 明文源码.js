@@ -338,6 +338,12 @@ function generateClashConfig(hostName) {
   const nodeConfigs = generateNodes(PREFERRED_NODES).map(node => node.nodeConfig).join("\n");
   const proxyConfigs = generateNodes(PREFERRED_NODES).map(node => node.proxyConfig).join("\n");
 
+  const cloudflareRules = PROXY_ENABLED ? [] : [
+    '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
+    '  - GEOSITE,cloudflare,🎯 全球直连',
+    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连'
+  ];
+
   return `
 proxies:
 ${nodeConfigs}
@@ -374,9 +380,7 @@ ${proxyConfigs}
   proxies:
 ${proxyConfigs}
 rules:
-# edgeTunnel没有使用反代就去除注释
-# - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve
-# - GEOSITE,cloudflare,🎯 全球直连
+${cloudflareRules.join('\n')}
   - GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
   - GEOSITE,cn,🎯 全球直连 #国内域名直连规则
   - GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
