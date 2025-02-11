@@ -1,26 +1,26 @@
 import { connect } from 'cloudflare:sockets';
 
 ////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
+const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
+const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
-let TXT_URL = [
-    'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
-];
-    // 优选节点 TXT 文件路径
-    // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
+let PREFERRED_NODES = [
+  //'www.wto.org',
+  //'www.shopify.com',
+];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  节点名称不填则使用统一名称，任何都不填使用自身域名
+let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
-const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
+const PROXY_ENABLED = true; // 是否启用反代功能 (总开关）
 const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
 
 const SOCKS5_PROXY_ENABLED = false; // 是否启用 SOCKS5 反代，启用后原始反代将失效
 const SOCKS5_GLOBAL_PROXY_ENABLED = false; // 是否启用 SOCKS5 全局反代
 const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 
-const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
-const SUB_UUID = typeof SUB_UUID !== 'undefined' ? SUB_UUID : (typeof DEFAULT_SUB_UUID !== 'undefined' ? DEFAULT_SUB_UUID : "550e8400-e29b-41d4-a716-446655440000");
-const SUB_NAME = typeof SUB_NAME !== 'undefined' ? SUB_NAME : (typeof DEFAULT_SUB_NAME !== 'undefined' ? DEFAULT_SUB_NAME : '节点');
-const FAKE_WEBSITE = typeof FAKE_WEBSITE !== 'undefined' ? FAKE_WEBSITE : (typeof DEFAULT_FAKE_WEBSITE !== 'undefined' ? DEFAULT_FAKE_WEBSITE : 'www.baidu.com');
+const NODE_NAME = '晓夜'; // 节点名称【统一名称】
+const FAKE_WEBSITE = 'www.baidu.com'; // 伪装网页，如 'www.baidu.com'
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
 
@@ -32,11 +32,10 @@ export default {
 
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
       // 加载优选节点
-      let PREFERRED_NODES = [];
-      if (TXT_URL.length > 0) {
-        const response = await Promise.all(TXT_URL.map(url => fetch(url).then(response => response.ok ? response.text() : '')));
-        const text = response.flat();
-        PREFERRED_NODES = text.map(text => text.split('\n').map(line => line.trim()).filter(line => line)).flat();
+      if (PREFERRED_NODES_TXT_URL) {
+        const response = await fetch(PREFERRED_NODES_TXT_URL);
+        const text = await response.text();
+        PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
       }
 
       if (pathname === `/${SUB_PATH}`) {
@@ -47,14 +46,14 @@ export default {
       }
 
       if (pathname === `/${SUB_PATH}/${V2RAY_PATH}`) {
-        return new Response(generateVlessConfig(request.headers.get('Host'), PREFERRED_NODES), {
+        return new Response(generateVlessConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
       }
 
       if (pathname === `/${SUB_PATH}/${CLASH_PATH}`) {
-        return new Response(generateClashConfig(request.headers.get('Host'), PREFERRED_NODES), {
+        return new Response(generateClashConfig(request.headers.get('Host')), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
@@ -292,26 +291,26 @@ Clash的：https://${hostName}/${subPath}/${CLASH_PATH}
 `;
 }
 
-function generateVlessConfig(hostName, PREFERRED_NODES) {
-  if (!PREFERRED_NODES || PREFERRED_NODES.length === 0) {
+function generateVlessConfig(hostName) {
+  if (PREFERRED_NODES.length === 0) {
     PREFERRED_NODES = [`${hostName}:443`];
   }
   return PREFERRED_NODES.map(node => {
     const [mainPart] = node.split("@");
-    const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
+    const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
     const [address, portStr] = addressPort.split(":");
     const port = portStr ? Number(portStr) : 443;
     return `vless://${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
   }).join("\n");
 }
-function generateClashConfig(hostName, PREFERRED_NODES) {
-  if (!PREFERRED_NODES || PREFERRED_NODES.length === 0) {
+function generateClashConfig(hostName) {
+  if (PREFERRED_NODES.length === 0) {
     PREFERRED_NODES = [`${hostName}:443`];
   }
   const generateNodes = (nodes) => {
     return nodes.map(node => {
       const [mainPart] = node.split("@");
-      const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
+      const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
       const [address, portStr] = addressPort.split(":");
       const port = portStr ? Number(portStr) : 443;
       const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
@@ -345,24 +344,17 @@ function generateClashConfig(hostName, PREFERRED_NODES) {
 
   return `
 proxies:
+
 ${nodeConfigs}
+
 proxy-groups:
+
 - name: 🚀 节点选择
   type: select
   proxies:
     - ♻️ 自动选择
     - 🔯 故障转移
 ${proxyConfigs}
-- name: 🐟 漏网之鱼
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
-- name: 🎯 全球直连
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
@@ -378,6 +370,7 @@ ${proxyConfigs}
     url: https://www.google.com/generate_204
   proxies:
 ${proxyConfigs}
+
 rules:
 ${cloudflareRules.join('\n')}
   - GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
