@@ -4,9 +4,9 @@ import { connect } from 'cloudflare:sockets';
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
 
-let TXT_URL = typeof TXT_URL !== 'undefined' ? TXT_URL : (typeof DEFAULT_TXT_URL !== 'undefined' ? DEFAULT_TXT_URL : [
-    '',
-]);
+let TXT_URL = [
+    'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
+];
     // 优选节点 TXT 文件路径
     // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
 
