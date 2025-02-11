@@ -7,12 +7,12 @@ const CLASH_PATH = 'clash';
 const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES = [
-  //'www.wto.org',
-  //'www.shopify.com',
-];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  节点名称不填则使用统一名称，任何都不填使用自身域名
+    //'www.wto.org',
+];  // 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
+
 let PREFERRED_NODES_TXT_URL = ''; // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
 
-const PROXY_ENABLED = true; // 是否启用反代功能 (总开关）
+const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
 const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
 
 const SOCKS5_PROXY_ENABLED = false; // 是否启用 SOCKS5 反代，启用后原始反代将失效
@@ -31,7 +31,6 @@ export default {
     const { pathname } = url;
 
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
-      // 加载优选节点
       if (PREFERRED_NODES_TXT_URL) {
         const response = await fetch(PREFERRED_NODES_TXT_URL);
         const text = await response.text();
@@ -339,22 +338,29 @@ function generateClashConfig(hostName) {
   const cloudflareRules = PROXY_ENABLED ? [] : [
     '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
     '  - GEOSITE,cloudflare,🎯 全球直连',
-    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连',
+    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连'
   ];
 
   return `
 proxies:
-
 ${nodeConfigs}
-
 proxy-groups:
-
 - name: 🚀 节点选择
   type: select
   proxies:
     - ♻️ 自动选择
     - 🔯 故障转移
 ${proxyConfigs}
+- name: 🐟 漏网之鱼
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🎯 全球直连
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
@@ -370,7 +376,6 @@ ${proxyConfigs}
     url: https://www.google.com/generate_204
   proxies:
 ${proxyConfigs}
-
 rules:
 ${cloudflareRules.join('\n')}
   - GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
