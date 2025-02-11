@@ -4,7 +4,7 @@ import { connect } from 'cloudflare:sockets';
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
 
-let PREFERRED_NODES_TXT_URL = [
+let TXT_URL = [
     'https://raw.githubusercontent.com/ImLTHQ/edgeTunnel/main/Domain.txt',
 ];
     // 优选节点 TXT 文件路径
@@ -33,8 +33,8 @@ export default {
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
       // 加载优选节点
       let PREFERRED_NODES = [];
-      if (PREFERRED_NODES_TXT_URL.length > 0) {
-        const response = await Promise.all(PREFERRED_NODES_TXT_URL.map(url => fetch(url).then(response => response.ok ? response.text() : '')));
+      if (TXT_URL.length > 0) {
+        const response = await Promise.all(TXT_URL.map(url => fetch(url).then(response => response.ok ? response.text() : '')));
         const text = response.flat();
         PREFERRED_NODES = text.map(text => text.split('\n').map(line => line.trim()).filter(line => line)).flat();
       }
