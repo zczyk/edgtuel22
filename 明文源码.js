@@ -15,11 +15,9 @@ const SOCKS5_PROXY_ENABLED = false; // 是否启用 SOCKS5 反代，启用后原
 const SOCKS5_GLOBAL_PROXY_ENABLED = false; // 是否启用 SOCKS5 全局反代
 const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 
-const NODE_NAME = '晓夜'; // 节点名称【统一名称】
-
 const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
 const SUB_UUID = typeof SUB_UUID !== 'undefined' ? SUB_UUID : (typeof DEFAULT_SUB_UUID !== 'undefined' ? DEFAULT_SUB_UUID : "550e8400-e29b-41d4-a716-446655440000");
-const SUB_NAME = typeof SUB_NAME !== 'undefined' ? SUB_NAME : (typeof DEFAULT_SUB_NAME !== 'undefined' ? DEFAULT_SUB_NAME : '节点');
+const NODE_NAME = typeof NODE_NAME !== 'undefined' ? NODE_NAME : (typeof DEFAULT_NODE_NAME !== 'undefined' ? DEFAULT_NODE_NAME : '节点');
 const FAKE_WEBSITE = typeof FAKE_WEBSITE !== 'undefined' ? FAKE_WEBSITE : (typeof DEFAULT_FAKE_WEBSITE !== 'undefined' ? DEFAULT_FAKE_WEBSITE : 'www.baidu.com');
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
