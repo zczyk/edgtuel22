@@ -32,7 +32,9 @@ const SOCKS5_CREDENTIALS = '';
 
 export default {
   async fetch(request, env) {
+    
     const TXT_URL_FINAL = env.TXT_URL || TXT_URL;
+
     const upgradeHeader = request.headers.get('Upgrade');
     const url = new URL(request.url);
     const { pathname } = url;
