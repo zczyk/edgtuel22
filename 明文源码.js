@@ -17,7 +17,7 @@ const SOCKS5_GLOBAL_PROXY_ENABLED = false;
 // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 const SOCKS5_CREDENTIALS = '';
 
-// 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
+// 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 const TXT_URL = typeof TXT_URL !== 'undefined' ? TXT_URL : (typeof DEFAULT_TXT_URL !== 'undefined' ? DEFAULT_TXT_URL : "");
 // 订阅路径 [域名/SUB_PATH]
 const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
