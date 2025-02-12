@@ -5,7 +5,7 @@ const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
 
 // 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-const TXT_URL = '';
+const TXT_URL = 'https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt';
 // 订阅路径 [域名/SUB_PATH]
 const SUB_PATH = 'sub';
 // 用于验证的UUID
