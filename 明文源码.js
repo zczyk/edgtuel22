@@ -1,10 +1,8 @@
 import { connect } from 'cloudflare:sockets';
 
 ////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
-const SUB_PATH = "XiaoYeTech"; // 订阅路径，支持任意大小写字母和数字， [域名/SUB_PATH] 进入订阅页面
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
-const SUB_UUID = "550e8400-e29b-41d4-a716-446655440000"; // 订阅验证 UUID，建议修改为自己的UUID
 
 let PREFERRED_NODES_TXT_URL = ''; 
 // 优选节点 TXT 文件路径，使用 TXT 时，脚本内部填写的节点无效，两者二选一
@@ -18,7 +16,11 @@ const SOCKS5_GLOBAL_PROXY_ENABLED = false; // 是否启用 SOCKS5 全局反代
 const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 
 const NODE_NAME = '晓夜'; // 节点名称【统一名称】
-const FAKE_WEBSITE = 'www.baidu.com'; // 伪装网页，如 'www.baidu.com'
+
+const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
+const SUB_UUID = typeof SUB_UUID !== 'undefined' ? SUB_UUID : (typeof DEFAULT_SUB_UUID !== 'undefined' ? DEFAULT_SUB_UUID : "550e8400-e29b-41d4-a716-446655440000");
+const SUB_NAME = typeof SUB_NAME !== 'undefined' ? SUB_NAME : (typeof DEFAULT_SUB_NAME !== 'undefined' ? DEFAULT_SUB_NAME : '节点');
+const FAKE_WEBSITE = typeof FAKE_WEBSITE !== 'undefined' ? FAKE_WEBSITE : (typeof DEFAULT_FAKE_WEBSITE !== 'undefined' ? DEFAULT_FAKE_WEBSITE : 'www.baidu.com');
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
 
