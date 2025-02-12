@@ -16,7 +16,7 @@ const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@
 
 const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
 const SUB_UUID = typeof SUB_UUID !== 'undefined' ? SUB_UUID : (typeof DEFAULT_SUB_UUID !== 'undefined' ? DEFAULT_SUB_UUID : "550e8400-e29b-41d4-a716-446655440000");
-const NODE_NAME = typeof NODE_NAME !== 'undefined' ? NODE_NAME : (typeof DEFAULT_NODE_NAME !== 'undefined' ? DEFAULT_NODE_NAME : '节点');
+const SUB_NAME = typeof SUB_NAME !== 'undefined' ? SUB_NAME : (typeof DEFAULT_SUB_NAME !== 'undefined' ? DEFAULT_SUB_NAME : '节点');
 const FAKE_WEBSITE = typeof FAKE_WEBSITE !== 'undefined' ? FAKE_WEBSITE : (typeof DEFAULT_FAKE_WEBSITE !== 'undefined' ? DEFAULT_FAKE_WEBSITE : 'www.baidu.com');
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
@@ -294,7 +294,7 @@ function generateVlessConfig(hostName, PREFERRED_NODES) {
   }
   return PREFERRED_NODES.map(node => {
     const [mainPart] = node.split("@");
-    const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
+    const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
     const [address, portStr] = addressPort.split(":");
     const port = portStr ? Number(portStr) : 443;
     return `vless://${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
@@ -307,7 +307,7 @@ function generateClashConfig(hostName, PREFERRED_NODES) {
   const generateNodes = (nodes) => {
     return nodes.map(node => {
       const [mainPart] = node.split("@");
-      const [addressPort, nodeName = NODE_NAME] = mainPart.split("#");
+      const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
       const [address, portStr] = addressPort.split(":");
       const port = portStr ? Number(portStr) : 443;
       const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
