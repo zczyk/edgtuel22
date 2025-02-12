@@ -32,15 +32,15 @@ const SOCKS5_CREDENTIALS = '';
 
 export default {
   async fetch(request, env) {
-    const V2RAY_PATH_FINAL = env.V2RAY_PATH || V2RAY_PATH;
+    const TXT_URL_FINAL = env.TXT_URL || TXT_URL;
     const upgradeHeader = request.headers.get('Upgrade');
     const url = new URL(request.url);
     const { pathname } = url;
 
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
       let PREFERRED_NODES = [];
-      if (TXT_URL) {
-        const response = await fetch(TXT_URL);
+      if (TXT_URL_FINAL) {
+        const response = await fetch(TXT_URL_FINAL);
         const text = await response.text();
         PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
       }
@@ -52,7 +52,7 @@ export default {
         });
       }
 
-      if (pathname === `/${SUB_PATH}/${V2RAY_PATH_FINAL}`) {
+      if (pathname === `/${SUB_PATH}/${V2RAY_PATH}`) {
         return new Response(generateVlessConfig(request.headers.get('Host'), PREFERRED_NODES), {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -293,7 +293,7 @@ async function parseSocks5Credentials(socks5String) {
 
 function generateSubPage(subPath, hostName) {
   return `
-v2ray的：https://${hostName}/${subPath}/${V2RAY_PATH_FINAL}
+v2ray的：https://${hostName}/${subPath}/${V2RAY_PATH}
 Clash的：https://${hostName}/${subPath}/${CLASH_PATH}
 `;
 }
