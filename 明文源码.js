@@ -1,8 +1,7 @@
 import { connect } from 'cloudflare:sockets';
 
 ////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
-V2RAY_PATH = 'v2ray';
-V2RAY_PATH = env.V2RAY_PATH || V2RAY_PATH;
+V2RAY_PATH = env.V2RAY_PATH || 'v2ray';
 CLASH_PATH = 'clash';
 
 // 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
