@@ -4,19 +4,28 @@ import { connect } from 'cloudflare:sockets';
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
 
-let TXT_URL = 'https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt'; 
+// 是否启用反代功能 （总开关）
+const PROXY_ENABLED = true;
+
+// 反代 IP 或域名，格式：地址:端口
+const PROXY_ADDRESS = 'ts.hpc.tw:443';
+
+// 是否启用 SOCKS5 反代，启用后原始反代将失效
+const SOCKS5_PROXY_ENABLED = false;
+// 是否启用 SOCKS5 全局反代
+const SOCKS5_GLOBAL_PROXY_ENABLED = false;
+// SOCKS5 账号信息，格式：'账号:密码@地址:端口'
+const SOCKS5_CREDENTIALS = '';
+
 // 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用统一名称，任何都不填使用自身域名
-
-const PROXY_ENABLED = true; // 是否启用反代功能 （总开关）
-const PROXY_ADDRESS = 'ts.hpc.tw:443'; // 反代 IP 或域名，格式：地址:端口
-
-const SOCKS5_PROXY_ENABLED = false; // 是否启用 SOCKS5 反代，启用后原始反代将失效
-const SOCKS5_GLOBAL_PROXY_ENABLED = false; // 是否启用 SOCKS5 全局反代
-const SOCKS5_CREDENTIALS = ''; // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
-
+const TXT_URL = typeof TXT_URL !== 'undefined' ? TXT_URL : (typeof DEFAULT_TXT_URL !== 'undefined' ? DEFAULT_TXT_URL : "");
+// 订阅路径 [域名/SUB_PATH]
 const SUB_PATH = typeof SUB_PATH !== 'undefined' ? SUB_PATH : (typeof DEFAULT_SUB_PATH !== 'undefined' ? DEFAULT_SUB_PATH : "sub");
+// 用于验证的UUID
 const SUB_UUID = typeof SUB_UUID !== 'undefined' ? SUB_UUID : (typeof DEFAULT_SUB_UUID !== 'undefined' ? DEFAULT_SUB_UUID : "550e8400-e29b-41d4-a716-446655440000");
+// 默认节点名称
 const SUB_NAME = typeof SUB_NAME !== 'undefined' ? SUB_NAME : (typeof DEFAULT_SUB_NAME !== 'undefined' ? DEFAULT_SUB_NAME : '节点');
+// 伪装网站网址
 const FAKE_WEBSITE = typeof FAKE_WEBSITE !== 'undefined' ? FAKE_WEBSITE : (typeof DEFAULT_FAKE_WEBSITE !== 'undefined' ? DEFAULT_FAKE_WEBSITE : 'www.baidu.com');
 
 ////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
