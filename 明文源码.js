@@ -1,34 +1,35 @@
 import { connect } from 'cloudflare:sockets';
 
-////////////////////////////////////////////////////////////////////////// 配置区块 ////////////////////////////////////////////////////////////////////////
+// 配置区块
+
 const V2RAY_PATH = 'v2ray';
 const CLASH_PATH = 'clash';
 
-// 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 const TXT_URL = '';
-// 订阅路径 [域名/SUB_PATH]
+  // 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 const SUB_PATH = 'sub';
-// 用于验证的UUID
+  // 订阅路径 [域名/SUB_PATH]
 const SUB_UUID = '550e8400-e29b-41d4-a716-446655440000';
-// 默认节点名称
+  // 用于验证的UUID
 const SUB_NAME = '节点';
-// 伪装网站网址
+  // 默认节点名称
 const FAKE_WEBSITE = 'www.baidu.com';
+  // 伪装网站网址
 
-// 是否启用反代功能 （总开关）
 const PROXY_ENABLED = true;
+  // 是否启用反代功能 （总开关）
 
-// 反代 IP 或域名，格式：地址:端口
 const PROXY_ADDRESS = 'ts.hpc.tw:443';
+  // 反代 IP 或域名，格式：地址:端口
 
-// 是否启用 SOCKS5 反代，启用后原始反代将失效
 const SOCKS5_PROXY_ENABLED = false;
-// 是否启用 SOCKS5 全局反代
+  // 是否启用 SOCKS5 反代，启用后原始反代将失效
 const SOCKS5_GLOBAL_PROXY_ENABLED = false;
-// SOCKS5 账号信息，格式：'账号:密码@地址:端口'
+  // 是否启用 SOCKS5 全局反代
 const SOCKS5_CREDENTIALS = '';
+  // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
 
-////////////////////////////////////////////////////////////////////////// 网页入口 ////////////////////////////////////////////////////////////////////////
+// 网页入口
 
 export default {
   async fetch(request, env) {
@@ -83,7 +84,8 @@ export default {
     }
   },
 };
-//////////////////////////////////////////////////////////////////////// 脚本主要架构 //////////////////////////////////////////////////////////////////////
+
+// 脚本主要架构
 
 async function upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
   const webSocketPair = new WebSocketPair();
@@ -209,7 +211,7 @@ async function establishPipeline(webSocket, tcpSocket, initialData, tcpBuffer = 
     },
   }));
 }
-////////////////////////////////////////////////////////////////////////// SOCKS5 部分 //////////////////////////////////////////////////////////////////////
+// SOCKS5 部分
 async function createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5) {
   const { username, password, hostname, port } = await parseSocks5Credentials(envSocks5);
   const socket = connect({ hostname, port });
@@ -291,7 +293,8 @@ async function parseSocks5Credentials(socks5String) {
 
   return { username, password, hostname, port };
 }
-////////////////////////////////////////////////////////////////////////// 订阅页面 ////////////////////////////////////////////////////////////////////////
+
+// 订阅页面
 
 function generateSubPage(subPath, hostName) {
   return `
