@@ -7,7 +7,9 @@ let 订阅路径 = "sub"
 
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-let 我的优选TXT = []
+let 我的优选TXT = [
+  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/refs/heads/main/Domain.txt"
+]
     //优选TXT路径[https://ip.txt]，表达格式与上述相同，使用TXT时脚本内部填写的节点无效，二选一
 
 let 启用反代功能 = true
