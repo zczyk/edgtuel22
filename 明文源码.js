@@ -2,12 +2,14 @@ import { connect } from "cloudflare:sockets"
 // 配置区块
 let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
 let 默认节点名称 = "节点"
-let 订阅路径 = "sub"
+let 订阅路径 = "XiaoYeTech"
     // 订阅路径 [域名/订阅路径]
 
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-let 我的优选TXT = []
+let 我的优选TXT = [
+  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
+]
     //优选TXT路径[https://ip.txt]，表达格式与上述相同，使用TXT时脚本内部填写的节点无效，二选一
 
 let 启用反代功能 = true
@@ -18,10 +20,10 @@ let 反代地址 = "ts.hpc.tw:443"
 let 启用SOCKS5反代 = false
     // 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
-let 我的SOCKS5账号 = ''
+let 我的SOCKS5账号 = ""
     // 格式：账号:密码@地址:端口
 
-let 伪装网页 = 'www.baidu.com'
+let 伪装网页 = "www.baidu.com"
 
 // 网页入口
 export default {
