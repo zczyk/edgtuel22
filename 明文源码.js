@@ -108,10 +108,10 @@ async function 升级WS请求(访问请求) {
 function 使用64位加解密(还原混淆字符) {
   还原混淆字符 = 还原混淆字符.replace(/-/g, "+").replace(/_/g, "/")
   const 解密数据 = atob(还原混淆字符)
-  const 解密_你_个_丁咚_咙_咚呛 = Uint8Array.from(解密数据, (c) =>
+  const 解密 = Uint8Array.from(解密数据, (c) =>
     c.charCodeAt(0)
   );
-  return 解密_你_个_丁咚_咙_咚呛.buffer
+  return 解密.buffer
 }
 //第二步，解读VL协议数据，创建TCP握手
 async function 解析VL标头(VL数据, TCP接口) {
