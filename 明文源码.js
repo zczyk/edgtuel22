@@ -55,9 +55,9 @@ export default {
           let 配置文件;
           const userAgent = 访问请求.headers.get("User-Agent").toLowerCase() // 转换为小写
           if (userAgent.includes("v2ray")) {
-            配置文件 = 给我通用配置文件(访问请求.headers.get("Host"))
+            配置文件 = v2ray配置文件(访问请求.headers.get("Host"))
           } else if (userAgent.includes("clash")) { // 只需要检查一次
-            配置文件 = 给我小猫咪配置文件(访问请求.headers.get("Host"))
+            配置文件 = Clash配置文件(访问请求.headers.get("Host"))
           } else {
             配置文件 = 提示界面(访问请求.headers.get("Host"))
           }
@@ -362,7 +362,7 @@ async function 获取SOCKS5账号(SOCKS5) {
 function 提示界面 () {
   return `请把链接导入v2ray或clash`
 }
-function 给我通用配置文件(hostName) {
+function v2ray配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`];
   }
@@ -377,7 +377,7 @@ function 给我通用配置文件(hostName) {
     })
     .join("\n");
 }
-function 给我小猫咪配置文件(hostName) {
+function Clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`];
   }
