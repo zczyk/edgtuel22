@@ -10,7 +10,7 @@ let 我的优选 = []
 let 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt"
 ]
-    //优选TXT路径[https://ip.txt]，表达格式与上述相同，使用TXT时脚本内部填写的节点无效，二选一
+    //优选TXT路径 使用TXT时脚本内部填写的节点无效，二选一
 
 let 启用反代功能 = true
     // 是否启用反代功能 （总开关）
