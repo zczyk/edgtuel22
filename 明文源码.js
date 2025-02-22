@@ -1,337 +1,399 @@
-import { connect } from 'cloudflare:sockets';
-
+import { connect } from "cloudflare:sockets"
 // 配置区块
+let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
+let 默认节点名称 = "节点"
+let 订阅路径 = "sub"
+    // 订阅路径 [域名/订阅路径]
 
-const V2RAY_PATH = 'v2ray';
-const CLASH_PATH = 'clash';
+let 我的优选 = []
+    // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
+let 我的优选TXT = []
+    //优选TXT路径[https://ip.txt]，表达格式与上述相同，使用TXT时脚本内部填写的节点无效，二选一
 
-const TXT_URL = '';
-  // 优选节点URL 格式: IP(v6也可以哦)/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-const SUB_PATH = 'sub';
-  // 订阅路径 [域名/SUB_PATH]
-const SUB_UUID = '550e8400-e29b-41d4-a716-446655440000';
-  // 用于验证的UUID
-const SUB_NAME = '节点';
-  // 默认节点名称
-const FAKE_WEBSITE = 'www.baidu.com';
-  // 伪装网站网址
+let 启用反代功能 = true
+    // 是否启用反代功能 （总开关）
+let 反代地址 = "ts.hpc.tw:443"
+    // 格式：地址:端口
 
-const PROXY_ENABLED = true;
-  // 是否启用反代功能 （总开关）
+let 启用SOCKS5反代 = false
+    // 启用后原始反代将失效
+let 启用SOCKS5全局反代 = false
+let 我的SOCKS5账号 = ''
+    // 格式：账号:密码@地址:端口
 
-const PROXY_ADDRESS = 'ts.hpc.tw:443';
-  // 反代 IP 或域名，格式：地址:端口
-
-const SOCKS5_PROXY_ENABLED = false;
-  // 是否启用 SOCKS5 反代，启用后原始反代将失效
-const SOCKS5_GLOBAL_PROXY_ENABLED = false;
-  // 是否启用 SOCKS5 全局反代
-const SOCKS5_CREDENTIALS = '';
-  // SOCKS5 账号信息，格式：'账号:密码@地址:端口'
+let 伪装网页 = 'www.baidu.com'
 
 // 网页入口
-
 export default {
-  async fetch(request, env) {
-    
-    const TXT_URL_FINAL = env.TXT_URL || TXT_URL;
+  async fetch(访问请求, env) {
+    const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
+    const url = new URL(访问请求.url)
+    if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
+      if (我的优选TXT.length > 0) {
+        我的优选 = (
+          await Promise.all(
+            我的优选TXT.map((url) =>
+              fetch(url).then((response) =>
+                response.ok
+                  ? response.text().then((text) =>
+                      text
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter((line) => line)
+                    )
+                  : []
+              )
+            )
+          )
+        ).flat();
 
-    const upgradeHeader = request.headers.get('Upgrade');
-    const url = new URL(request.url);
-    const { pathname } = url;
-
-    if (!upgradeHeader || upgradeHeader !== 'websocket') {
-      let PREFERRED_NODES = [];
-      if (TXT_URL_FINAL) {
-        const response = await fetch(TXT_URL_FINAL);
-        const text = await response.text();
-        PREFERRED_NODES = text.split('\n').map(line => line.trim()).filter(line => line);
+        // 去重处理
+        我的优选 = [...new Set(我的优选)]
       }
-
-      if (pathname === `/${SUB_PATH}`) {
-        return new Response(generateSubPage(SUB_PATH, request.headers.get('Host')), {
-          status: 200,
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-        });
+      switch (url.pathname) {
+        case `/${订阅路径}`: {
+          let 配置文件;
+          const userAgent = 访问请求.headers.get("User-Agent").toLowerCase() // 转换为小写
+          if (userAgent.includes("v2ray")) {
+            配置文件 = 给我通用配置文件(访问请求.headers.get("Host"))
+          } else if (userAgent.includes("clash")) { // 只需要检查一次
+            配置文件 = 给我小猫咪配置文件(访问请求.headers.get("Host"))
+          } else {
+            配置文件 = 提示界面(访问请求.headers.get("Host"))
+          }
+          return new Response(`${配置文件}`, {
+            status: 200,
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+          });
+        }
+        default:
+            url.hostname = 伪装网页;
+            url.protocol = 'https:';
+            访问请求 = new Request(url, 访问请求);
+            return fetch(访问请求);
       }
-
-      if (pathname === `/${SUB_PATH}/${V2RAY_PATH}`) {
-        return new Response(generateVlessConfig(request.headers.get('Host'), PREFERRED_NODES), {
-          status: 200,
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-        });
-      }
-
-      if (pathname === `/${SUB_PATH}/${CLASH_PATH}`) {
-        return new Response(generateClashConfig(request.headers.get('Host'), PREFERRED_NODES), {
-          status: 200,
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-        });
-      }
-
-      // 默认伪装网站
-      url.hostname = FAKE_WEBSITE;
-      url.protocol = 'https:';
-      return fetch(new Request(url, request));
-
-    } else if (upgradeHeader === 'websocket') {
-      const envProxyIp = env.PROXYIP || PROXY_ADDRESS;
-      const envSocks5 = env.SOCKS5 || SOCKS5_CREDENTIALS;
-      const envSocks5Open = (env.SOCKS5OPEN === 'true' ? true : (env.SOCKS5OPEN === 'false' ? false : SOCKS5_PROXY_ENABLED));
-      const envSocks5Global = (env.SOCKS5GLOBAL === 'true' ? true : (env.SOCKS5GLOBAL === 'false' ? false : SOCKS5_GLOBAL_PROXY_ENABLED));
-
-      return upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
+    } else if (读取我的请求标头 === "websocket") {
+      启用SOCKS5反代 =
+        env.SOCKS5OPEN === "true"
+          ? true
+          : env.SOCKS5OPEN === "false"
+          ? false
+          : 启用SOCKS5反代;
+      启用SOCKS5全局反代 =
+        env.SOCKS5GLOBAL === "true"
+          ? true
+          : env.SOCKS5GLOBAL === "false"
+          ? false
+          : 启用SOCKS5全局反代;
+      return await 升级WS请求(访问请求);
     }
   },
 };
-
 // 脚本主要架构
-
-async function upgradeWebSocketRequest(request, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
-  const webSocketPair = new WebSocketPair();
-  const [client, webSocket] = Object.values(webSocketPair);
-  webSocket.accept();
-
-  const encodedTarget = request.headers.get('sec-websocket-protocol');
-  const decodedTarget = decodeBase64(encodedTarget);
-  const { tcpSocket, initialData } = await parseVLHeader(decodedTarget, envProxyIp, envSocks5, envSocks5Open, envSocks5Global);
-
-  establishPipeline(webSocket, tcpSocket, initialData);
-
-  return new Response(null, { status: 101, webSocket: client });
+//第一步，读取和构建基础访问结构
+async function 升级WS请求(访问请求) {
+  const 创建WS接口 = new WebSocketPair();
+  const [客户端, WS接口] = Object.values(创建WS接口);
+  WS接口.accept();
+  const 读取我的加密访问内容数据头 = 访问请求.headers.get(
+    "sec-websocket-protocol"
+  );
+  const 解密数据 = 使用64位加解密(读取我的加密访问内容数据头); //解密目标访问数据，传递给TCP握手进程
+  const { TCP接口, 写入初始数据 } = await 解析VL标头(解密数据); //解析VL数据并进行TCP握手
+  建立传输管道(WS接口, TCP接口, 写入初始数据);
+  return new Response(null, { status: 101, webSocket: 客户端 });
 }
-
-function decodeBase64(encoded) {
-  const base64String = encoded.replace(/-/g, '+').replace(/_/g, '/');
-  const decodedString = atob(base64String);
-  return Uint8Array.from(decodedString, (c) => c.charCodeAt(0)).buffer;
+function 使用64位加解密(还原混淆字符) {
+  还原混淆字符 = 还原混淆字符.replace(/-/g, "+").replace(/_/g, "/");
+  const 解密数据 = atob(还原混淆字符);
+  const 解密_你_个_丁咚_咙_咚呛 = Uint8Array.from(解密数据, (c) =>
+    c.charCodeAt(0)
+  );
+  return 解密_你_个_丁咚_咙_咚呛.buffer;
 }
-
-async function parseVLHeader(vlData, envProxyIp, envSocks5, envSocks5Open, envSocks5Global) {
-  if (verifyUUID(new Uint8Array(vlData.slice(1, 17))) !== SUB_UUID) {
+//第二步，解读VL协议数据，创建TCP握手
+async function 解析VL标头(VL数据, TCP接口) {
+  if (
+    验证VL的密钥(new Uint8Array(VL数据.slice(1, 17))) !== 我的UUID
+  ) {
     return null;
   }
-
-  const dataLocation = new Uint8Array(vlData)[17];
-  const portStartIndex = 18 + dataLocation + 1;
-  const portBuffer = vlData.slice(portStartIndex, portStartIndex + 2);
-  const targetPort = new DataView(portBuffer).getUint16(0);
-  const addressStartIndex = portStartIndex + 2;
-  const addressTypeBuffer = new Uint8Array(vlData.slice(addressStartIndex, addressStartIndex + 1));
-  const addressType = addressTypeBuffer[0];
-
-  let addressLength = 0;
-  let targetAddress = '';
-  let addressInfoStartIndex = addressStartIndex + 1;
-
-  switch (addressType) {
+  const 获取数据定位 = new Uint8Array(VL数据)[17];
+  const 提取端口索引 = 18 + 获取数据定位 + 1;
+  const 建立端口缓存 = VL数据.slice(提取端口索引, 提取端口索引 + 2);
+  const 访问端口 = new DataView(建立端口缓存).getUint16(0);
+  const 提取地址索引 = 提取端口索引 + 2;
+  const 建立地址缓存 = new Uint8Array(
+    VL数据.slice(提取地址索引, 提取地址索引 + 1)
+  );
+  const 识别地址类型 = 建立地址缓存[0];
+  let 地址长度 = 0;
+  let 访问地址 = "";
+  let 地址信息索引 = 提取地址索引 + 1;
+  switch (识别地址类型) {
     case 1:
-      addressLength = 4;
-      targetAddress = new Uint8Array(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength)).join('.');
+      地址长度 = 4;
+      访问地址 = new Uint8Array(
+        VL数据.slice(地址信息索引, 地址信息索引 + 地址长度)
+      ).join(".");
       break;
     case 2:
-      addressLength = new Uint8Array(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + 1))[0];
-      addressInfoStartIndex += 1;
-      targetAddress = new TextDecoder().decode(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength));
+      地址长度 = new Uint8Array(
+        VL数据.slice(地址信息索引, 地址信息索引 + 1)
+      )[0];
+      地址信息索引 += 1;
+      访问地址 = new TextDecoder().decode(
+        VL数据.slice(地址信息索引, 地址信息索引 + 地址长度)
+      );
       break;
     case 3:
-      addressLength = 16;
-      const dataView = new DataView(vlData.slice(addressInfoStartIndex, addressInfoStartIndex + addressLength));
-      const ipv6Parts = [];
-      for (let i = 0; i < 8; i++) { ipv6Parts.push(dataView.getUint16(i * 2).toString(16)); }
-      targetAddress = ipv6Parts.join(':');
+      地址长度 = 16;
+      const dataView = new DataView(
+        VL数据.slice(地址信息索引, 地址信息索引 + 地址长度)
+      );
+      const ipv6 = [];
+      for (let i = 0; i < 8; i++) {
+        ipv6.push(dataView.getUint16(i * 2).toString(16));
+      }
+      访问地址 = ipv6.join(":");
       break;
   }
-
-  const initialData = vlData.slice(addressInfoStartIndex + addressLength);
-  let tcpSocket;
-
-  if (PROXY_ENABLED && envSocks5Open && envSocks5Global) {
-    tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5);
-    return { tcpSocket, initialData };
+  const 写入初始数据 = VL数据.slice(地址信息索引 + 地址长度);
+  if (启用反代功能 && 启用SOCKS5反代 && 启用SOCKS5全局反代) {
+    TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
+    return { TCP接口, 写入初始数据 };
   } else {
     try {
-      tcpSocket = connect({ hostname: targetAddress, port: targetPort });
-      await tcpSocket.opened;
+      TCP接口 = connect({ hostname: 访问地址, port: 访问端口 });
+      await TCP接口.opened;
     } catch {
-      if (PROXY_ENABLED) {
-        if (envSocks5Open) {
-          tcpSocket = await createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5);
+      if (启用反代功能) {
+        if (启用SOCKS5反代) {
+          TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
         } else {
-          let [proxyHost, proxyPort] = envProxyIp.split(':');
-          tcpSocket = connect({ hostname: proxyHost, port: proxyPort || targetPort });
+          let [反代地址地址, 反代地址端口] = 反代地址.split(":");
+          TCP接口 = connect({
+            hostname: 反代地址地址,
+            port: 反代地址端口 || 访问端口,
+          });
         }
       }
     } finally {
-      return { tcpSocket, initialData };
+      return { TCP接口, 写入初始数据 };
     }
   }
 }
-
-function verifyUUID(arr, offset = 0) {
+function 验证VL的密钥(arr, offset = 0) {
   const uuid = (
-    formatUUID[arr[offset + 0]] + formatUUID[arr[offset + 1]] + formatUUID[arr[offset + 2]] + formatUUID[arr[offset + 3]] + "-" +
-    formatUUID[arr[offset + 4]] + formatUUID[arr[offset + 5]] + "-" +
-    formatUUID[arr[offset + 6]] + formatUUID[arr[offset + 7]] + "-" +
-    formatUUID[arr[offset + 8]] + formatUUID[arr[offset + 9]] + "-" +
-    formatUUID[arr[offset + 10]] + formatUUID[arr[offset + 11]] + formatUUID[arr[offset + 12]] + formatUUID[arr[offset + 13]] + formatUUID[arr[offset + 14]] + formatUUID[arr[offset + 15]]
+    转换密钥格式[arr[offset + 0]] +
+    转换密钥格式[arr[offset + 1]] +
+    转换密钥格式[arr[offset + 2]] +
+    转换密钥格式[arr[offset + 3]] +
+    "-" +
+    转换密钥格式[arr[offset + 4]] +
+    转换密钥格式[arr[offset + 5]] +
+    "-" +
+    转换密钥格式[arr[offset + 6]] +
+    转换密钥格式[arr[offset + 7]] +
+    "-" +
+    转换密钥格式[arr[offset + 8]] +
+    转换密钥格式[arr[offset + 9]] +
+    "-" +
+    转换密钥格式[arr[offset + 10]] +
+    转换密钥格式[arr[offset + 11]] +
+    转换密钥格式[arr[offset + 12]] +
+    转换密钥格式[arr[offset + 13]] +
+    转换密钥格式[arr[offset + 14]] +
+    转换密钥格式[arr[offset + 15]]
   ).toLowerCase();
   return uuid;
 }
-
-const formatUUID = [];
-for (let i = 0; i < 256; ++i) { formatUUID.push((i + 256).toString(16).slice(1)); }
-
-async function establishPipeline(webSocket, tcpSocket, initialData, tcpBuffer = [], wsBuffer = []) {
-  const tcpWriter = tcpSocket.writable.getWriter();
-  await webSocket.send(new Uint8Array([0, 0]).buffer); // 发送 WS 握手认证信息
-
-  tcpSocket.readable.pipeTo(new WritableStream({
-    async write(chunk) {
-      wsBuffer.push(chunk);
-      const wsData = wsBuffer.shift();
-      webSocket.send(wsData);
-    }
-  }));
-
-  const wsDataStream = new ReadableStream({
-    async start(controller) {
-      if (initialData) { controller.enqueue(initialData); initialData = null }
-      webSocket.addEventListener('message', (event) => { controller.enqueue(event.data) });
-      webSocket.addEventListener('close', () => { controller.close() });
-      webSocket.addEventListener('error', () => { controller.close() });
-    }
-  });
-
-  wsDataStream.pipeTo(new WritableStream({
-    async write(chunk) {
-      tcpBuffer.push(chunk)
-      const tcpData = tcpBuffer.shift();
-      tcpWriter.write(tcpData)
-    },
-  }));
+const 转换密钥格式 = [];
+for (let i = 0; i < 256; ++i) {
+  转换密钥格式.push((i + 256).toString(16).slice(1));
 }
-// SOCKS5 部分
-async function createSocks5Socket(addressType, targetAddress, targetPort, envProxyIp, envSocks5) {
-  const { username, password, hostname, port } = await parseSocks5Credentials(envSocks5);
-  const socket = connect({ hostname, port });
+//第三步，创建客户端WS-CF-目标的传输通道并监听状态
+async function 建立传输管道(
+  WS接口,
+  TCP接口,
+  写入初始数据,
+  TCP缓存 = [],
+  WS缓存 = []
+) {
+  const 传输数据 = TCP接口.writable.getWriter();
+  await WS接口.send(new Uint8Array([0, 0]).buffer); //向客户端发送WS握手认证信息
+  TCP接口.readable.pipeTo(
+    new WritableStream({
+      //将TCP接口返回的数据通过WS接口发送回客户端【优先建立客户端与CF的WS回传通道，防止初始包返回数据时通道任未建立导致丢失数据】
+      async write(VL数据) {
+        WS缓存.push(VL数据);
+        const WS数据块 = WS缓存.shift();
+        WS接口.send(WS数据块);
+      },
+    })
+  );
+  const 数据流 = new ReadableStream({
+    //监听WS接口数据并发送给数据流
+    async start(控制器) {
+      if (写入初始数据) {
+        控制器.enqueue(写入初始数据);
+        写入初始数据 = null;
+      }
+      WS接口.addEventListener("message", (event) => {
+        控制器.enqueue(event.data);
+      }); //监听客户端WS接口消息，推送给数据流
+      WS接口.addEventListener("close", () => {
+        控制器.close();
+      }); //监听客户端WS接口关闭信息，结束流传输
+      WS接口.addEventListener("error", () => {
+        控制器.close();
+      }); //监听客户端WS接口异常信息，结束流传输
+    },
+  });
+  数据流.pipeTo(
+    new WritableStream({
+      //将客户端接收到的WS数据发往TCP接口
+      async write(VL数据) {
+        TCP缓存.push(VL数据);
+        const TCP数据块 = TCP缓存.shift();
+        传输数据.write(TCP数据块);
+      },
+    })
+  );
+}
+// SOCKS5部分
+async function 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口) {
+  const { username, password, hostname, port } = await 获取SOCKS5账号(
+    我的SOCKS5账号
+  );
+  const SOCKS5接口 = connect({ hostname, port });
   try {
-    await socket.opened;
-  } catch (e) {
-    return new Response('SOCKS5 连接失败', { status: 400 });
+    await SOCKS5接口.opened;
+  } catch {
+    return new Response("SOCKS5未连通", { status: 400 });
   }
-
-  const writer = socket.writable.getWriter();
-  const reader = socket.readable.getReader();
+  const writer = SOCKS5接口.writable.getWriter();
+  const reader = SOCKS5接口.readable.getReader();
   const encoder = new TextEncoder();
-
-  // SOCKS5 认证请求
-  const socksGreeting = new Uint8Array([5, 2, 0, 2]); // 支持无认证和用户名/密码认证
+  const socksGreeting = new Uint8Array([5, 2, 0, 2]); //构建认证信息,支持无认证和用户名/密码认证
   await writer.write(socksGreeting);
-  let response = (await reader.read()).value;
-
-  if (response[1] === 0x02) { // 需要用户名/密码认证
+  let res = (await reader.read()).value;
+  if (res[1] === 0x02) {
+    //检查是否需要用户名/密码认证
     if (!username || !password) {
-      return closeAndReject(writer, reader, socket, 'SOCKS5 认证失败,缺少账号密码');
+      return 关闭接口并退出();
     }
     const authRequest = new Uint8Array([
-      1, username.length, ...encoder.encode(username), password.length, ...encoder.encode(password),
-    ]);
+      1,
+      username.length,
+      ...encoder.encode(username),
+      password.length,
+      ...encoder.encode(password),
+    ]); // 发送用户名/密码认证请求
     await writer.write(authRequest);
-    response = (await reader.read()).value;
-    if (response[0] !== 0x01 || response[1] !== 0x00) {
-      return closeAndReject(writer, reader, socket, 'SOCKS5 认证失败');
+    res = (await reader.read()).value;
+    if (res[0] !== 0x01 || res[1] !== 0x00) {
+      return 关闭接口并退出(); // 认证失败
     }
   }
-
-  // SOCKS5 连接请求
-  let convertedAddress;
-  switch (addressType) {
+  let 转换访问地址;
+  switch (识别地址类型) {
     case 1: // IPv4
-      convertedAddress = new Uint8Array([1, ...targetAddress.split('.').map(Number)]);
+      转换访问地址 = new Uint8Array([1, ...访问地址.split(".").map(Number)]);
       break;
     case 2: // 域名
-      convertedAddress = new Uint8Array([3, targetAddress.length, ...encoder.encode(targetAddress)]);
+      转换访问地址 = new Uint8Array([
+        3,
+        访问地址.length,
+        ...encoder.encode(访问地址),
+      ]);
       break;
     case 3: // IPv6
-      convertedAddress = new Uint8Array([4, ...targetAddress.split(':').flatMap(x => [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2), 16)])]);
+      转换访问地址 = new Uint8Array([
+        4,
+        ...访问地址
+          .split(":")
+          .flatMap((x) => [
+            parseInt(x.slice(0, 2), 16),
+            parseInt(x.slice(2), 16),
+          ]),
+      ]);
       break;
     default:
-      return closeAndReject(writer, reader, socket, 'SOCKS5 地址类型错误');
+      return 关闭接口并退出();
   }
-
-  const socksRequest = new Uint8Array([5, 1, 0, ...convertedAddress, targetPort >> 8, targetPort & 0xff]);
+  const socksRequest = new Uint8Array([
+    5,
+    1,
+    0,
+    ...转换访问地址,
+    访问端口 >> 8,
+    访问端口 & 0xff,
+  ]); //发送转换后的访问地址/端口
   await writer.write(socksRequest);
-  response = (await reader.read()).value;
-  if (response[0] !== 0x05 || response[1] !== 0x00) {
-    return closeAndReject(writer, reader, socket, 'SOCKS5 连接失败')
+  res = (await reader.read()).value;
+  if (res[0] !== 0x05 || res[1] !== 0x00) {
+    return 关闭接口并退出(); // 连接失败
   }
-
   writer.releaseLock();
   reader.releaseLock();
-  return socket;
+  return SOCKS5接口;
+  function 关闭接口并退出() {
+    writer.releaseLock();
+    reader.releaseLock();
+    SOCKS5接口.close();
+    return new Response("SOCKS5握手失败", { status: 400 });
+  }
 }
-async function closeAndReject(writer, reader, socket, message) {
-  writer.releaseLock();
-  reader.releaseLock();
-  socket.close();
-  return new Response(message, { status: 400 });
-}
-async function parseSocks5Credentials(socks5String) {
-  const [latter, former] = socks5String.split("@").reverse();
-  let username = null, password = null, hostname = null, port = null;
-
+async function 获取SOCKS5账号(SOCKS5) {
+  const [latter, former] = SOCKS5.split("@").reverse();
+  let username, password, hostname, port;
   if (former) {
     const formers = former.split(":");
     username = formers[0];
     password = formers[1];
   }
-
   const latters = latter.split(":");
   port = Number(latters.pop());
   hostname = latters.join(":");
-
   return { username, password, hostname, port };
 }
-
 // 订阅页面
-
-function generateSubPage(subPath, hostName) {
-  return `
-v2ray的：https://${hostName}/${subPath}/${V2RAY_PATH}
-Clash的：https://${hostName}/${subPath}/${CLASH_PATH}
-`;
+function 提示界面 () {
+  return `请把链接导入v2ray或clash`
 }
-
-function generateVlessConfig(hostName, PREFERRED_NODES) {
-  if (PREFERRED_NODES.length === 0) {
-    PREFERRED_NODES = [`${hostName}:443`];
+function 给我通用配置文件(hostName) {
+  if (我的优选.length === 0) {
+    我的优选 = [`${hostName}:443`];
   }
-  return PREFERRED_NODES.map(node => {
-    const [mainPart] = node.split("@");
-    const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
-    const [address, portStr] = addressPort.split(":");
-    const port = portStr ? Number(portStr) : 443;
-    return `vless://${SUB_UUID}@${address}:${port}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${nodeName}`;
-  }).join("\n");
+  return 我的优选
+    .map((获取优选) => {
+      const [主内容] = 获取优选.split("@");
+      const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#");
+      const 拆分地址端口 = 地址端口.split(":");
+      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+      const 地址 = 拆分地址端口.join(":");
+      return `vless://${我的UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
+    })
+    .join("\n");
 }
-function generateClashConfig(hostName, PREFERRED_NODES) {
-  if (PREFERRED_NODES.length === 0) {
-    PREFERRED_NODES = [`${hostName}:443`];
+function 给我小猫咪配置文件(hostName) {
+  if (我的优选.length === 0) {
+    我的优选 = [`${hostName}:443`];
   }
-  const generateNodes = (nodes) => {
-    return nodes.map(node => {
-      const [mainPart] = node.split("@");
-      const [addressPort, nodeName = SUB_NAME] = mainPart.split("#");
-      const [address, portStr] = addressPort.split(":");
-      const port = portStr ? Number(portStr) : 443;
-      const cleanAddress = address.replace(/^\[(.+)\]$/, '$1');
+  const 生成节点 = (我的优选) => {
+    return 我的优选.map((获取优选) => {
+      const [主内容] = 获取优选.split("@");
+      const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#");
+      const 拆分地址端口 = 地址端口.split(":");
+      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
       return {
-        nodeConfig: `- name: ${nodeName}
+        nodeConfig: `- name: ${节点名字}
   type: vless
-  server: ${cleanAddress}
-  port: ${port}
-  uuid: ${SUB_UUID}
+  server: ${地址}
+  port: ${端口}
+  uuid: ${我的UUID}
   udp: false
   tls: true
   sni: ${hostName}
@@ -340,30 +402,31 @@ function generateClashConfig(hostName, PREFERRED_NODES) {
     path: "/?ed=2560"
     headers:
       Host: ${hostName}`,
-        proxyConfig: `    - ${nodeName}`
+        proxyConfig: `    - ${节点名字}`,
       };
     });
   };
-
-  const nodeConfigs = generateNodes(PREFERRED_NODES).map(node => node.nodeConfig).join("\n");
-  const proxyConfigs = generateNodes(PREFERRED_NODES).map(node => node.proxyConfig).join("\n");
-
-  const cloudflareRules = PROXY_ENABLED ? [] : [
-    '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
-    '  - GEOSITE,cloudflare,🎯 全球直连',
-    '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连'
-  ];
-
+    const 节点配置 = 生成节点(我的优选)
+    .map((node) => node.nodeConfig)
+    .join("\n");
+    const 代理配置 = 生成节点(我的优选)
+    .map((node) => node.proxyConfig)
+    .join("\n");
+    const CF规则 = 启用反代功能 ? [] : [
+        '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
+        '  - GEOSITE,cloudflare,🎯 全球直连',
+        '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连',
+    ];
   return `
 proxies:
-${nodeConfigs}
+${节点配置}
 proxy-groups:
 - name: 🚀 节点选择
   type: select
   proxies:
     - ♻️ 自动选择
     - 🔯 故障转移
-${proxyConfigs}
+${代理配置}
 - name: 🐟 漏网之鱼
   type: select
   proxies:
@@ -380,7 +443,7 @@ ${proxyConfigs}
   interval: 150
   tolerance: 50
   proxies:
-${proxyConfigs}
+${代理配置}
 - name: 🔯 故障转移
   type: fallback
   health-check:
@@ -388,21 +451,21 @@ ${proxyConfigs}
     interval: 300
     url: https://www.google.com/generate_204
   proxies:
-${proxyConfigs}
+${代理配置}
 rules:
-${cloudflareRules.join('\n')}
-  - GEOIP,LAN,🎯 全球直连,no-resolve #局域网IP直连规则
-  - GEOSITE,cn,🎯 全球直连 #国内域名直连规则
-  - GEOIP,CN,🎯 全球直连,no-resolve #国内IP直连规则
-  - DOMAIN-SUFFIX,cn,🎯 全球直连 #cn域名直连规则
-  - GEOSITE,gfw,🚀 节点选择 #GFW域名规则
-  - GEOSITE,google,🚀 节点选择 #GOOGLE域名规则
-  - GEOIP,GOOGLE,🚀 节点选择,no-resolve #GOOGLE IP规则
-  - GEOSITE,netflix,🚀 节点选择 #奈飞域名规则
-  - GEOIP,NETFLIX,🚀 节点选择,no-resolve #奈飞IP规则
-  - GEOSITE,telegram,🚀 节点选择 #TG域名规则
-  - GEOIP,TELEGRAM,🚀 节点选择,no-resolve #TG IP规则
-  - GEOSITE,openai,🚀 节点选择 #GPT规则
+${CF规则.join('\n')}
+  - GEOIP,LAN,🎯 全球直连,no-resolve
+  - GEOSITE,cn,🎯 全球直连
+  - GEOIP,CN,🎯 全球直连,no-resolve
+  - DOMAIN-SUFFIX,cn,🎯 全球直连
+  - GEOSITE,gfw,🚀 节点选择
+  - GEOSITE,google,🚀 节点选择
+  - GEOIP,GOOGLE,🚀 节点选择,no-resolve
+  - GEOSITE,netflix,🚀 节点选择
+  - GEOIP,NETFLIX,🚀 节点选择,no-resolve
+  - GEOSITE,telegram,🚀 节点选择
+  - GEOIP,TELEGRAM,🚀 节点选择,no-resolve
+  - GEOSITE,openai,🚀 节点选择
   - MATCH,🐟 漏网之鱼
 `;
 }
