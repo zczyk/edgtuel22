@@ -36,16 +36,31 @@
 
 2. Worker绑定自定义域名
     - 点击Worker控制台的`设置`选项卡,在`域和路由`那一栏点`添加`,选择`自定义域`
-    - 填入你的自定义子域名,注意不要使用你的主域名，例如：
+    - 填入你的自定义子域名,注意不要使用你的主域名,例如：
         你的主域名是`femboy.love`,则填入 `im.femboy.love`即可
     - 点击`添加域`
 
 3. Pages绑定自定义域名
     - 点击Pages控制台的`自定义域`选项卡,点击`设置自定义域`
-    - 填入你的自定义子域名,注意不要使用你的主域名，例如：
+    - 填入你的自定义子域名,注意不要使用你的主域名,例如：
         你的主域名是`femboy.love`,则填入 `im.femboy.love`即可
     - 点击`继续`,点击`激活域`
 </details>
+
+# Star 星星走起
+[![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
+
+# 💻 已适配客户端
+# Windows
+   - [v2rayN](https://github.com/2dust/v2rayN)
+   - clash.meta（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)，[clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)，[Clash Nyanpasu](https://github.com/keiko233/clash-nyanpasu)）
+# 安卓
+   - clash.meta（[ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)，[FlClash](https://github.com/chen08209/FlClash)）
+### MacOS
+   - clash.meta（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
+
+# 感谢
+[shulng](https://github.com/shulng),[cmliu](https://github.com/cmliu)
 
 # 免责声明
 本免责声明适用于 GitHub 上的 “edge-tunnel” 项目（以下简称“本项目”）,项目链接为:https://github.com/ImLTHQ/edge-tunnel
