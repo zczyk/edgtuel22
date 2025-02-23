@@ -12,8 +12,9 @@ let 反代地址 = "ts.hpc.tw:443"
     // 环境变量PROXYIP 格式：地址:端口
 
 let 启用SOCKS5反代 = false
-    // 启用后原始反代将失效
+    // 环境变量SOCKS5OPEN 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
+    // 环境变量 SOCKS5GLOBAL
 let 我的SOCKS5账号 = ""
     // 环境变量SOCKS5 格式：账号:密码@地址:端口
 
