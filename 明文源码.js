@@ -16,14 +16,13 @@ let 我的优选TXT = [
 let 启用反代功能 = true
     // 是否启用反代功能 （总开关）
 let 反代地址 = "ts.hpc.tw:443"
-    // 环境变量PROXYIP 格式：地址:端口
+    // 格式：地址:端口
 
 let 启用SOCKS5反代 = false
-    // 环境变量SOCKS5OPEN 启用后原始反代将失效
+    // 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
-    // 环境变量 SOCKS5GLOBAL
 let 我的SOCKS5账号 = ""
-    // 环境变量SOCKS5 格式：账号:密码@地址:端口
+    // 格式：账号:密码@地址:端口
 
 let 伪装网页 = "www.baidu.com"
 
@@ -77,20 +76,6 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
-      反代地址 = env.PROXYIP || 反代地址
-      我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
-      启用SOCKS5反代 =
-        env.SOCKS5OPEN === "true"
-          ? true
-          : env.SOCKS5OPEN === "false"
-          ? false
-          : 启用SOCKS5反代
-      启用SOCKS5全局反代 =
-        env.SOCKS5GLOBAL === "true"
-          ? true
-          : env.SOCKS5GLOBAL === "false"
-          ? false
-          : 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
