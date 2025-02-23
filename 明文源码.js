@@ -31,10 +31,6 @@ export default {
     
     const 订阅路径 = env.SUB_PATH || 订阅路径
     const 我的优选TXT = env.TXT_URL || 我的优选TXT
-    const 反代地址 = env.PROXYIP || 反代地址
-    const 我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
-    const 启用SOCKS5反代 = env.SOCKS5OPEN || 启用SOCKS5反代
-    const 启用SOCKS5全局反代 = env.SOCKS5GLOBAL || 启用SOCKS5全局反代
 
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
@@ -83,6 +79,20 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
+      反代地址 = env.PROXYIP || 反代地址
+      我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
+      启用SOCKS5反代 =
+        env.SOCKS5OPEN === "true"
+          ? true
+          : env.SOCKS5OPEN === "false"
+          ? false
+          : 启用SOCKS5反代
+      启用SOCKS5全局反代 =
+        env.SOCKS5GLOBAL === "true"
+          ? true
+          : env.SOCKS5GLOBAL === "false"
+          ? false
+          : 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
