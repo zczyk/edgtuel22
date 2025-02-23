@@ -456,7 +456,6 @@ ${代理配置}
 ${代理配置}
 rules:
 ${CF规则.join('\n')}
-  - GEOIP,LAN,🎯 全球直连,no-resolve
   - GEOSITE,cn,🎯 全球直连
   - GEOIP,CN,🎯 全球直连,no-resolve
   - DOMAIN-SUFFIX,cn,🎯 全球直连
