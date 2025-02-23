@@ -2,7 +2,7 @@ import { connect } from "cloudflare:sockets"
 // 配置区块
 let 订阅路径 = "sub"
   // 订阅路径 域名/订阅路径
-let 默认节点名称 = "晓夜"
+let 默认节点名称 = "节点"
   // 默认节点名称
 let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
 
