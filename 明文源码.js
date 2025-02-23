@@ -28,7 +28,7 @@ let 伪装网页 = "www.baidu.com"
 
 // 网页入口
 export default {
-  async fetch(访问请求, env) {
+  async fetch(访问请求) {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
