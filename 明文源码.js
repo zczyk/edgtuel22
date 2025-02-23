@@ -372,7 +372,8 @@ function Clash配置文件(hostName) {
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
       return {
-        nodeConfig: `  - name: ${节点名字}
+        nodeConfig: `
+  - name: "${节点名字}"
     type: vless
     server: ${地址}
     port: ${端口}
@@ -385,7 +386,7 @@ function Clash配置文件(hostName) {
       path: "/?ed=2560"
       headers:
         Host: ${hostName}`,
-        proxyConfig: `    - ${节点名字}`,
+        proxyConfig: `    - "${节点名字}"`,
       }
     })
   }
@@ -404,25 +405,25 @@ function Clash配置文件(hostName) {
 proxies:
 ${节点配置}
 proxy-groups:
-  - name: 🚀 节点选择
+  - name: "🚀 节点选择"
     type: select
     proxies:
-      - ♻️ 自动选择
-      - 🔯 故障转移
+      - "♻️ 自动选择"
+      - "🔯 故障转移"
 ${代理配置}
-  - name: 🐟 漏网之鱼
+  - name: "🐟 漏网之鱼"
     type: select
     proxies:
       - DIRECT
-      - 🚀 节点选择
-  - name: ♻️ 自动选择
+      - "🚀 节点选择"
+  - name: "♻️ 自动选择"
     type: url-test
     url: https://www.google.com/generate_204
     interval: 150
     tolerance: 50
     proxies:
 ${代理配置}
-  - name: 🔯 故障转移
+  - name: "🔯 故障转移"
     type: fallback
     health-check:
       enable: true
