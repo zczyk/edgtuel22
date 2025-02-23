@@ -77,10 +77,10 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
-      反代地址 = env.PROXYIP || 反代地址
-      我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
-      启用SOCKS5反代 = env.SOCKS5OPEN || 启用SOCKS5反代
-      启用SOCKS5全局反代 = env.SOCKS5GLOBAL || 启用SOCKS5全局反代
+      const 反代地址 = env.PROXYIP || 反代地址
+      const 我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
+      const 启用SOCKS5反代 = env.SOCKS5OPEN || 启用SOCKS5反代
+      const 启用SOCKS5全局反代 = env.SOCKS5GLOBAL || 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
