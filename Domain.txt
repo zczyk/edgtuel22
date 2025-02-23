@@ -1,4 +1,3 @@
-xn--ess702a.tech#节点1
-www.shopify.com#节点2
-fbi.gov#节点3
-www.wto.org#节点4
+www.shopify.com#节点1
+fbi.gov#节点2
+www.wto.org#节点3
