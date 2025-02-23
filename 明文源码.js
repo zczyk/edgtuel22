@@ -394,6 +394,11 @@ function Clash配置文件(hostName) {
   const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n")
+  const CF规则 = 启用反代功能 ? [] : [
+    '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
+    '  - GEOSITE,cloudflare,DIRECT',
+    '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
+  ]
   return `
 proxies:
 ${节点配置}
