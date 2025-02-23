@@ -6,6 +6,7 @@
 
 <details>
 <summary><code><strong>「 Pages部署教程(推荐) 」</strong></code></summary>
+
 1. 部署 CF Pages:
     - 在Github上先 Fork 本项目
     - 在CF Pages控制台中选择`连接到 Git`后,选中`edge-tunnel`项目后点击`开始设置`
@@ -16,6 +17,7 @@
 
 <details>
 <summary><code><strong>「 Worker 部署教程 」</strong></code></summary>
+
 1. 部署 CF Worker:
     - 在Github上先Fork本项目
     - 在CF Worker 控制台中创建一个新的Worker
@@ -26,6 +28,7 @@
 
 <details>
 <summary><code><strong>「 给 Pages/Workers绑定自定义域名 」</strong></code></summary>
+
 1. CF连接你的域名:
     - 去`账户主页`,选择`域`,输入你的域名,点击`继续`
     - 按照需求选择计划(免费的够用了),点击`继续`,点击`继续前往激活`,点击`确认`
