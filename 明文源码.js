@@ -26,7 +26,7 @@ let 我的SOCKS5账号 = ""
 
 let 伪装网页 = "www.baidu.com"
 
-//////////////////////////////////////////////////////////////////////////网页入口////////////////////////////////////////////////////////////////////////
+// 网页入口
 export default {
   async fetch(访问请求, env) {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
@@ -80,7 +80,7 @@ export default {
     }
   },
 }
-////////////////////////////////////////////////////////////////////////脚本主要架构//////////////////////////////////////////////////////////////////////
+// 脚本主要架构
 //第一步，读取和构建基础访问结构
 async function 升级WS请求(访问请求) {
   const 创建WS接口 = new WebSocketPair()
@@ -204,22 +204,14 @@ for (let i = 0; i < 256; ++i) {
   转换密钥格式.push((i + 256).toString(16).slice(1))
 }
 //第三步，创建客户端WS-CF-目标的传输通道并监听状态
-async function 建立传输管道(
-  WS接口,
-  TCP接口,
-  写入初始数据,
-  TCP缓存 = [],
-  WS缓存 = []
-) {
+async function 建立传输管道(WS接口, TCP接口, 写入初始数据) {
   const 传输数据 = TCP接口.writable.getWriter()
   await WS接口.send(new Uint8Array([0, 0]).buffer) //向客户端发送WS握手认证信息
   TCP接口.readable.pipeTo(
     new WritableStream({
       //将TCP接口返回的数据通过WS接口发送回客户端【优先建立客户端与CF的WS回传通道，防止初始包返回数据时通道任未建立导致丢失数据】
       async write(VL数据) {
-        WS缓存.push(VL数据)
-        const WS数据块 = WS缓存.shift()
-        WS接口.send(WS数据块)
+        await WS接口.send(VL数据)
       },
     })
   )
@@ -245,9 +237,7 @@ async function 建立传输管道(
     new WritableStream({
       //将客户端接收到的WS数据发往TCP接口
       async write(VL数据) {
-        TCP缓存.push(VL数据)
-        const TCP数据块 = TCP缓存.shift()
-        传输数据.write(TCP数据块)
+        await 传输数据.write(VL数据)
       },
     })
   )
