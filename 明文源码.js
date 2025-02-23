@@ -63,8 +63,7 @@ export default {
           } else if (userAgent.includes("clash")) { // 只需要检查一次
             配置文件 = Clash配置文件(访问请求.headers.get("Host"))
           } else {
-            //配置文件 = 提示界面(访问请求.headers.get("Host"))
-            配置文件 = Clash配置文件(访问请求.headers.get("Host"))
+            配置文件 = 提示界面(访问请求.headers.get("Host"))
           }
           return new Response(`${配置文件}`, {
             status: 200,
