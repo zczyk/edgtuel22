@@ -9,7 +9,8 @@ let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 let 我的优选TXT = [
-    "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt"
+    "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
+    "https://raw.githubusercontent.com/ImLTHQ/CloudflareST/main/TLS.txt",
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
@@ -71,7 +72,7 @@ export default {
         }
         default:
             url.hostname = 伪装网页
-            url.protocol = 'https:'
+            url.protocol = "https:"
             访问请求 = new Request(url, 访问请求)
             return fetch(访问请求)
       }
@@ -394,9 +395,9 @@ function Clash配置文件(hostName) {
     .map((node) => node.proxyConfig)
     .join("\n")
   const CF规则 = 启用反代功能 ? [] : [
-    '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
-    '  - GEOSITE,cloudflare,DIRECT',
-    '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
+    "  - GEOIP,CLOUDFLARE,DIRECT,no-resolve",
+    "  - GEOSITE,cloudflare,DIRECT",
+    "  - DOMAIN-KEYWORD,cloudflare,DIRECT",
   ]
   return `
 proxies:
@@ -429,7 +430,7 @@ ${代理配置}
   proxies:
 ${代理配置}
 rules:
-${CF规则.join('\n')}
+${CF规则.join("\n")}
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOSITE,cn,DIRECT
   - GEOIP,CN,DIRECT,no-resolve
