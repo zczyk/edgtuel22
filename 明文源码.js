@@ -28,8 +28,14 @@ let 伪装网页 = "www.baidu.com"
 //////////////////////////////////////////////////////////////////////////网页入口////////////////////////////////////////////////////////////////////////
 export default {
   async fetch(访问请求, env) {
+    
     const 订阅路径 = env.SUB_PATH || 订阅路径
     const 我的优选TXT = env.TXT_URL || 我的优选TXT
+    const 反代地址 = env.PROXYIP || 反代地址
+    const 我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
+    const 启用SOCKS5反代 = env.SOCKS5OPEN || 启用SOCKS5反代
+    const 启用SOCKS5全局反代 = env.SOCKS5GLOBAL || 启用SOCKS5全局反代
+
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
@@ -77,10 +83,6 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
-      const 反代地址 = env.PROXYIP || 反代地址
-      const 我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
-      const 启用SOCKS5反代 = env.SOCKS5OPEN || 启用SOCKS5反代
-      const 启用SOCKS5全局反代 = env.SOCKS5GLOBAL || 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
