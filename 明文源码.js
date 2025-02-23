@@ -363,9 +363,9 @@ function Clash配置文件(hostName) {
     我的优选 = [`${hostName}:443`]
   }
   const 生成节点 = (我的优选) => {
-    return 我的优选.map((获取优选) => {
+    return 我的优选.map((获取优选, index) => { // 添加 index 参数
       const [主内容] = 获取优选.split("@")
-      const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#")
+      const [地址端口, 节点名字 = `节点 ${index + 1}`] = 主内容.split("#") // 使用 index 生成唯一的节点名字
       const 拆分地址端口 = 地址端口.split(":")
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
@@ -387,16 +387,16 @@ function Clash配置文件(hostName) {
       }
     })
   }
-    const 节点配置 = 生成节点(我的优选)
+  const 节点配置 = 生成节点(我的优选)
     .map((node) => node.nodeConfig)
     .join("\n")
-    const 代理配置 = 生成节点(我的优选)
+  const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n")
   const CF规则 = 启用反代功能 ? [] : [
-      '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
-      '  - GEOSITE,cloudflare,DIRECT',
-      '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
+    '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
+    '  - GEOSITE,cloudflare,DIRECT',
+    '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
   ]
   return `
 proxies:
