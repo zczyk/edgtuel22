@@ -1,16 +1,10 @@
 import { connect } from "cloudflare:sockets"
 // 配置区块
 let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
-let 默认节点名称 = "节点"
-let 订阅路径 = "sub"
-    // 订阅路径 [域名/订阅路径]
 
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-let 我的优选TXT = [
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt"
-]
-    //优选TXT路径 使用TXT时脚本内部填写的节点无效，二选一
+    //环境变量TXT_URL填优选TXT地址 使用TXT时脚本内部填写的节点无效，二选一
 
 let 启用反代功能 = true
     // 是否启用反代功能 （总开关）
@@ -25,9 +19,14 @@ let 我的SOCKS5账号 = ""
 
 let 伪装网页 = "www.baidu.com"
 
-// 网页入口
+  // 环境变量SUB_NAME 默认节点名称：节点
+  // 环境变量SUB_PATH 订阅路径 域名/订阅路径
+
+//////////////////////////////////////////////////////////////////////////网页入口////////////////////////////////////////////////////////////////////////
 export default {
   async fetch(访问请求, env) {
+    const 订阅路径 = env.SUB_PATH || 订阅路径
+    const 我的优选TXT = env.TXT_URL || 我的优选TXT
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
@@ -47,14 +46,14 @@ export default {
               )
             )
           )
-        ).flat();
+        ).flat()
 
         // 去重处理
         我的优选 = [...new Set(我的优选)]
       }
       switch (url.pathname) {
         case `/${订阅路径}`: {
-          let 配置文件;
+          let 配置文件
           const userAgent = 访问请求.headers.get("User-Agent").toLowerCase() // 转换为小写
           if (userAgent.includes("v2ray")) {
             配置文件 = v2ray配置文件(访问请求.headers.get("Host"))
@@ -75,11 +74,25 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
+      反代地址 = env.PROXYIP || 反代地址
+      我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
+      启用SOCKS5反代 =
+        env.SOCKS5OPEN === "true"
+          ? true
+          : env.SOCKS5OPEN === "false"
+          ? false
+          : 启用SOCKS5反代
+      启用SOCKS5全局反代 =
+        env.SOCKS5GLOBAL === "true"
+          ? true
+          : env.SOCKS5GLOBAL === "false"
+          ? false
+          : 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
-};
-// 脚本主要架构
+}
+////////////////////////////////////////////////////////////////////////脚本主要架构//////////////////////////////////////////////////////////////////////
 //第一步，读取和构建基础访问结构
 async function 升级WS请求(访问请求) {
   const 创建WS接口 = new WebSocketPair()
@@ -87,7 +100,7 @@ async function 升级WS请求(访问请求) {
   WS接口.accept()
   const 读取我的加密访问内容数据头 = 访问请求.headers.get(
     "sec-websocket-protocol"
-  );
+  )
   const 解密数据 = 使用64位加解密(读取我的加密访问内容数据头) //解密目标访问数据，传递给TCP握手进程
   const { TCP接口, 写入初始数据 } = await 解析VL标头(解密数据) //解析VL数据并进行TCP握手
   建立传输管道(WS接口, TCP接口, 写入初始数据)
@@ -98,7 +111,7 @@ function 使用64位加解密(还原混淆字符) {
   const 解密数据 = atob(还原混淆字符)
   const 解密 = Uint8Array.from(解密数据, (c) =>
     c.charCodeAt(0)
-  );
+  )
   return 解密.buffer
 }
 //第二步，解读VL协议数据，创建TCP握手
@@ -358,6 +371,7 @@ function v2ray配置文件(hostName) {
   }
   return 我的优选
     .map((获取优选) => {
+      const 默认节点名称 = env.SUB_NAME || 默认节点名称
       const [主内容] = 获取优选.split("@")
       const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#")
       const 拆分地址端口 = 地址端口.split(":")
@@ -373,6 +387,7 @@ function Clash配置文件(hostName) {
   }
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选) => {
+      const 默认节点名称 = env.SUB_NAME || 默认节点名称
       const [主内容] = 获取优选.split("@")
       const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#")
       const 拆分地址端口 = 地址端口.split(":")
@@ -402,11 +417,11 @@ function Clash配置文件(hostName) {
     const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n")
-    const CF规则 = 启用反代功能 ? [] : [
-        '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
-        '  - GEOSITE,cloudflare,DIRECT',
-        '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
-    ]
+  const CF规则 = 启用反代功能 ? [] : [
+      '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
+      '  - GEOSITE,cloudflare,DIRECT',
+      '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
+  ]
   return `
 proxies:
 ${节点配置}
