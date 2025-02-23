@@ -9,8 +9,7 @@ let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 let 我的优选TXT = [
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/CloudflareST/main/TLS.txt",
+    "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt"
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
@@ -29,7 +28,7 @@ let 伪装网页 = "www.baidu.com"
 
 // 网页入口
 export default {
-  async fetch(访问请求) {
+  async fetch(访问请求, env) {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
@@ -363,7 +362,6 @@ function Clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`]
   }
-
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选) => {
       const [主内容] = 获取优选.split("@")
@@ -372,64 +370,63 @@ function Clash配置文件(hostName) {
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
       return {
-        nodeConfig: `
-  - name: "${节点名字}"
-    type: vless
-    server: ${地址}
-    port: ${端口}
-    uuid: ${我的UUID}
-    udp: false
-    tls: true
-    sni: ${hostName}
-    network: ws
-    ws-opts:
-      path: "/?ed=2560"
-      headers:
-        Host: ${hostName}`,
-        proxyConfig: `    - "${节点名字}"`,
+        nodeConfig: `- name: ${节点名字}
+  type: vless
+  server: ${地址}
+  port: ${端口}
+  uuid: ${我的UUID}
+  udp: false
+  tls: true
+  sni: ${hostName}
+  network: ws
+  ws-opts:
+    path: "/?ed=2560"
+    headers:
+      Host: ${hostName}`,
+        proxyConfig: `    - ${节点名字}`,
       }
     })
   }
-  const 节点配置 = 生成节点(我的优选)
+    const 节点配置 = 生成节点(我的优选)
     .map((node) => node.nodeConfig)
     .join("\n")
-  const 代理配置 = 生成节点(我的优选)
+    const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n")
   const CF规则 = 启用反代功能 ? [] : [
-    '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
-    '  - GEOSITE,cloudflare,DIRECT',
-    '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
+      '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
+      '  - GEOSITE,cloudflare,DIRECT',
+      '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
   ]
   return `
 proxies:
 ${节点配置}
 proxy-groups:
-  - name: "🚀 节点选择"
-    type: select
-    proxies:
-      - "♻️ 自动选择"
-      - "🔯 故障转移"
+- name: 🚀 节点选择
+  type: select
+  proxies:
+    - ♻️ 自动选择
+    - 🔯 故障转移
 ${代理配置}
-  - name: "🐟 漏网之鱼"
-    type: select
-    proxies:
-      - DIRECT
-      - "🚀 节点选择"
-  - name: "♻️ 自动选择"
-    type: url-test
+- name: 🐟 漏网之鱼
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: ♻️ 自动选择
+  type: url-test
+  url: https://www.google.com/generate_204
+  interval: 150
+  tolerance: 50
+  proxies:
+${代理配置}
+- name: 🔯 故障转移
+  type: fallback
+  health-check:
+    enable: true
+    interval: 300
     url: https://www.google.com/generate_204
-    interval: 150
-    tolerance: 50
-    proxies:
-${代理配置}
-  - name: "🔯 故障转移"
-    type: fallback
-    health-check:
-      enable: true
-      interval: 300
-      url: https://www.google.com/generate_204
-    proxies:
+  proxies:
 ${代理配置}
 rules:
 ${CF规则.join('\n')}
