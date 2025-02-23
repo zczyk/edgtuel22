@@ -360,23 +360,24 @@ function v2ray配置文件(hostName) {
 }
 function Clash配置文件(hostName) {
   if (我的优选.length === 0) {
-    我的优选 = [`${hostName}:443`]
+    我的优选 = [`${hostName}:443`];
   }
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选) => {
-      const [主内容] = 获取优选.split("@")
-      const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#")
-      const 拆分地址端口 = 地址端口.split(":")
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443
-      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
+      const [主内容, tls] = 获取优选.split("@");
+      const [地址端口, 节点名字 = 我的节点名字] = 主内容.split("#");
+      const 拆分地址端口 = 地址端口.split(":");
+      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+      const TLS开关 = tls === "notls" ? "false" : "true";
       return {
-        nodeConfig: `- name: ${节点名字}
-  type: vless
+        nodeConfig: `- name: ${节点名字}-${地址}-${端口}
+  type: ${转码}${转码2}
   server: ${地址}
   port: ${端口}
-  uuid: ${我的UUID}
+  uuid: ${哎呀呀这是我的VL密钥}
   udp: false
-  tls: true
+  tls: ${TLS开关}
   sni: ${hostName}
   network: ws
   ws-opts:
@@ -384,20 +385,15 @@ function Clash配置文件(hostName) {
     headers:
       Host: ${hostName}`,
         proxyConfig: `    - ${节点名字}`,
-      }
-    })
-  }
-    const 节点配置 = 生成节点(我的优选)
+      };
+    });
+  };
+  const 节点配置 = 生成节点(我的优选)
     .map((node) => node.nodeConfig)
-    .join("\n")
-    const 代理配置 = 生成节点(我的优选)
+    .join("\n");
+  const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
-    .join("\n")
-  const CF规则 = 启用反代功能 ? [] : [
-      '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
-      '  - GEOSITE,cloudflare,DIRECT',
-      '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
-  ]
+    .join("\n");
   return `
 proxies:
 ${节点配置}
