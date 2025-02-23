@@ -28,7 +28,7 @@ let 伪装网页 = "www.baidu.com"
 
 // 网页入口
 export default {
-  async fetch(访问请求, env) {
+  async fetch(访问请求) {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
@@ -360,24 +360,23 @@ function v2ray配置文件(hostName) {
 }
 function Clash配置文件(hostName) {
   if (我的优选.length === 0) {
-    我的优选 = [`${hostName}:443`];
+    我的优选 = [`${hostName}:443`]
   }
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选) => {
-      const [主内容, tls] = 获取优选.split("@");
-      const [地址端口, 节点名字 = 我的节点名字] = 主内容.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
-      const TLS开关 = tls === "notls" ? "false" : "true";
+      const [主内容] = 获取优选.split("@")
+      const [地址端口, 节点名字 = 我的节点名字] = 主内容.split("#")
+      const 拆分地址端口 = 地址端口.split(":")
+      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443
+      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
       return {
-        nodeConfig: `- name: ${节点名字}-${地址}-${端口}
+        nodeConfig: `- name: ${节点名字}
   type: ${转码}${转码2}
   server: ${地址}
   port: ${端口}
   uuid: ${哎呀呀这是我的VL密钥}
   udp: false
-  tls: ${TLS开关}
+  tls: true
   sni: ${hostName}
   network: ws
   ws-opts:
@@ -385,15 +384,15 @@ function Clash配置文件(hostName) {
     headers:
       Host: ${hostName}`,
         proxyConfig: `    - ${节点名字}`,
-      };
-    });
-  };
+      }
+    })
+  }
   const 节点配置 = 生成节点(我的优选)
     .map((node) => node.nodeConfig)
-    .join("\n");
+    .join("\n")
   const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
-    .join("\n");
+    .join("\n")
   return `
 proxies:
 ${节点配置}
