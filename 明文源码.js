@@ -415,9 +415,9 @@ function Clash配置文件(hostName) {
     .map((node) => node.proxyConfig)
     .join("\n")
     const CF规则 = 启用反代功能 ? [] : [
-        '  - GEOIP,CLOUDFLARE,🎯 全球直连,no-resolve',
-        '  - GEOSITE,cloudflare,🎯 全球直连',
-        '  - DOMAIN-KEYWORD,cloudflare,🎯 全球直连',
+        '  - GEOIP,CLOUDFLARE,DIRECT,no-resolve',
+        '  - GEOSITE,cloudflare,DIRECT',
+        '  - DOMAIN-KEYWORD,cloudflare,DIRECT',
     ]
   return `
 proxies:
@@ -430,11 +430,6 @@ proxy-groups:
     - 🔯 故障转移
 ${代理配置}
 - name: 🐟 漏网之鱼
-  type: select
-  proxies:
-    - DIRECT
-    - 🚀 节点选择
-- name: 🎯 全球直连
   type: select
   proxies:
     - DIRECT
@@ -456,10 +451,10 @@ ${代理配置}
 ${代理配置}
 rules:
 ${CF规则.join('\n')}
-  - GEOIP,LAN,🎯 全球直连,no-resolve
-  - GEOSITE,cn,🎯 全球直连
-  - GEOIP,CN,🎯 全球直连,no-resolve
-  - DOMAIN-SUFFIX,cn,🎯 全球直连
+  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,cn,DIRECT
   - GEOSITE,gfw,🚀 节点选择
   - GEOSITE,google,🚀 节点选择
   - GEOIP,GOOGLE,🚀 节点选择,no-resolve
