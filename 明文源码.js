@@ -371,7 +371,7 @@ function Clash配置文件(hostName) {
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1")
       return {
         nodeConfig: `- name: ${节点名字}
-  type: ${转码}${转码2}
+  type: vless
   server: ${地址}
   port: ${端口}
   uuid: ${哎呀呀这是我的VL密钥}
