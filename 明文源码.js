@@ -444,6 +444,7 @@ ${CF规则.join('\n')}
   - GEOSITE,cn,DIRECT
   - GEOIP,CN,DIRECT,no-resolve
   - DOMAIN-SUFFIX,cn,DIRECT
+  - GEOSITE,category-ads-all,REJECT
   - GEOSITE,gfw,🚀 节点选择
   - GEOSITE,google,🚀 节点选择
   - GEOIP,GOOGLE,🚀 节点选择,no-resolve
