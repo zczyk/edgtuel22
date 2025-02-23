@@ -374,7 +374,7 @@ function Clash配置文件(hostName) {
   type: vless
   server: ${地址}
   port: ${端口}
-  uuid: ${哎呀呀这是我的VL密钥}
+  uuid: ${我的UUID}
   udp: false
   tls: true
   sni: ${hostName}
