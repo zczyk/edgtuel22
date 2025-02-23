@@ -9,7 +9,8 @@ let 我的UUID = "25284107-7424-40a5-8396-cdd0623f4f05"
 let 我的优选 = []
     // 格式: 地址/域名:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 let 我的优选TXT = [
-    "https://raw.githubusercontent.com/ImLTHQ/CloudflareST/main/TLS.txt"
+  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
+  "https://raw.githubusercontent.com/ImLTHQ/CloudflareST/main/TLS.txt",
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
