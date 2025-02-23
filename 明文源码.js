@@ -75,18 +75,6 @@ export default {
             return fetch(访问请求)
       }
     } else if (读取我的请求标头 === "websocket") {
-      启用SOCKS5反代 =
-        env.SOCKS5OPEN === "true"
-          ? true
-          : env.SOCKS5OPEN === "false"
-          ? false
-          : 启用SOCKS5反代
-      启用SOCKS5全局反代 =
-        env.SOCKS5GLOBAL === "true"
-          ? true
-          : env.SOCKS5GLOBAL === "false"
-          ? false
-          : 启用SOCKS5全局反代
       return await 升级WS请求(访问请求)
     }
   },
