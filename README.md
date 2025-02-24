@@ -60,7 +60,7 @@
 - clash.meta（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
 
 # 感谢
-[shulng](https://github.com/shulng)
+[shulng](https://github.com/shulng)，[XIU2](https://github.com/XIU2)
 
 # 免责声明
 本免责声明适用于 GitHub 上的 “edge-tunnel” 项目（以下简称“本项目”）,项目链接为:https://github.com/ImLTHQ/edge-tunnel
