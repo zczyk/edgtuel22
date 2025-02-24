@@ -33,6 +33,11 @@ jobs:
         working-directory: target
         run: |
           git add .
-          git commit -m "从上游同步"
-          git remote set-url origin https://github.com/${{ github.repository }}
-          git push origin main
+          git commit -m "Sync from upstream"
+          if git status --porcelain | grep -q .; then
+            git pull origin main --rebase
+            git remote set-url origin https://github.com/${{ github.repository }}
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
