@@ -55,28 +55,29 @@ export default {
         // 去重处理
         我的优选 = [...new Set(我的优选)]
       }
-      switch (url.pathname) {
-        case `/${订阅路径}`: {
-          let 配置文件
-          const userAgent = 访问请求.headers.get("User-Agent").toLowerCase() // 转换为小写
-          if (userAgent.includes("v2ray")) {
-            配置文件 = v2ray配置文件(访问请求.headers.get("Host"))
-          } else if (userAgent.includes("clash")) { // 只需要检查一次
-            配置文件 = Clash配置文件(访问请求.headers.get("Host"))
-          } else {
-            配置文件 = 提示界面(访问请求.headers.get("Host"))
-          }
-          return new Response(`${配置文件}`, {
-            status: 200,
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-          })
+
+      if (url.pathname === `/${订阅路径}`) {
+        const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase()
+        const 配置生成器 = {
+          v2ray: v2ray配置文件,
+          clash: clash配置文件,
+          default: 提示界面
         }
-        default:
-            url.hostname = 伪装网页
-            url.protocol = "https:"
-            访问请求 = new Request(url, 访问请求)
-            return fetch(访问请求)
+        const 工具 = Object.keys(配置生成器).find(工具 => 用户代理.includes(工具))
+        const 生成配置 = 配置生成器[工具 || 'default']
+
+        return new Response(生成配置(访问请求.headers.get("Host")), {
+          status: 200,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+        })
+      } else {
+          // 添加伪装网页功能
+          url.hostname = 伪装网页
+          url.protocol = "https:"
+          访问请求 = new Request(url, 访问请求)
+          return fetch(访问请求)
       }
+
     } else if (读取我的请求标头 === "websocket") {
       return await 升级WS请求(访问请求)
     }
@@ -360,7 +361,7 @@ function v2ray配置文件(hostName) {
     })
     .join("\n")
 }
-function Clash配置文件(hostName) {
+function clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`]
   }
