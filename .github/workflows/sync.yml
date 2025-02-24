@@ -2,8 +2,8 @@ name: Sync-repo
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天凌晨 0 点
-  workflow_dispatch:  # 允许手动触发
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -12,22 +12,31 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
-          path: target  # 将目标仓库克隆到 'target' 目录
+          path: target
 
       - name: Checkout sync repository
         uses: actions/checkout@v3
         with:
-          repository: ImLTHQ/edge-tunnel  # 要同步的仓库
-          path: source  # 将要同步的仓库克隆到 'source' 目录
+          repository: ImLTHQ/edge-tunnel
+          path: source
 
       - name: Sync files
         run: |
           rsync -av --delete source/ target/
+
       - name: Configure Git
         working-directory: target
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<actions@github.com>"
+
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.DEPLOY_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git remote set-url origin git@github.com:${{ github.repository }}
 
       - name: Commit and push changes
         working-directory: target
