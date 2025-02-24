@@ -9,31 +9,30 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target repository
+      - name: Checkout repositories
         uses: actions/checkout@v3
         with:
           path: target
 
-      - name: Checkout sync repository
+      - name: Checkout source repository
         uses: actions/checkout@v3
         with:
           repository: ImLTHQ/edge-tunnel
           path: source
 
-      - name: 同步文件
-        run: |
-          rsync -av --delete source/ target/
+      - name: Sync files
+        run: rsync -av --delete source/ target/
 
-      - name: 配置git
+      - name: Configure Git
         working-directory: target
         run: |
           git config user.name "GitHub Actions Bot"
-          git config user.email "<actions@github.com>"
+          git config user.email "actions@github.com"
 
       - name: Commit and push changes
         working-directory: target
         run: |
           git add .
-          git commit -m "从上游同步" || echo "没有更改"
+          git commit -m "从上游同步"
           git remote set-url origin https://github.com/${{ github.repository }}
           git push origin main
