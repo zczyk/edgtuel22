@@ -71,7 +71,6 @@ export default {
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         })
       } else {
-          // 添加伪装网页功能
           url.hostname = 伪装网页
           url.protocol = "https:"
           访问请求 = new Request(url, 访问请求)
