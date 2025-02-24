@@ -30,17 +30,10 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<actions@github.com>"
 
-      - name: Add SSH key
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.DEPLOY_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git remote set-url origin git@github.com:${{ github.repository }}
-
       - name: Commit and push changes
         working-directory: target
         run: |
           git add .
           git commit -m "从上游同步" || echo "没有更改"
+          git remote set-url origin https://github.com/${{ github.repository }}
           git push origin main
