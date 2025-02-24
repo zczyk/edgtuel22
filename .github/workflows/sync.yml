@@ -20,11 +20,11 @@ jobs:
           repository: ImLTHQ/edge-tunnel
           path: source
 
-      - name: Sync files
+      - name: 同步文件
         run: |
           rsync -av --delete source/ target/
 
-      - name: Configure Git
+      - name: 配置git
         working-directory: target
         run: |
           git config user.name "GitHub Actions Bot"
