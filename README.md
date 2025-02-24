@@ -27,6 +27,17 @@
 </details>
 
 <details>
+<summary><code><strong>「 部署后建议做的 」</strong></code></summary>
+
+1. 设置Github Action（这是为了使你的仓库与作者的同步保持最新）
+- 来到你Fork的仓库
+- 在`Actions`选项卡中点击`绿色按钮`
+- 选择`上游同步`
+- 点击`Enable workflow`
+
+</details>
+
+<details>
 <summary><code><strong>「 给 Pages/Workers绑定自定义域名 」</strong></code></summary>
 
 1. CF连接你的域名:
