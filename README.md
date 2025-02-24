@@ -12,7 +12,7 @@
 - 在CF Pages控制台中选择`连接到 Git`后,选中`edge-tunnel`项目后点击`开始设置`
 
 2. 使用订阅:
-- 在你的Clash/V2ray客户端导入订阅地址`https://CF分配的域名/sub`即可
+- 在你的Clash/V2ray客户端导入订阅地址`https://CF分配的域名/订阅路径`即可
 </details>
 
 <details>
@@ -24,6 +24,9 @@
 - 在`导入存储库`中选择`edge-tunnel`,点击`保存并部署`
 
 2. 因为部分用户无法访问CF分配的地址,建议按照下面的教程绑定自定义域名
+
+3. 使用订阅:
+- 在你的Clash/V2ray客户端导入订阅地址`https://域名/订阅路径`即可
 </details>
 
 <details>
