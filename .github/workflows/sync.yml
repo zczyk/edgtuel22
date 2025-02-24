@@ -1,43 +1,35 @@
-name: Sync-repo
+name: Upstream Sync
+
+permissions:
+  contents: write
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
-  sync:
+  sync_latest_from_upstream:
+    name: Sync latest commits from upstream repo
     runs-on: ubuntu-latest
+    if: ${{ github.event.repository.fork }}
+
     steps:
-      - name: Checkout repositories
+      - name: Checkout target repo
         uses: actions/checkout@v3
+
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
         with:
-          path: target
+          upstream_sync_repo: cmliu/edgetunnel
+          upstream_sync_branch: main
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          test_mode: false
 
-      - name: Checkout source repository
-        uses: actions/checkout@v3
-        with:
-          repository: ImLTHQ/edge-tunnel
-          path: source
-
-      - name: Sync files
-        run: rsync -av --delete source/ target/
-
-      - name: Configure Git
-        working-directory: target
+      - name: Sync check
+        if: failure()
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-
-      - name: Commit and push changes
-        working-directory: target
-        run: |
-          git add .
-          git commit -m "Sync from upstream"
-          if git status --porcelain | grep -q .; then
-            git pull origin main --rebase
-            git remote set-url origin https://github.com/${{ github.repository }}
-            git push origin main
-          else
-            echo "No changes to commit"
-          fi
+          echo "[Error] 由于上游仓库的 workflow 文件变更，导致 GitHub 自动暂停了本次自动更新，你需要手动 Sync Fork 一次"
+          exit 1
