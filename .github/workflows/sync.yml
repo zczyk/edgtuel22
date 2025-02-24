@@ -3,6 +3,7 @@ name: Sync-repo
 on:
   schedule:
     - cron: '0 0 * * *'  # 每天凌晨 0 点
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -11,13 +12,13 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
-          path: target  # 将目标仓库克隆到 'target' 目录
+          path: targe
 
       - name: Checkout sync repository
         uses: actions/checkout@v3
         with:
-          repository: ImLTHQ/edge-tunnel  # 要同步的仓库
-          path: source  # 将要同步的仓库克隆到 'source' 目录
+          repository: ImLTHQ/edge-tunnel
+          path: source
 
       - name: Sync files
         run: |
