@@ -59,7 +59,6 @@
 - 点击`继续`,点击`激活域`
 </details>
 
-# Star 星星走起
 [![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
 # 已适配客户端
