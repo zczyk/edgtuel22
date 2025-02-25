@@ -5,7 +5,7 @@ on:
     paths:
       - '明文源码.js'
   schedule:
-    - cron: '0 0 * * *'  # 每天 00:00 UTC 执行
+    - cron: '0 0 * * *'
 
 jobs:
   obfuscate:
@@ -44,13 +44,12 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add _worker.js
           git commit -m "自动混淆" || echo "No changes to commit"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          git fetch origin main
+          git reset --hard origin/main
+          git push origin HEAD:${GITHUB_REF} --force
+        env:
+          GITHUB_REF: ${{ github.ref }}
