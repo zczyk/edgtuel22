@@ -1,6 +1,8 @@
 # edge-tunnel
 这是一个基于CF Worker平台的JavaScript,在原版的基础上简化并添加了对客户端的识别,不依赖外部订阅转换
 
+本人是初学者，代码有问题欢迎指出
+
 点个星星再走吧
 [![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
