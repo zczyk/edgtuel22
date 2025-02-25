@@ -27,6 +27,7 @@ let 我的SOCKS5账号 = ""
     // 格式：账号:密码@地址:端口
 
 let 伪装网页 = "www.baidu.com"
+let 嘲讽语 = "杂鱼~"
 
 // 网页入口
 export default {
@@ -34,29 +35,28 @@ export default {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
-      if (我的优选TXT.length > 0) {
-        我的优选 = (
-          await Promise.all(
-            我的优选TXT.map((url) =>
-              fetch(url).then((response) =>
-                response.ok
-                  ? response.text().then((text) =>
-                      text
-                        .split("\n")
-                        .map((line) => line.trim())
-                        .filter((line) => line)
-                    )
-                  : []
+      if (url.pathname === `/${订阅路径}`) {
+        if (我的优选TXT.length > 0) {
+          我的优选 = (
+            await Promise.all(
+              我的优选TXT.map((url) =>
+                fetch(url).then((response) =>
+                  response.ok
+                    ? response.text().then((text) =>
+                        text
+                          .split("\n")
+                          .map((line) => line.trim())
+                          .filter((line) => line)
+                      )
+                    : []
+                )
               )
             )
-          )
-        ).flat()
+          ).flat()
 
-        // 去重处理
-        我的优选 = [...new Set(我的优选)]
-      }
-
-      if (url.pathname === `/${订阅路径}`) {
+          // 去重处理
+          我的优选 = [...new Set(我的优选)]
+        }
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase()
         const 配置生成器 = {
           v2ray: v2ray配置文件,
@@ -70,11 +70,16 @@ export default {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         })
-      } else {
+      } else if (url.pathname === "/") {
           url.hostname = 伪装网页
           url.protocol = "https:"
           访问请求 = new Request(url, 访问请求)
           return fetch(访问请求)
+      } else {
+        return new Response(生成嘲讽页面(), {
+          status: 200,
+          headers: { "Content-Type": "text/html;charset=utf-8" },
+        })
       }
 
     } else if (读取我的请求标头 === "websocket") {
@@ -344,6 +349,9 @@ async function 获取SOCKS5账号(SOCKS5) {
 // 订阅页面
 function 提示界面 () {
   return `请把链接导入v2ray或clash`
+}
+function 生成嘲讽页面() {
+  return `${嘲讽语}`
 }
 function v2ray配置文件(hostName) {
   if (我的优选.length === 0) {
