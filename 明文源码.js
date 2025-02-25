@@ -15,12 +15,12 @@ let 我的优选TXT = [
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
-let 启用反代功能 = true
+let 启用反代功能 = 启用SOCKS5反代 ? true : 反代地址 !== ""
     // 是否启用反代功能 (总开关)
 let 反代地址 = "ts.hpc.tw:443"
     // 格式：地址:端口
 
-let 启用SOCKS5反代 = false
+let 启用SOCKS5反代 = 我的SOCKS5账号 !== ""
     // 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
 let 我的SOCKS5账号 = ""
