@@ -4,9 +4,9 @@ on:
   push:
     paths:
       - '明文源码.js'
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-  workflow_dispatch:
 
 jobs:
   obfuscate:
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install -g javascript-obfuscator
 
-      - name: 混淆代码
+      - name: Obfuscate code
         run: |
           javascript-obfuscator 明文源码.js --output _worker.js \
           --compact true \
@@ -49,8 +49,9 @@ jobs:
           git config --local user.name "GitHub Action"
           git add _worker.js
           git commit -m "自动混淆" || echo "No changes to commit"
-          git fetch origin main
-          git reset --hard origin/main
-          git push origin HEAD:${GITHUB_REF} --force
-        env:
-          GITHUB_REF: ${{ github.ref }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
