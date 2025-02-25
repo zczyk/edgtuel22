@@ -1,8 +1,9 @@
 # edge-tunnel
 这是一个基于CF Worker平台的JavaScript,在原版的基础上简化并添加了对客户端的识别,不依赖外部订阅转换
 
+[![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
+
 # 使用方法
-动手点个星星吧。我真的很需要！！！
 
 <details>
 <summary><code><strong>「 Pages部署教程(推荐) 」</strong></code></summary>
@@ -58,8 +59,6 @@
 - 填入你的自定义域名
 - 点击`继续`,点击`激活域`
 </details>
-
-[![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
 # 已适配客户端
 # Windows
