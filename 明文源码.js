@@ -354,7 +354,7 @@ function 生成嘲讽页面() {
 
 function 生成项目介绍页面() {
   return new Response(`
-<title>edgeTunnel-项目介绍</title>
+<title>项目介绍</title>
 <style>
 body {
   font-size: 16px;
