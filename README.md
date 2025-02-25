@@ -1,6 +1,7 @@
 # edge-tunnel
 这是一个基于CF Worker平台的JavaScript,在原版的基础上简化并添加了对客户端的识别,不依赖外部订阅转换
 
+点个星星再走吧
 [![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
 # 使用方法
@@ -61,13 +62,13 @@
 </details>
 
 # 已适配客户端
-# Windows
+Windows
 - [v2rayN](https://github.com/2dust/v2rayN)
 - clash.meta（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)，[clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)，[Clash Nyanpasu](https://github.com/keiko233/clash-nyanpasu)）
-# 安卓
+安卓
 - [v2rayNG](https://github.com/2dust/v2rayNG)
 - clash.meta（[ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)，[FlClash](https://github.com/chen08209/FlClash)）
-### MacOS
+MacOS
 - [v2rayN](https://github.com/2dust/v2rayN)
 - clash.meta（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
 
