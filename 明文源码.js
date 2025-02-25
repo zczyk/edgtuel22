@@ -26,7 +26,7 @@ let 启用SOCKS5全局反代 = false
 let 我的SOCKS5账号 = ""
     // 格式：账号:密码@地址:端口
 
-let 伪装网页 = "www.baidu.com"
+let 伪装网页 = ""
 let 嘲讽语 = "杂鱼~"
 
 // 网页入口
@@ -71,10 +71,7 @@ export default {
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         })
       } else if (url.pathname === "/") {
-          url.hostname = 伪装网页
-          url.protocol = "https:"
-          访问请求 = new Request(url, 访问请求)
-          return fetch(访问请求)
+          return 伪装网页 ? 重定向到伪装网页(访问请求, url) : 生成项目介绍页面();
       } else {
         return new Response(生成嘲讽页面(), {
           status: 200,
@@ -350,9 +347,39 @@ async function 获取SOCKS5账号(SOCKS5) {
 function 提示界面 () {
   return `请把链接导入v2ray或clash`
 }
+
 function 生成嘲讽页面() {
   return `${嘲讽语}`
 }
+
+function 生成项目介绍页面() {
+  return new Response(`
+<title>edgeTunnel-项目介绍</title>
+<style>
+body {
+  font-size: 16px;
+}
+</style>
+<pre>
+<strong>edge-tunnel</strong>
+
+简介：这是一种基于CF Worker的免费代理方案
+
+项目地址：<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">https://github.com/ImLTHQ/edge-tunnel</a>
+</pre>
+    `, {
+      status: 200,
+      headers: { "Content-Type": "text/html;charset=utf-8" },
+  })
+}
+
+function 重定向到伪装网页(访问请求, url) {
+    url.hostname = 伪装网页
+    url.protocol = "https:"
+    访问请求 = new Request(url, 访问请求)
+    return fetch(访问请求)
+}
+
 function v2ray配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`]
@@ -368,6 +395,7 @@ function v2ray配置文件(hostName) {
     })
     .join("\n")
 }
+
 function clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`]
