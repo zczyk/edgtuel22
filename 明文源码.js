@@ -67,7 +67,10 @@ export default {
         )
         const 生成配置 = 配置生成器[工具 || "default"]
 
-        return new Response(生成配置(访问请求.headers.get("Host")))
+        return new Response(生成配置(访问请求.headers.get("Host")), {
+          status: 200,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+        })
       } else {
         return 生成项目介绍页面()
       }
