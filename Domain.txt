@@ -1,3 +1,2 @@
-time.is#优选域名 1
-www.shopify.com#优选域名 2
-fbi.gov#优选域名 3
+www.shopify.com#优选域名 1
+fbi.gov#优选域名 2
