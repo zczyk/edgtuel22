@@ -27,14 +27,14 @@ export default {
     默认节点名称 = env.SUB_NAME || 默认节点名称;
     
     // 处理 TXT_URL 环境变量
-    const txtUrlEnv = env.TXT_URL;
-    if (txtUrlEnv) {
-      if (typeof txtUrlEnv === 'string') {
+    let TXT_URL_ENV = env.TXT_URL;
+    if (TXT_URL_ENV) {
+      if (typeof TXT_URL_ENV === 'string') {
         // 将多行字符串分割成数组
-        我的优选TXT = txtUrlEnv.split('\n').map(line => line.trim()).filter(line => line);
-      } else if (Array.isArray(txtUrlEnv)) {
+        我的优选TXT = TXT_URL_ENV.split('\n').map(line => line.trim()).filter(line => line);
+      } else if (Array.isArray(TXT_URL_ENV)) {
         // 已经是数组，直接使用
-        我的优选TXT = txtUrlEnv;
+        我的优选TXT = TXT_URL_ENV;
       } else {
         我的优选TXT = [];
       }
