@@ -1,35 +1,33 @@
 import { connect } from "cloudflare:sockets";
 
 // 配置区块
-var 订阅路径 = "sub";
-// 订阅路径 域名/订阅路径
 var 默认节点名称 = "节点";
 // 默认节点名称
 var 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 // 用于验证的UUID
 
-var 我的优选 = [];
-// 格式: 地址:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
-var 我的优选TXT = [
+const 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HK.txt",
 ];
-// 使用TXT时脚本内部填写的节点无效，二选一
+// 格式: 地址:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 
-var 启用反代功能 = true;
+const 启用反代功能 = true;
 // 是否启用反代功能 (总开关)
-var 反代地址 = "ts.hpc.tw:443";
+const 反代地址 = "ts.hpc.tw:443";
 // 格式：地址:端口
 
-var 启用SOCKS5反代 = false;
+const 启用SOCKS5反代 = false;
 // 启用后原始反代将失效
-var 启用SOCKS5全局反代 = false;
-var 我的SOCKS5账号 = "";
+const 启用SOCKS5全局反代 = false;
+const 我的SOCKS5账号 = "";
 // 格式：账号:密码@地址:端口
 
 // 网页入口
 export default {
-  async fetch(访问请求) {
+  async fetch(访问请求, env) {
+    const 订阅路径 = env.SUB_PATH || "sub";
+    let 我的优选 = [];
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
