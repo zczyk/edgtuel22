@@ -1,4 +1,5 @@
 import { connect } from "cloudflare:sockets"
+
 // 配置区块
 let 订阅路径 = "sub"
   // 订阅路径 域名/订阅路径
@@ -15,19 +16,19 @@ let 我的优选TXT = [
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
-let 启用反代功能 = 启用SOCKS5反代 ? true : 反代地址 !== ""
+//let 启用反代功能 = 启用SOCKS5反代 ? true : 反代地址 !== ""
+let 启用反代功能 =true
     // 是否启用反代功能 (总开关)
 let 反代地址 = "ts.hpc.tw:443"
     // 格式：地址:端口
 
-let 启用SOCKS5反代 = 我的SOCKS5账号 !== ""
+//let 启用SOCKS5反代 = 我的SOCKS5账号 !== ""
+let 启用SOCKS5反代 = false
     // 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
 let 我的SOCKS5账号 = ""
     // 格式：账号:密码@地址:端口
 
-let 伪装网页 = ""
-let 嘲讽语 = "杂鱼~"
 
 // 网页入口
 export default {
@@ -70,13 +71,8 @@ export default {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         })
-      } else if (url.pathname === "/") {
-          return 伪装网页 ? 重定向到伪装网页(访问请求, url) : 生成项目介绍页面();
       } else {
-        return new Response(生成嘲讽页面(), {
-          status: 200,
-          headers: { "Content-Type": "text/html;charset=utf-8" },
-        })
+        return 生成项目介绍页面()
       }
 
     } else if (读取我的请求标头 === "websocket") {
@@ -348,10 +344,6 @@ function 提示界面 () {
   return `请把链接导入v2ray或clash`
 }
 
-function 生成嘲讽页面() {
-  return `${嘲讽语}`
-}
-
 function 生成项目介绍页面() {
   return new Response(`
 <title>项目介绍</title>
@@ -371,13 +363,6 @@ body {
       status: 200,
       headers: { "Content-Type": "text/html;charset=utf-8" },
   })
-}
-
-function 重定向到伪装网页(访问请求, url) {
-    url.hostname = 伪装网页
-    url.protocol = "https:"
-    访问请求 = new Request(url, 访问请求)
-    return fetch(访问请求)
 }
 
 function v2ray配置文件(hostName) {
