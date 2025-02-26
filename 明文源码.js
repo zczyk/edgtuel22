@@ -6,7 +6,7 @@ let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
 
 let 我的优选 = [];
-let 我的优选TXT = [ // 保持为数组，作为默认值
+let 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HK.txt",
 ];
@@ -25,24 +25,21 @@ export default {
     订阅路径 = env.SUB_PATH || 订阅路径;
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
-    
-    // 处理 TXT_URL 环境变量
+    反代IP = env.PROXY_IP || 反代IP;
+    启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true" ? true : 启用SOCKS5全局反代;
+    我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
+
     let TXT_URL_ENV = env.TXT_URL;
     if (TXT_URL_ENV) {
       if (typeof TXT_URL_ENV === 'string') {
-        // 将多行字符串分割成数组
         我的优选TXT = TXT_URL_ENV.split('\n').map(line => line.trim()).filter(line => line);
       } else if (Array.isArray(TXT_URL_ENV)) {
-        // 已经是数组，直接使用
         我的优选TXT = TXT_URL_ENV;
       } else {
         我的优选TXT = [];
       }
     }
 
-    反代IP = env.PROXY_IP || 反代IP;
-    启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true" ? true : 启用SOCKS5全局反代;
-    我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
