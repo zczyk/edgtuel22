@@ -1,5 +1,4 @@
 import { connect } from "cloudflare:sockets"
-
 // 配置区块
 let 订阅路径 = "sub"
   // 订阅路径 域名/订阅路径
@@ -16,19 +15,18 @@ let 我的优选TXT = [
 ]
     //使用TXT时脚本内部填写的节点无效，二选一
 
-//let 启用反代功能 = 启用SOCKS5反代 ? true : 反代地址 !== ""
-let 启用反代功能 =true
+let 启用反代功能 = true
     // 是否启用反代功能 (总开关)
 let 反代地址 = "ts.hpc.tw:443"
     // 格式：地址:端口
 
-//let 启用SOCKS5反代 = 我的SOCKS5账号 !== ""
 let 启用SOCKS5反代 = false
     // 启用后原始反代将失效
 let 启用SOCKS5全局反代 = false
 let 我的SOCKS5账号 = ""
     // 格式：账号:密码@地址:端口
 
+let 伪装网页 = "www.baidu.com"
 
 // 网页入口
 export default {
@@ -36,28 +34,29 @@ export default {
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade")
     const url = new URL(访问请求.url)
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
-      if (url.pathname === `/${订阅路径}`) {
-        if (我的优选TXT.length > 0) {
-          我的优选 = (
-            await Promise.all(
-              我的优选TXT.map((url) =>
-                fetch(url).then((response) =>
-                  response.ok
-                    ? response.text().then((text) =>
-                        text
-                          .split("\n")
-                          .map((line) => line.trim())
-                          .filter((line) => line)
-                      )
-                    : []
-                )
+      if (我的优选TXT.length > 0) {
+        我的优选 = (
+          await Promise.all(
+            我的优选TXT.map((url) =>
+              fetch(url).then((response) =>
+                response.ok
+                  ? response.text().then((text) =>
+                      text
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter((line) => line)
+                    )
+                  : []
               )
             )
-          ).flat()
+          )
+        ).flat()
 
-          // 去重处理
-          我的优选 = [...new Set(我的优选)]
-        }
+        // 去重处理
+        我的优选 = [...new Set(我的优选)]
+      }
+
+      if (url.pathname === `/${订阅路径}`) {
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase()
         const 配置生成器 = {
           v2ray: v2ray配置文件,
@@ -67,10 +66,7 @@ export default {
         const 工具 = Object.keys(配置生成器).find(工具 => 用户代理.includes(工具))
         const 生成配置 = 配置生成器[工具 || 'default']
 
-        return new Response(生成配置(访问请求.headers.get("Host")), {
-          status: 200,
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-        })
+        return new Response(生成配置(访问请求.headers.get("Host")))
       } else {
         return 生成项目介绍页面()
       }
@@ -357,12 +353,9 @@ body {
 
 简介：这是一种基于CF Worker的免费代理方案
 
-项目地址：<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">https://github.com/ImLTHQ/edge-tunnel</a>
+<a href="点我跳转仓库" target="_blank">https://github.com/ImLTHQ/edge-tunnel</a>
 </pre>
-    `, {
-      status: 200,
-      headers: { "Content-Type": "text/html;charset=utf-8" },
-  })
+    `)
 }
 
 function v2ray配置文件(hostName) {
@@ -380,7 +373,6 @@ function v2ray配置文件(hostName) {
     })
     .join("\n")
 }
-
 function clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`]
