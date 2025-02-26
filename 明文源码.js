@@ -351,8 +351,7 @@ body {
 <strong>edge-tunnel</strong>
 
 简介：这是一种基于CF Worker的免费代理方案
-
-<a href="点我跳转仓库" target="_blank">https://github.com/ImLTHQ/edge-tunnel</a>
+<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">点我跳转仓库</a>
 </pre>
     `, {
       status: 200,
