@@ -29,7 +29,6 @@ export default {
     反代IP = env.PROXY_IP || 反代IP
     启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true" ? true : 启用SOCKS5全局反代;
     我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号
-
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
