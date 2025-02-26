@@ -354,7 +354,10 @@ body {
 
 <a href="点我跳转仓库" target="_blank">https://github.com/ImLTHQ/edge-tunnel</a>
 </pre>
-    `)
+    `, {
+      status: 200,
+      headers: { "Content-Type": "text/html;charset=utf-8" },
+  })
 }
 
 function v2ray配置文件(hostName) {
