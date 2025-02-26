@@ -6,6 +6,7 @@ let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
 
 let 我的优选 = [];
+let TXT_URL_ENV = "";
 let 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HK.txt",
@@ -29,7 +30,7 @@ export default {
     启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true" ? true : 启用SOCKS5全局反代;
     我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
 
-    let TXT_URL_ENV = env.TXT_URL;
+    TXT_URL_ENV = env.TXT_URL;
     if (TXT_URL_ENV) {
       if (typeof TXT_URL_ENV === 'string') {
         我的优选TXT = TXT_URL_ENV.split('\n').map(line => line.trim()).filter(line => line);
