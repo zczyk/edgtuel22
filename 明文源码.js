@@ -77,7 +77,10 @@ export default {
           用户代理.includes(工具)
         );
         const 生成配置 = 配置生成器[工具 || "default"];
-        return 生成配置();
+        return new Response(生成配置(访问请求.headers.get("Host")), {
+          status: 200,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+        });
       } else {
         return 生成项目介绍页面();
       }
@@ -417,6 +420,13 @@ function clash配置文件(hostName) {
     .map((node) => node.proxyConfig)
     .join("\n");
   return `
+dns:
+  nameserver:
+    - 180.76.76.76
+    - 2400:da00::6666
+  fallback:
+    - 8.8.8.8
+    - 2001:4860:4860::8888
 proxies:
 ${节点配置}
 proxy-groups:
