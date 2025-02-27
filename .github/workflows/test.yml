@@ -32,7 +32,7 @@ jobs:
       - name: 测速
         run: |
           set -e
-          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5 -o ./test/HK.csv
+          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5 -o HK.csv
           rm -f ip.txt
           python csv_to_txt.py
 
