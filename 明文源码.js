@@ -420,13 +420,6 @@ function clash配置文件(hostName) {
   const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n");
-  const CF规则 = 反代IP || 我的SOCKS5账号
-    ? []
-    : [
-        "  - GEOIP,CLOUDFLARE,DIRECT,no-resolve",
-        "  - GEOSITE,cloudflare,DIRECT",
-        "  - DOMAIN-KEYWORD,cloudflare,DIRECT",
-      ];
   return `
 proxies:
 ${节点配置}
@@ -438,6 +431,16 @@ proxy-groups:
     - 🔯 故障转移
 ${代理配置}
 - name: 🐟 漏网之鱼
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🌏 CF规则
+  type: select
+  proxies:
+    - 🚀 节点选择
+    - DIRECT
+- name: 🎯 国内直连
   type: select
   proxies:
     - DIRECT
@@ -458,12 +461,14 @@ ${代理配置}
   proxies:
 ${代理配置}
 rules:
-${CF规则.join("\n")}
   - GEOIP,LAN,DIRECT,no-resolve
-  - GEOSITE,cn,DIRECT
-  - GEOIP,CN,DIRECT,no-resolve
-  - DOMAIN-SUFFIX,cn,DIRECT
   - GEOSITE,category-ads-all,REJECT
+  - GEOIP,CLOUDFLARE,🌏 CF规则,no-resolve
+  - GEOSITE,cloudflare,🌏 CF规则
+  - DOMAIN-KEYWORD,cloudflare,D🌏 CF规则
+  - GEOSITE,cn,🎯 国内直连
+  - GEOIP,CN,🎯 国内直连,no-resolve
+  - DOMAIN-SUFFIX,cn,🎯 国内直连
   - GEOSITE,gfw,🚀 节点选择
   - GEOSITE,google,🚀 节点选择
   - GEOIP,GOOGLE,🚀 节点选择,no-resolve
