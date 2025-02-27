@@ -70,7 +70,7 @@
 # 变量说明
 
 | 变量名 | 示例 | 备注 |
-|---------|---------|---------|
+|-|-|-|
 | SUB_PATH | `sub` | 订阅路径 |
 | SUB_UUID | `550e8400-e29b-41d4-a716-446655440000` | 用于验证的UUID |
 | TXT_URL | `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HK.txt` | 格式: 地址:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名 |
