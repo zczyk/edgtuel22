@@ -18,10 +18,7 @@ jobs:
 
       - name: 下载 CloudFlare IP 列表
         run: |
-          rm -f ip.txt
-          {
-            wget -qO- https://www.cloudflare-cn.com/ips-v4/#
-          } | tee -a ip.txt
+          wget -qO- https://www.cloudflare-cn.com/ips-v4/ | tee ip.txt
 
       - name: Make script executable and install dependencies
         run: |
@@ -32,7 +29,12 @@ jobs:
       - name: 测速
         run: |
           set -e
-          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5 -o HK.csv
+          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5 -o HKG.csv
+          ./CloudflareST -cfcolo KHH -sl 5 -n 500 -dn 5 -o KHH.csv
+          ./CloudflareST -cfcolo NRT -sl 5 -n 500 -dn 5 -o NRT.csv
+          ./CloudflareST -cfcolo LAX -sl 5 -n 500 -dn 5 -o LAX.csv
+          ./CloudflareST -cfcolo SEA -sl 5 -n 500 -dn 5 -o SEA.csv
+          ./CloudflareST -cfcolo SJC -sl 5 -n 500 -dn 5 -o SJC.csv
           rm -f ip.txt
           python csv_to_txt.py
 
