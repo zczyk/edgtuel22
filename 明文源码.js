@@ -465,7 +465,7 @@ rules:
   - GEOSITE,category-ads-all,REJECT
   - GEOIP,CLOUDFLARE,🌏 CF规则,no-resolve
   - GEOSITE,cloudflare,🌏 CF规则
-  - DOMAIN-KEYWORD,cloudflare,D🌏 CF规则
+  - DOMAIN-KEYWORD,cloudflare,🌏 CF规则
   - GEOSITE,cn,🎯 国内直连
   - GEOIP,CN,🎯 国内直连,no-resolve
   - DOMAIN-SUFFIX,cn,🎯 国内直连
