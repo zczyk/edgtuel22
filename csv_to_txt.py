@@ -11,7 +11,7 @@ def csv_to_txt(csv_filename, output_filename, area_name):
             f.write(f"{ip}#{area_name} {i+1} ↓ {speed}MB/s\n")
 
 csv_to_txt("HKG.csv", "HKG.txt", "中国香港")
-csv_to_txt("KHH.csv", "KHH.txt", "中国台湾高雄")
+csv_to_txt("KHH.csv", "KHH.txt", "中国台湾")
 csv_to_txt("NRT.csv", "NRT.txt", "日本东京")
 csv_to_txt("LAX.csv", "LAX.txt", "美国洛杉矶")
 csv_to_txt("SEA.csv", "SEA.txt", "美国西雅图")
