@@ -446,16 +446,16 @@ ${代理配置}
   proxies:
     - DIRECT
     - 🚀 节点选择
-- name: 🌏 CF规则
-  type: select
-  proxies:
-    - 🚀 节点选择
-    - DIRECT
 - name: 🎯 国内直连
   type: select
   proxies:
     - DIRECT
     - 🚀 节点选择
+- name: 🌏 CF规则
+  type: select
+  proxies:
+    - 🚀 节点选择
+    - DIRECT
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
@@ -472,22 +472,31 @@ ${代理配置}
   proxies:
 ${代理配置}
 rules:
-  - GEOIP,LAN,DIRECT,no-resolve
+  - GEOIP,LAN,DIRECT
   - GEOSITE,category-ads-all,REJECT
-  - GEOIP,CLOUDFLARE,🌏 CF规则,no-resolve
-  - GEOSITE,cloudflare,🌏 CF规则
-  - DOMAIN-KEYWORD,cloudflare,🌏 CF规则
   - GEOSITE,cn,🎯 国内直连
-  - GEOIP,CN,🎯 国内直连,no-resolve
+  - GEOIP,cn,🎯 国内直连
   - DOMAIN-SUFFIX,cn,🎯 国内直连
+  - GEOIP,cloudflare,🌏 CF规则
+  - GEOSITE,cloudflare,🌏 CF规则
   - GEOSITE,gfw,🚀 节点选择
+  - GEOIP,gfw,🚀 节点选择
   - GEOSITE,google,🚀 节点选择
-  - GEOIP,GOOGLE,🚀 节点选择,no-resolve
+  - GEOIP,GOOGLE,🚀 节点选择
   - GEOSITE,netflix,🚀 节点选择
-  - GEOIP,NETFLIX,🚀 节点选择,no-resolve
+  - GEOIP,netflix,🚀 节点选择
   - GEOSITE,telegram,🚀 节点选择
-  - GEOIP,TELEGRAM,🚀 节点选择,no-resolve
+  - GEOIP,telegram,🚀 节点选择
   - GEOSITE,openai,🚀 节点选择
+  - GEOIP,openai,🚀 节点选择
+  - GEOSITE,microsoft,🚀 节点选择
+  - GEOIP,microsoft,🚀 节点选择
+  - GEOSITE,apple,🚀 节点选择
+  - GEOIP,apple,🚀 节点选择
+  - GEOSITE,facebook,🚀 节点选择
+  - GEOIP,facebook,🚀 节点选择
+  - GEOSITE,twitter,🚀 节点选择
+  - GEOIP,twitter,🚀 节点选择
   - MATCH,🐟 漏网之鱼
 `;
 }
