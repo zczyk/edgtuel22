@@ -8,7 +8,7 @@ def csv_to_txt(csv_filename, output_filename, area_name):
 
     with open(output_filename, 'w', encoding='utf-8') as f:
         for i, (ip, speed) in enumerate(zip(ips, download_speeds)):
-            f.write(f"{ip}#{area_name}优选IP {i+1}  ↓ {speed}MB/s\n")
+            f.write(f"{ip}#{area_name} {i+1} ↓ {speed}MB/s\n")
 
 csv_to_txt("HKG.csv", "HKG.txt", "中国香港")
 csv_to_txt("KHH.csv", "KHH.txt", "中国台湾高雄")
