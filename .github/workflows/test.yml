@@ -32,9 +32,9 @@ jobs:
       - name: 测速
         run: |
           set -e
-          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5
+          ./CloudflareST -cfcolo HKG -sl 5 -n 500 -dn 5 -o HK.csv
           rm -f ip.txt
-          python convert_csv_to_tls.py
+          python csv_to_txt.py
 
       - name: Commit and push changes
         env:
