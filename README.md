@@ -18,7 +18,7 @@
 - 点击`开始设置`
 
 2. 使用订阅:
-- 在你的Clash/V2ray客户端导入订阅地址`https://CF分配的域名/订阅路径`即可
+- 在你的Clash/V2ray客户端导入订阅地址`https://域名/订阅路径`即可
 </details>
 
 <details>
@@ -33,7 +33,7 @@
 2. 因为部分用户无法访问CF分配的地址,建议按照`给 Pages/Workers绑定自定义域名`绑定自定义域名
 
 3. 使用订阅:
-- 在你的Clash/V2ray客户端导入订阅地址`https://CF分配的域名/订阅路径`即可
+- 在你的Clash/V2ray客户端导入订阅地址`https://域名/订阅路径`即可
 </details>
 
 <details>
