@@ -406,7 +406,7 @@ function clash配置文件(hostName) {
   server: ${地址}
   port: ${端口}
   uuid: ${我的UUID}
-  udp: false
+  udp: true
   tls: true
   sni: ${hostName}
   network: ws
