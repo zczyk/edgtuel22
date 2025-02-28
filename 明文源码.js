@@ -68,8 +68,8 @@ export default {
         我的优选 = [...new Set(我的优选)];
       }
 
-      const encodedSubPath = encodeURIComponent(订阅路径);
-      if (url.pathname === `/${encodedSubPath}`) {
+      const 最终订阅路径 = 路径编码(订阅路径);
+      if (url.pathname === `/${最终订阅路径}`) {
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
         const 配置生成器 = {
           v2ray: v2ray配置文件,
