@@ -379,12 +379,13 @@ function v2ray配置文件(hostName) {
   }
   return 我的优选
     .map((获取优选) => {
-      const [主内容] = 获取优选.split("@");
+      const [主内容,tls] = 获取优选.split("@");
       const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#");
       const 拆分地址端口 = 地址端口.split(":");
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
       const 地址 = 拆分地址端口.join(":");
-      return `vless://${我的UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
+      const TLS开关 = tls === 'notls' ? 'security=none' : 'security=tls';
+      return `vless://${我的UUID}@${地址}:${端口}?encryption=none&${TLS开关}&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
     })
     .join("\n");
 }
@@ -394,12 +395,13 @@ function clash配置文件(hostName) {
   }
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选, index) => {
-      const [主内容] = 获取优选.split("@");
+      const [主内容,tls] = 获取优选.split("@");
       const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] =
         主内容.split("#");
       const 拆分地址端口 = 地址端口.split(":");
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+      const TLS开关 = tls === 'notls' ? 'false' : 'true';
       return {
         nodeConfig: `- name: ${节点名字}
   type: vless
@@ -407,7 +409,7 @@ function clash配置文件(hostName) {
   port: ${端口}
   uuid: ${我的UUID}
   udp: false
-  tls: true
+  tls: ${TLS开关}
   sni: ${hostName}
   network: ws
   ws-opts:
@@ -481,22 +483,6 @@ rules:
   - GEOSITE,cloudflare,🌏 CF规则
   - GEOSITE,gfw,🚀 节点选择
   - GEOIP,gfw,🚀 节点选择
-  - GEOSITE,google,🚀 节点选择
-  - GEOIP,GOOGLE,🚀 节点选择
-  - GEOSITE,netflix,🚀 节点选择
-  - GEOIP,netflix,🚀 节点选择
-  - GEOSITE,telegram,🚀 节点选择
-  - GEOIP,telegram,🚀 节点选择
-  - GEOSITE,openai,🚀 节点选择
-  - GEOIP,openai,🚀 节点选择
-  - GEOSITE,microsoft,🚀 节点选择
-  - GEOIP,microsoft,🚀 节点选择
-  - GEOSITE,apple,🚀 节点选择
-  - GEOIP,apple,🚀 节点选择
-  - GEOSITE,facebook,🚀 节点选择
-  - GEOIP,facebook,🚀 节点选择
-  - GEOSITE,twitter,🚀 节点选择
-  - GEOIP,twitter,🚀 节点选择
   - MATCH,🐟 漏网之鱼
 `;
 }
