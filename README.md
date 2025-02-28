@@ -7,7 +7,7 @@
 [![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
 # 使用方法
-请先注册GitHub和Cloudflare账号
+请先注册GitHub和Cloudflare(下面简称CF)账号
 
 <details>
 <summary><code><strong>「 Pages部署教程(推荐) 」</strong></code></summary>
