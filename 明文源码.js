@@ -29,7 +29,7 @@ export default {
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
     反代IP = env.PROXY_IP || 反代IP;
-    启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true" ? true : 启用SOCKS5全局反代;
+    启用SOCKS5全局反代 = env.SOCKS5GLOBAL === "true" ? true : env.SOCKS5GLOBAL === "false" ? false : 启用SOCKS5全局反代;
     我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
 
     TXT_URL_ENV = env.TXT_URL;
