@@ -26,7 +26,6 @@ let 我的SOCKS5账号 = "";  // 格式：账号:密码@地址:端口
 export default {
   async fetch(访问请求, env) {
     订阅路径 = env.SUB_PATH || 订阅路径;
-    订阅路径 = encodeURIComponent(订阅路径);
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
     反代IP = env.PROXY_IP || 反代IP;
@@ -68,8 +67,9 @@ export default {
         // 去重处理
         我的优选 = [...new Set(我的优选)];
       }
-
-      if (url.pathname === `/${订阅路径}`) {
+      
+      const 最终订阅路径 = encodeURIComponent(订阅路径);
+      if (url.pathname === `/${最终订阅路径}`) {
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
         const 配置生成器 = {
           v2ray: v2ray配置文件,
