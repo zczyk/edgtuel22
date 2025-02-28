@@ -15,15 +15,12 @@ let 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/LAX.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SEA.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SJC.txt",
-];
-// 格式: 地址:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
+];  // 格式: 地址:端口#节点名称  端口不填默认443 节点名称不填则使用默认节点名称，任何都不填使用自身域名
 
-let 反代IP = "ts.hpc.tw:443";
-// 格式：地址:端口
+let 反代IP = "ts.hpc.tw:443"; // 格式：地址:端口
 
 let 启用SOCKS5全局反代 = false;
-let 我的SOCKS5账号 = "";
-// 格式：账号:密码@地址:端口
+let 我的SOCKS5账号 = "";  // 格式：账号:密码@地址:端口
 
 // 网页入口
 export default {
@@ -71,7 +68,8 @@ export default {
         我的优选 = [...new Set(我的优选)];
       }
 
-      if (url.pathname === `/${订阅路径}`) {
+      const encodedSubPath = encodeURIComponent(订阅路径);
+      if (url.pathname === `/${encodedSubPath}`) {
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
         const 配置生成器 = {
           v2ray: v2ray配置文件,
