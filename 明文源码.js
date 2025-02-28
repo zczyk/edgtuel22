@@ -445,7 +445,6 @@ proxy-groups:
   type: select
   proxies:
     - ♻️ 自动选择
-    - 🔯 故障转移
 ${代理配置}
 - name: 🎯 国内直连
   type: select
@@ -457,14 +456,6 @@ ${代理配置}
   url: https://www.google.com/generate_204
   interval: 150
   tolerance: 50
-  proxies:
-${代理配置}
-- name: 🔯 故障转移
-  type: fallback
-  health-check:
-    enable: true
-    interval: 300
-    url: https://www.google.com/generate_204
   proxies:
 ${代理配置}
 rules:
