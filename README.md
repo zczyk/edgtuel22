@@ -89,7 +89,7 @@ Windows
 安卓
 
 - [v2rayNG](https://github.com/2dust/v2rayNG)
-- clash（[ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)，[FlClash](https://github.com/chen08209/FlClash)）
+- [ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)
 
 MacOS
 
