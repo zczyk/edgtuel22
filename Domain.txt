@@ -1,2 +1,5 @@
+pages.dev
+pages.cloudflare.com
+workers.cloudflare.com
 fbi.gov#优选域名 1
 www.wto.org#优选域名 2
