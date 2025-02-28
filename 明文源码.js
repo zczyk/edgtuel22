@@ -379,29 +379,27 @@ function v2ray配置文件(hostName) {
   }
   return 我的优选
     .map((获取优选) => {
-      const [主内容,tls] = 获取优选.split("@");
-      const [地址端口, 节点名字 = 默认节点名称] = 主内容.split("#");
+      const [地址端口, 节点名字 = 默认节点名称] = 获取优选.split("#");
       const 拆分地址端口 = 地址端口.split(":");
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
       const 地址 = 拆分地址端口.join(":");
-      const TLS开关 = tls === 'notls' ? 'security=none' : 'security=tls';
-      return `vless://${我的UUID}@${地址}:${端口}?encryption=none&${TLS开关}&sni=${hostName}&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
+      return `vless://${我的UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&fp=chrome&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
     })
     .join("\n");
 }
+
 function clash配置文件(hostName) {
   if (我的优选.length === 0) {
     我的优选 = [`${hostName}:443`];
   }
   const 生成节点 = (我的优选) => {
     return 我的优选.map((获取优选, index) => {
-      const [主内容,tls] = 获取优选.split("@");
       const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] =
-        主内容.split("#");
+        获取优选.split("#");
       const 拆分地址端口 = 地址端口.split(":");
       const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
       const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
-      const TLS开关 = tls === 'notls' ? 'false' : 'true';
+      const userAgent = "Chrome";
       return {
         nodeConfig: `- name: ${节点名字}
   type: vless
@@ -409,13 +407,14 @@ function clash配置文件(hostName) {
   port: ${端口}
   uuid: ${我的UUID}
   udp: false
-  tls: ${TLS开关}
+  tls: true
   sni: ${hostName}
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}`,
+      Host: ${hostName}
+      User-Agent: ${userAgent}`,
         proxyConfig: `    - ${节点名字}`,
       };
     });
