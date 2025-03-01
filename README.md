@@ -93,6 +93,7 @@
 - `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
 - `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
 - `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
+
 <details>
 
 # 已适配客户端
