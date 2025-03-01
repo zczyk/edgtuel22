@@ -1,6 +1,6 @@
 # edge-tunnel
 
-这是一个基于CF Worker平台的JavaScript,在原版的基础上简化并移除了noTLS的支持，同时不依赖外部订阅转换
+这是一个基于CF Worker平台的JavaScript,在天书的基础上简化并移除了noTLS的支持，同时不依赖外部订阅转换
 
 本人是初学者，代码有问题欢迎指出
 
