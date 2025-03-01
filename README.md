@@ -1,4 +1,5 @@
 # edge-tunnel
+
 这是一个基于CF Worker平台的JavaScript,在原版的基础上简化并移除了noTLS的支持，同时不依赖外部订阅转换
 
 本人是初学者，代码有问题欢迎指出
@@ -7,6 +8,7 @@
 [![Stargazers over time](https://starchart.cc/ImLTHQ/edge-tunnel.svg?variant=adaptive)](https://starchart.cc/ImLTHQ/edge-tunnel)
 
 # 使用方法
+
 请先注册GitHub和Cloudflare(下面简称CF)账号
 
 <details>
@@ -79,8 +81,7 @@
 | SOCKS5_GLOBAL | `false` | 启用SOCKS5全局反代 |
 | SOCKS5 | `账号:密码@地址:端口` | SOCKS5 |
 
-<details>
-<summary><code><strong>「 第三方 ProxyIP 」</strong></code></summary>
+# 第三方 ProxyIP
 
 - `ProxyIP.US.CMLiussss.net` IP落地区域: 🇺🇸 美国
 - `ProxyIP.SG.CMLiussss.net` IP落地区域: 🇸🇬 新加坡
@@ -93,8 +94,6 @@
 - `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
 - `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
 - `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
-
-<details>
 
 # 已适配客户端
 
