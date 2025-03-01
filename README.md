@@ -97,4 +97,4 @@ MacOS
 - clash（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
 
 # 感谢
-[shulng](https://github.com/shulng)，[XIU2](https://github.com/XIU2)，[zizifn](https://github.com/zizifn)
+[shulng](https://github.com/shulng)，[XIU2](https://github.com/XIU2)，[zizifn](https://github.com/zizifn)，[cmliu](https://github.com/cmliu)
