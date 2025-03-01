@@ -433,11 +433,11 @@ function clash配置文件(hostName) {
   return `
 dns:
   nameserver:
+    - 1.1.1.1
+    - 2606:4700:4700::1111
+  fallback:
     - 180.76.76.76
     - 2400:da00::6666
-  fallback:
-    - 8.8.8.8
-    - 2001:4860:4860::8888
 proxies:
 ${节点配置}
 proxy-groups:
@@ -446,7 +446,7 @@ proxy-groups:
   proxies:
     - ♻️ 自动选择
 ${代理配置}
-- name: 🎯 国内直连
+- name: 🎯 直连规则
   type: select
   proxies:
     - DIRECT
@@ -459,11 +459,10 @@ ${代理配置}
   proxies:
 ${代理配置}
 rules:
-  - GEOIP,LAN,DIRECT
-  - GEOSITE,category-ads-all,REJECT
-  - GEOSITE,cn,🎯 国内直连
-  - GEOIP,cn,🎯 国内直连
-  - DOMAIN-SUFFIX,cn,🎯 国内直连
+  - GEOIP,lan,DIRECT
+  - GEOSITE,cn,🎯 直连规则
+  - GEOIP,cn,🎯 直连规则
+  - DOMAIN-SUFFIX,cn,🎯 直连规则
   - MATCH,🚀 节点选择
 `;
 }
