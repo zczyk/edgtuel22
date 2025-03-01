@@ -430,6 +430,7 @@ function clash配置文件(hostName) {
   const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n");
+    const CF规则 = !反代IP && !我的SOCKS5账号 ? '- GEOIP,CLOUDFLARE,🎯 直连规则' : '';
   return `
 dns:
   nameserver:
@@ -460,9 +461,8 @@ ${代理配置}
 ${代理配置}
 rules:
   - GEOIP,lan,DIRECT
-  - GEOSITE,cn,🎯 直连规则
   - GEOIP,cn,🎯 直连规则
-  - DOMAIN-SUFFIX,cn,🎯 直连规则
+  ${CF规则}
   - MATCH,🚀 节点选择
 `;
 }
