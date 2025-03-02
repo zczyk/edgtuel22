@@ -80,6 +80,7 @@
 | PROXY_IP | `ts.hpc.tw:443` | 反代IP |
 | SOCKS5_GLOBAL | `false` | 启用SOCKS5全局反代 |
 | SOCKS5 | `账号:密码@地址:端口` | SOCKS5 |
+| FAKE_WEB | `baidu.com` | 根路径的伪装网页 |
 
 # 已适配客户端
 
