@@ -81,20 +81,6 @@
 | SOCKS5_GLOBAL | `false` | 启用SOCKS5全局反代 |
 | SOCKS5 | `账号:密码@地址:端口` | SOCKS5 |
 
-# 第三方 ProxyIP
-
-- `ProxyIP.US.CMLiussss.net` IP落地区域: 🇺🇸 美国
-- `ProxyIP.SG.CMLiussss.net` IP落地区域: 🇸🇬 新加坡
-- `ProxyIP.JP.CMLiussss.net` IP落地区域: 🇯🇵 日本
-- `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港 [白嫖哥维护](https://t.me/v2rayByCf/295)
-- `ProxyIP.KR.CMLiussss.net` IP落地区域: 🇰🇷 韩国
-- `ProxyIP.DE.tp2024.CMLiussss.net` 🤖️GPT专用 IP落地区域: 🇩🇪 德国
-- `ProxyIP.Aliyun.CMLiussss.net` IP落地区域: ☁️ 阿里云
-- `ProxyIP.Oracle.CMLiussss.net` IP落地区域: ☁️ 甲骨文
-- `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
-- `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
-- `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
-
 # 已适配客户端
 
 Windows
@@ -111,6 +97,20 @@ MacOS
 
 - [v2rayN](https://github.com/2dust/v2rayN)
 - clash（[FlClash](https://github.com/chen08209/FlClash)，[mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
+
+# 更多ProxyIP
+
+- `ProxyIP.US.CMLiussss.net` IP落地区域: 🇺🇸 美国
+- `ProxyIP.SG.CMLiussss.net` IP落地区域: 🇸🇬 新加坡
+- `ProxyIP.JP.CMLiussss.net` IP落地区域: 🇯🇵 日本
+- `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港 [白嫖哥维护](https://t.me/v2rayByCf/295)
+- `ProxyIP.KR.CMLiussss.net` IP落地区域: 🇰🇷 韩国
+- `ProxyIP.DE.tp2024.CMLiussss.net` 🤖️GPT专用 IP落地区域: 🇩🇪 德国
+- `ProxyIP.Aliyun.CMLiussss.net` IP落地区域: ☁️ 阿里云
+- `ProxyIP.Oracle.CMLiussss.net` IP落地区域: ☁️ 甲骨文
+- `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
+- `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
+- `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
 
 # 感谢
 [shulng](https://github.com/shulng)，[XIU2](https://github.com/XIU2)，[zizifn](https://github.com/zizifn)，[cmliu](https://github.com/cmliu)
