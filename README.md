@@ -104,7 +104,7 @@ MacOS
 - `ProxyIP.US.CMLiussss.net` IP落地区域: 🇺🇸 美国
 - `ProxyIP.SG.CMLiussss.net` IP落地区域: 🇸🇬 新加坡
 - `ProxyIP.JP.CMLiussss.net` IP落地区域: 🇯🇵 日本
-- `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港 [白嫖哥维护](https://t.me/v2rayByCf/295)
+- `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港
 - `ProxyIP.KR.CMLiussss.net` IP落地区域: 🇰🇷 韩国
 - `ProxyIP.DE.tp2024.CMLiussss.net` 🤖️GPT专用 IP落地区域: 🇩🇪 德国
 - `ProxyIP.Aliyun.CMLiussss.net` IP落地区域: ☁️ 阿里云
