@@ -1,7 +1,6 @@
 import { connect } from "cloudflare:sockets";
 
-// 配置
-
+// 配置区块
 let 订阅路径 = "sub";
 let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
@@ -22,23 +21,12 @@ let 反代IP = "ts.hpc.tw:443"; // 格式：地址:端口
 let 启用SOCKS5全局反代 = false;
 let 我的SOCKS5账号 = ""; // 格式：账号:密码@地址:端口
 
-function 字符串转数组(str) {
-  if (!str) {
-    return [];
-  }
-  return str
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line);
-}
-
 // 网页入口
 export default {
   async fetch(访问请求, env) {
     订阅路径 = env.SUB_PATH || 订阅路径;
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
-    我的优选TXT = 字符串转数组(env.TXT_URL) || 我的优选TXT;
     反代IP = env.PROXY_IP || 反代IP;
     启用SOCKS5全局反代 =
       env.SOCKS5GLOBAL === "true"
@@ -47,6 +35,21 @@ export default {
         ? false
         : 启用SOCKS5全局反代;
     我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
+
+    let env传入的TXT_URL = "";
+    env传入的TXT_URL = env.TXT_URL;
+    if (env传入的TXT_URL) {
+      if (typeof env传入的TXT_URL === "string") {
+        我的优选TXT = env传入的TXT_URL
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line);
+      } else if (Array.isArray(env传入的TXT_URL)) {
+        我的优选TXT = env传入的TXT_URL;
+      } else {
+        我的优选TXT = [];
+      }
+    }
 
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
@@ -355,8 +358,34 @@ async function 获取SOCKS5账号(SOCKS5) {
   hostname = latters.join(":");
   return { username, password, hostname, port };
 }
+// 订阅页面
+function 提示界面() {
+  return `请把链接导入clash或v2ray`;
+}
 
-//其它
+function 生成项目介绍页面() {
+  return new Response(
+    `
+<title>项目介绍</title>
+<style>
+body {
+  font-size: 25px;
+}
+</style>
+<pre>
+<strong>edge-tunnel</strong>
+
+简介：这是一种基于CF Worker的免费代理方案
+<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">点我跳转仓库</a>
+</pre>
+    `,
+    {
+      status: 200,
+      headers: { "Content-Type": "text/html;charset=utf-8" },
+    }
+  );
+}
+
 // 测试SOCKS5和反代IP是否有效
 function 测试SOCKS5和反代IP() {
   let socks5Valid = true;
@@ -390,35 +419,6 @@ function 测试SOCKS5和反代IP() {
   }
 
   return { socks5Valid, proxyIPValid };
-}
-
-// 订阅
-
-function 提示界面() {
-  return `请把链接导入clash或v2ray`;
-}
-
-function 生成项目介绍页面() {
-  return new Response(
-    `
-<title>项目介绍</title>
-<style>
-body {
-  font-size: 25px;
-}
-</style>
-<pre>
-<strong>edge-tunnel</strong>
-
-简介：这是一种基于CF Worker的免费代理方案
-<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">点我跳转仓库</a>
-</pre>
-    `,
-    {
-      status: 200,
-      headers: { "Content-Type": "text/html;charset=utf-8" },
-    }
-  );
 }
 
 function v2ray配置文件(hostName) {
@@ -456,7 +456,7 @@ function clash配置文件(hostName) {
   uuid: ${我的UUID}
   udp: true
   tls: true
-  servername: ${hostName}
+  sni: ${hostName}
   network: ws
   ws-opts:
     path: "/?ed=2560"
