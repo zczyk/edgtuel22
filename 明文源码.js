@@ -55,30 +55,19 @@ export default {
     const url = new URL(访问请求.url);
     if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
       if (我的优选TXT.length > 0) {
-        我的优选 = (
-          await Promise.all(
-            我的优选TXT.map((url) =>
-              fetch(url).then((response) =>
-                response.ok
-                  ? response.text().then((text) =>
-                      text
-                        .split("\n")
-                        .map((line) => line.trim())
-                        .filter((line) => line)
-                    )
-                  : []
-              )
-            )
-          )
-        ).flat();
-
-        // 去重处理
-        我的优选 = [...new Set(我的优选)];
+        我的优选 = [...new Set(
+          (await Promise.all(
+            我的优选TXT.map(async (url) => {
+              const response = await fetch(url);
+              return response.ok ? (await response.text()).split("\n").map(line => line.trim()).filter(line => line) : [];
+            })
+          )).flat()
+        )];
       }
 
       const { socks5Valid, proxyIPValid } = 测试SOCKS5和反代IP();
       if (!socks5Valid && !proxyIPValid) {
-        我的优选.unshift("127.0.0.1#无法访问CF CDN 请设置反代");
+        我的优选.unshift("127.0.0.1#SOCKS55或PROXY_IP出错，可能无法访问CF CDN");
       }
 
       const 最终订阅路径 = encodeURIComponent(订阅路径);
