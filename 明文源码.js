@@ -22,6 +22,16 @@ let 反代IP = "ts.hpc.tw:443"; // 格式：地址:端口
 let 启用SOCKS5全局反代 = false;
 let 我的SOCKS5账号 = ""; // 格式：账号:密码@地址:端口
 
+function 字符串转数组(str) {
+  if (!str) {
+    return [];
+  }
+  return str
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line);
+}
+
 // 网页入口
 export default {
   async fetch(访问请求, env) {
@@ -348,17 +358,6 @@ async function 获取SOCKS5账号(SOCKS5) {
 
 //其它
 // 测试SOCKS5和反代IP是否有效
-
-function 字符串转数组(str) {
-  if (!str) {
-    return [];
-  }
-  return str
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line);
-}
-
 function 测试SOCKS5和反代IP() {
   let socks5Valid = true;
   let proxyIPValid = true;
