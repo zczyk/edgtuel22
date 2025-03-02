@@ -75,7 +75,7 @@
 |-|-|-|
 | SUB_PATH | `sub` | 订阅路径（支持中文） |
 | SUB_UUID | `550e8400-e29b-41d4-a716-446655440000` | 用于验证的UUID |
-| TXT_URL | `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt` | 优选IP的txt地址  地址之间用换行隔开  格式: 地址:端口#节点名称  端口不填默认443  节点名称不填则使用默认节点名称，任何都不填使用自身域名 |
+| TXT_URL | `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt` | 优选IP的txt地址  支持多地址  地址之间用换行隔开  格式: 地址:端口#节点名称  端口不填默认443  节点名称不填则使用默认节点名称 |
 | SUB_NAME | `节点` | 默认节点名称 |
 | PROXY_IP | `ts.hpc.tw:443` | 反代IP |
 | SOCKS5_GLOBAL | `false` | 启用SOCKS5全局反代 |
