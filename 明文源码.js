@@ -505,8 +505,8 @@ ${代理配置}
 - name: ♻️ 自动选择
   type: url-test
   url: https://www.google.com/generate_204
-  interval: 150
-  tolerance: 50
+  interval: 300
+  tolerance: 100
   proxies:
 ${代理配置}
 rules:
