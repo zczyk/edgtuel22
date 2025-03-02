@@ -32,7 +32,7 @@ jobs:
       - name: 测速
         run: |
           set -e
-          python cloudflare_speedtest.py -cfcolo HKG -sl 5 -n 800 -dn 5 -o HKG.csv
+          python CFST.py -cfcolo HKG -sl 5 -n 800 -dn 5 -o HKG.csv
 
       - name: Commit and push changes
         env:
