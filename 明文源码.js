@@ -28,13 +28,13 @@ export default {
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
     反代IP = env.PROXY_IP || 反代IP;
+    我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
     启用SOCKS5全局反代 =
       env.SOCKS5GLOBAL === "true"
         ? true
         : env.SOCKS5GLOBAL === "false"
         ? false
         : 启用SOCKS5全局反代;
-    我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
 
     let env传入的TXT_URL = "";
     env传入的TXT_URL = env.TXT_URL;
@@ -65,8 +65,8 @@ export default {
         )];
       }
 
-      const { socks5Valid, proxyIPValid } = 测试SOCKS5和反代IP();
-      if (!socks5Valid && !proxyIPValid) {
+      const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
+      if (!SOCKS5有效 && !反代IP有效) {
         我的优选.unshift("127.0.0.1#SOCKS55或PROXY_IP出错，可能无法访问CF CDN");
       }
 
@@ -388,37 +388,37 @@ body {
 
 // 测试SOCKS5和反代IP是否有效
 function 测试SOCKS5和反代IP() {
-  let socks5Valid = true;
-  let proxyIPValid = true;
+  let SOCKS5有效 = true;
+  let 反代IP有效 = true;
 
   if (我的SOCKS5账号) {
     try {
-      const { hostname, port } = 获取SOCKS5账号(我的SOCKS5账号);
-      const testSocket = connect({ hostname: hostname, port: port });
-      testSocket.opened;
-      testSocket.close();
+      const { 地址, 端口 } = 获取SOCKS5账号(我的SOCKS5账号);
+      const 测试连接 = connect({ hostname: 地址, port: 端口 });
+      测试连接.opened;
+      测试连接.close();
     } catch (error) {
-      socks5Valid = false;
+      SOCKS5有效 = false;
     }
   } else {
-    socks5Valid = false;
+    SOCKS5有效 = false;
   }
 
   if (反代IP) {
     try {
       const [反代IP地址, 反代IP端口] = 反代IP.split(":");
-      const testSocket = connect({ hostname: 反代IP地址, port: Number(反代IP端口) || 443 });
-      testSocket.opened;
-      testSocket.close();
-      proxyIPValid = true;
+      const 测试连接 = connect({ hostname: 反代IP地址, port: Number(反代IP端口) || 443 });
+      测试连接.opened;
+      测试连接.close();
+      反代IP有效 = true;
     } catch (error) {
-      proxyIPValid = false;
+      反代IP有效 = false;
     }
   } else {
-      proxyIPValid = false;
+      反代IP有效 = false;
   }
 
-  return { socks5Valid, proxyIPValid };
+  return { SOCKS5有效, 反代IP有效 };
 }
 
 function v2ray配置文件(hostName) {
@@ -474,8 +474,8 @@ function clash配置文件(hostName) {
     .map((node) => node.proxyConfig)
     .join("\n");
 
-  const { socks5Valid, proxyIPValid } = 测试SOCKS5和反代IP();
-  const CF规则 = !socks5Valid && !proxyIPValid ? '- GEOIP,cloudflare,🎯 直连规则' : '';
+  const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
+  const CF规则 = !SOCKS5有效 && !反代IP有效 ? '- GEOIP,cloudflare,🎯 直连规则' : '';
 
   return `
 proxies:
