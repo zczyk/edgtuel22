@@ -465,6 +465,8 @@ async def download_handler(ip: Union[ipaddress.IPv4Address,ipaddress.IPv6Address
 
 async def test_download_speed(ping_data: List[CloudflareIPData]) -> List[CloudflareIPData]:
     """Tests download speed for a list of IP addresses."""
+    global TEST_COUNT  # Declare TEST_COUNT as global at the VERY beginning
+
     if DISABLE:
         return ping_data
 
@@ -474,7 +476,6 @@ async def test_download_speed(ping_data: List[CloudflareIPData]) -> List[Cloudfl
 
     test_num = min(TEST_COUNT, len(ping_data))
     if test_num < TEST_COUNT:
-        global TEST_COUNT # Declare TEST_COUNT as global before modification
         TEST_COUNT = test_num
 
     logging.info(f"Testing download speed (Min: {MIN_SPEED:.2f} MB/s, Count: {TEST_COUNT}, Queue: {test_num})")
