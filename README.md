@@ -35,7 +35,6 @@
 - 选择`上游同步`
 - 点击`Enable workflow`
 - 这是为了使你的仓库与作者的同步保持最新
-
 </details>
 
 <details>
@@ -79,7 +78,7 @@
 - `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
 - `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
 - `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
-<details>
+</details>
 
 # 已适配客户端
 
