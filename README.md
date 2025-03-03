@@ -10,7 +10,6 @@
 # 使用方法
 
 请先注册`GitHub`和`Cloudflare(下面简称CF)`账号
-
 - 在Github上先 Fork 本项目
 - 在CF 控制台中选择`计算(Workers)`
 - 点击`创建`, 选择`Pages`
@@ -23,7 +22,6 @@
 <summary><code><strong>「 部署后建议做的 」</strong></code></summary>
 
 设置Github Action
-
 - 来到你Fork的仓库
 - 在`Actions`选项卡中点击`绿色按钮`
 - 选择`上游同步`
@@ -35,13 +33,11 @@
 <summary><code><strong>「 绑定自定义域名(进阶) 」</strong></code></summary>
 
 CF连接你的域名:
-
 - 去`账户主页`,选择`域`,输入你的域名,点击`继续`
 - 按照需求选择计划(免费的够用了),点击`继续`,点击`继续前往激活`,点击`确认`
 - 按照CF的要求返回你的域名服务商,将你当前的DNS服务器替换为CF DNS服务器
 
 Pages绑定自定义域名
-
 - 点击Pages控制台的`自定义域`选项卡,点击`设置自定义域`
 - 填入域名
 - 点击`继续`,点击`激活域`
