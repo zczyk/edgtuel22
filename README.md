@@ -78,7 +78,7 @@
 | TXT_URL | `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/Domain.txt` | 优选IP的txt地址  支持多地址  地址之间用换行隔开  格式: 地址:端口#节点名称  端口不填默认443  节点名称不填则使用默认节点名称 |
 | SUB_NAME | `节点` | 默认节点名称 |
 | PROXY_IP | `ts.hpc.tw:443` | 反代IP |
-| SOCKS5_GLOBAL | `false` | 启用SOCKS5全局反代 |
+| SOCKS5_GLOBAL | `ture`,`false` | 启用SOCKS5全局反代 |
 | SOCKS5 | `账号:密码@地址:端口` | SOCKS5 |
 | FAKE_WEB | `baidu.com` | 根路径的伪装网页 |
 
