@@ -59,7 +59,6 @@ export default {
         )];
       }
 
-      // 测试
       const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
       if (!SOCKS5有效 && !反代IP有效) {
         我的优选.unshift("127.0.0.1#Socks5或反代IP出错，无法访问CF CDN");
@@ -357,6 +356,7 @@ async function 获取SOCKS5账号(SOCKS5) {
 function 字符串转数组(str) {
   return str
     .split('\n') // 使用换行符分割字符串
+    .filter(s => s !== ""); // 移除空字符串
 }
 
 function 测试SOCKS5和反代IP() {
@@ -382,7 +382,6 @@ function 测试SOCKS5和反代IP() {
       const 测试连接 = connect({ hostname: 反代IP地址, port: Number(反代IP端口) || 443 });
       测试连接.opened;
       测试连接.close();
-      反代IP有效 = true;
     } catch (error) {
       反代IP有效 = false;
     }
