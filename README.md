@@ -21,6 +21,7 @@
 <details>
 <summary><code><strong>「 部署后建议做的 」</strong></code></summary>
 
+
 设置Github Action
 - 来到你Fork的仓库
 - 在`Actions`选项卡中点击`绿色按钮`
@@ -31,6 +32,7 @@
 
 <details>
 <summary><code><strong>「 绑定自定义域名(进阶) 」</strong></code></summary>
+
 
 CF连接你的域名:
 - 去`账户主页`,选择`域`,输入你的域名,点击`继续`
