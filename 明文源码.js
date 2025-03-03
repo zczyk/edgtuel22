@@ -33,9 +33,9 @@ export default {
     反代IP = env.PROXY_IP || 反代IP;
     我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
     启用SOCKS5全局反代 =
-      env.SOCKS5GLOBAL = "true"
+      env.SOCKS5_GLOBAL = "true"
         ? true
-        : env.SOCKS5GLOBAL = "false"
+        : env.SOCKS5_GLOBAL = "false"
         ? false
         : 启用SOCKS5全局反代;
     伪装网页 = env.FAKE_WEB || 伪装网页;
@@ -59,6 +59,7 @@ export default {
         )];
       }
 
+      // 测试
       const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
       if (!SOCKS5有效 && !反代IP有效) {
         我的优选.unshift("127.0.0.1#Socks5或反代IP出错，无法访问CF CDN");
@@ -356,8 +357,6 @@ async function 获取SOCKS5账号(SOCKS5) {
 function 字符串转数组(str) {
   return str
     .split('\n') // 使用换行符分割字符串
-    .map(line => line.trim()) // 去除每行的首尾空格
-    .filter(line => line !== ''); // 过滤空行
 }
 
 function 测试SOCKS5和反代IP() {
