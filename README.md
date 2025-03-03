@@ -11,20 +11,13 @@
 
 请先注册`GitHub`和`Cloudflare(下面简称CF)`账号
 
-<details>
-<summary><code><strong>「 部署教程 」</strong></code></summary>
-
-1. 部署
 - 在Github上先 Fork 本项目
 - 在CF 控制台中选择`计算(Workers)`
 - 点击`创建`, 选择`Pages`
 - 点击`连接到 Git`, 选中`edge-tunnel`项目, 修改`项目名称`
 - 按照下面`变量说明`添加环境变量
 - 点击`保存并部署`
-
-2. 使用:
 - 在你的Clash/V2ray客户端导入订阅地址`https://域名/订阅路径`即可
-</details>
 
 <details>
 <summary><code><strong>「 部署后建议做的 」</strong></code></summary>
