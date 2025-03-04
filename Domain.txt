@@ -1,3 +1,0 @@
-pages.dev#优选域名 1
-pages.cloudflare.com#优选域名 2
-workers.cloudflare.com#优选域名 3
