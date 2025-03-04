@@ -30,7 +30,7 @@
 </details>
 
 <details>
-<summary><code><strong>「 绑定自定义域名(进阶) 」</strong></code></summary>
+<summary><code><strong>「 绑定自定义域名(可选) 」</strong></code></summary>
 
 CF连接你的域名:
 - 去`账户主页`,选择`域`,输入你的域名,点击`继续`
@@ -64,7 +64,7 @@ Pages绑定自定义域名
 - `ProxyIP.JP.CMLiussss.net` IP落地区域: 🇯🇵 日本
 - `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港
 - `ProxyIP.KR.CMLiussss.net` IP落地区域: 🇰🇷 韩国
-- `ProxyIP.DE.tp2024.CMLiussss.net` 🤖️GPT专用 IP落地区域: 🇩🇪 德国
+- `ProxyIP.DE.tp2024.CMLiussss.net` IP落地区域: 🇩🇪 德国
 - `ProxyIP.Aliyun.CMLiussss.net` IP落地区域: ☁️ 阿里云
 - `ProxyIP.Oracle.CMLiussss.net` IP落地区域: ☁️ 甲骨文
 - `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
