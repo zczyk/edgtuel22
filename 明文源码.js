@@ -480,14 +480,14 @@ dns:
     - 'tcp://94.140.14.15'    # AdGuard DNS over TCP
     - 'tcp://94.140.15.16'    # AdGuard DNS over TCP
   fallback:
-    - 'tcp://8.8.8.8'   # Google DNS over TLS
+    - 'tcp://8.8.8.8'   # Google DNS over TCP
     - 'tcp://1.1.1.1'    # Cloudflare DNS over TCP
   fallback-filter:
     geoip: true
     geoip-code: CN
   default-nameserver:
-    - 'tcp://223.5.5.5' # 阿里云DNS over TLS
-    - 'tcp://223.6.6.6' # 阿里云DNS over TLS
+    - 'tcp://223.5.5.5' # 阿里云DNS over TCP
+    - 'tcp://223.6.6.6' # 阿里云DNS over TCP
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
     - '*.lan'
