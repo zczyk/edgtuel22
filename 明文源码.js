@@ -5,13 +5,7 @@ let 订阅路径 = "sub";
 let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
 
-let 优选TXT = [
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/HKG.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/NRT.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/LAX.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SEA.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SJC.txt",
-];
+let 优选TXT = [];
 let 优选列表 = [];
 
 let 反代IP = "ts.hpc.tw:443";

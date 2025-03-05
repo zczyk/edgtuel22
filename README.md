@@ -59,17 +59,29 @@ Pages绑定自定义域名
 <details>
 <summary><code><strong>「 更多ProxyIP 」</strong></code></summary>
 
-- `ProxyIP.US.CMLiussss.net` IP落地区域: 🇺🇸 美国
-- `ProxyIP.SG.CMLiussss.net` IP落地区域: 🇸🇬 新加坡
-- `ProxyIP.JP.CMLiussss.net` IP落地区域: 🇯🇵 日本
-- `ProxyIP.HK.CMLiussss.net` IP落地区域: 🇭🇰 香港
-- `ProxyIP.KR.CMLiussss.net` IP落地区域: 🇰🇷 韩国
-- `ProxyIP.DE.tp2024.CMLiussss.net` IP落地区域: 🇩🇪 德国
-- `ProxyIP.Aliyun.CMLiussss.net` IP落地区域: ☁️ 阿里云
-- `ProxyIP.Oracle.CMLiussss.net` IP落地区域: ☁️ 甲骨文
-- `ProxyIP.DigitalOcean.CMLiussss.net` IP落地区域: ☁️ 数码海
-- `ProxyIP.Vultr.CMLiussss.net` IP落地区域: ☁️ Vultr
-- `ProxyIP.Multacom.CMLiussss.net` IP落地区域: ☁️ Multacom
+- `ts.hpc.tw:443`
+- `ProxyIP.US.CMLiussss.net`
+- `ProxyIP.SG.CMLiussss.net`
+- `ProxyIP.JP.CMLiussss.net`
+- `ProxyIP.HK.CMLiussss.net`
+- `ProxyIP.KR.CMLiussss.net`
+- `ProxyIP.DE.tp2024.CMLiussss.net`
+- `ProxyIP.Aliyun.CMLiussss.net`
+- `ProxyIP.Oracle.CMLiussss.net`
+- `ProxyIP.DigitalOcean.CMLiussss.net`
+- `ProxyIP.Vultr.CMLiussss.net`
+- `ProxyIP.Multacom.CMLiussss.net`
+</details>
+
+<details>
+<summary><code><strong>「 本项目提供的优选TXT地址 」</strong></code></summary>
+
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/HKG.txt` 香港
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/KHH.txt` 台湾
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/NRT.txt` 东京
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/LAX.txt` 洛杉矶
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SEA.txt` 西雅图
+- `https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SJC.txt` 圣何塞
 </details>
 
 # 已适配客户端

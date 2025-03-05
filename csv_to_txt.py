@@ -14,6 +14,7 @@ def csv_to_txt(csv_filename,area_name):
 
 output_dir="SpeedTest"
 csv_to_txt("HKG.csv","中国香港")
+csv_to_txt("KHH.csv","中国台湾")
 csv_to_txt("NRT.csv","日本东京")
 csv_to_txt("LAX.csv","美国洛杉矶")
 csv_to_txt("SEA.csv","美国西雅图")
