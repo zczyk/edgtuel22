@@ -470,26 +470,16 @@ function clash配置文件(hostName) {
     .join("\n");
   return `
 dns:
-  enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: redir-host
   nameserver:
-    - 'tcp://94.140.14.15'  # AdGuard
-    - 'tcp://94.140.15.16'  # AdGuard
+    - 8.8.8.8 # Google
+    - 1.1.1.1 # Cloudflare
   fallback:
-    - 'tcp://8.8.8.8' # Google
-    - 'tcp://1.1.1.1' # Cloudflare
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-  default-nameserver:
-    - 'tcp://223.5.5.5' # 阿里
-    - 'tcp://223.6.6.6' # 阿里
-  fake-ip-range: 198.18.0.1/16
-  fake-ip-filter:
-    - '*.lan'
+    - 223.5.5.5 # 阿里
+    - 223.6.6.6 # 阿里
+
 proxies:
 ${节点配置}
+
 proxy-groups:
 - name: 🚀 节点选择
   type: select
@@ -508,6 +498,7 @@ ${代理配置}
   tolerance: 100
   proxies:
 ${代理配置}
+
 rules:
   - GEOIP,lan,DIRECT
   - GEOIP,cn,🎯 直连规则
