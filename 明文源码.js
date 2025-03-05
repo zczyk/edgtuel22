@@ -474,17 +474,17 @@ dns:
   listen: 0.0.0.0:53
   enhanced-mode: redir-host
   nameserver:
-    - 'tcp://94.140.14.15'    # AdGuard DNS over TCP
-    - 'tcp://94.140.15.16'    # AdGuard DNS over TCP
+    - 'tcp://94.140.14.15'  # AdGuard
+    - 'tcp://94.140.15.16'  # AdGuard
   fallback:
-    - 'tcp://8.8.8.8'   # Google DNS over TCP
-    - 'tcp://1.1.1.1'    # Cloudflare DNS over TCP
+    - 'tcp://8.8.8.8' # Google
+    - 'tcp://1.1.1.1' # Cloudflare
   fallback-filter:
     geoip: true
     geoip-code: CN
   default-nameserver:
-    - 'tcp://223.5.5.5' # 阿里云DNS over TCP
-    - 'tcp://223.6.6.6' # 阿里云DNS over TCP
+    - 'tcp://223.5.5.5' # 阿里
+    - 'tcp://223.6.6.6' # 阿里
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
     - '*.lan'
