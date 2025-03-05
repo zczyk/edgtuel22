@@ -5,22 +5,19 @@ let 订阅路径 = "sub";
 let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
 
-let 我的优选 = [
-  "pages.dev#优选域名 1",
-  "www.wto.org#优选域名 2",
-];
-let 我的优选TXT = [
+let 优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HKG.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/NRT.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/LAX.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SEA.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SJC.txt",
 ];
+let 优选列表 = [];
 
 let 反代IP = "ts.hpc.tw:443";
 
 let 启用SOCKS5全局反代 = false;
-let 我的SOCKS5账号 = "";
+let SOCKS5账号 = "";
 
 let 伪装网页 = "";
 
@@ -30,9 +27,9 @@ export default {
     订阅路径 = env.SUB_PATH || 订阅路径;
     我的UUID = env.SUB_UUID || 我的UUID;
     默认节点名称 = env.SUB_NAME || 默认节点名称;
-    我的优选TXT = env.TXT_URL ? 字符串转数组(env.TXT_URL) : 我的优选TXT;
+    优选TXT = env.TXT_URL ? 字符串转数组(env.TXT_URL) : 优选TXT;
     反代IP = env.PROXY_IP || 反代IP;
-    我的SOCKS5账号 = env.SOCKS5 || 我的SOCKS5账号;
+    SOCKS5账号 = env.SOCKS5 || SOCKS5账号;
     启用SOCKS5全局反代 =
       env.SOCKS5_GLOBAL = "true"
         ? true
@@ -49,10 +46,10 @@ export default {
       访问请求 = new Request(url, 访问请求);
       return fetch(访问请求);
     } else if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
-      if (我的优选TXT.length > 0) {
-        我的优选 = [...new Set(
+      if (优选TXT.length > 0) {
+        优选列表 = [...new Set(
           (await Promise.all(
-            我的优选TXT.map(async (url) => {
+            优选TXT.map(async (url) => {
               const response = await fetch(url);
               return response.ok ? (await response.text()).split("\n").map(line => line.trim()).filter(line => line) : [];
             })
@@ -62,7 +59,7 @@ export default {
 
       const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
       if (!SOCKS5有效 && !反代IP有效) {
-        我的优选.unshift("127.0.0.1#Socks5或反代IP出错，无法访问CF CDN");
+        优选列表.unshift("127.0.0.1#Socks5或反代IP出错，无法访问CF CDN");
       }
 
       const 最终订阅路径 = encodeURIComponent(订阅路径);
@@ -155,14 +152,14 @@ async function 解析VL标头(VL数据, TCP接口) {
       break;
   }
   const 写入初始数据 = VL数据.slice(地址信息索引 + 地址长度);
-  if (启用SOCKS5全局反代 && 我的SOCKS5账号) {
+  if (启用SOCKS5全局反代 && SOCKS5账号) {
     TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
   } else {
     try {
       TCP接口 = connect({ hostname: 访问地址, port: 访问端口 });
       await TCP接口.opened;
     } catch {
-      if (我的SOCKS5账号) {
+      if (SOCKS5账号) {
         try {
           TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
         } catch {
@@ -256,7 +253,7 @@ async function 建立传输管道(WS接口, TCP接口, 写入初始数据) {
 // SOCKS5部分
 async function 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口) {
   const { username, password, hostname, port } = await 获取SOCKS5账号(
-    我的SOCKS5账号
+    SOCKS5账号
   );
   const SOCKS5接口 = connect({ hostname, port });
   try {
@@ -364,9 +361,9 @@ function 测试SOCKS5和反代IP() {
   let SOCKS5有效 = true;
   let 反代IP有效 = true;
 
-  if (我的SOCKS5账号) {
+  if (SOCKS5账号) {
     try {
-      const { 地址, 端口 } = 获取SOCKS5账号(我的SOCKS5账号);
+      const { 地址, 端口 } = 获取SOCKS5账号(SOCKS5账号);
       const 测试连接 = connect({ hostname: 地址, port: 端口 });
       测试连接.opened;
       测试连接.close();
@@ -422,10 +419,10 @@ body {
 }
 
 function v2ray配置文件(hostName) {
-  if (我的优选.length === 0) {
-    我的优选 = [`${hostName}:443`];
+  if (优选列表.length === 0) {
+    优选列表 = [`${hostName}:443`];
   }
-  return 我的优选
+  return 优选列表
     .map((获取优选) => {
       const [地址端口, 节点名字 = 默认节点名称] = 获取优选.split("#");
       const 拆分地址端口 = 地址端口.split(":");
@@ -437,11 +434,11 @@ function v2ray配置文件(hostName) {
 }
 
 function clash配置文件(hostName) {
-  if (我的优选.length === 0) {
-    我的优选 = [`${hostName}:443`];
+  if (优选列表.length === 0) {
+    优选列表 = [`${hostName}:443`];
   }
-  const 生成节点 = (我的优选) => {
-    return 我的优选.map((获取优选, index) => {
+  const 生成节点 = (优选列表) => {
+    return 优选列表.map((获取优选, index) => {
       const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] =
         获取优选.split("#");
       const 拆分地址端口 = 地址端口.split(":");
@@ -465,10 +462,10 @@ function clash配置文件(hostName) {
       };
     });
   };
-  const 节点配置 = 生成节点(我的优选)
+  const 节点配置 = 生成节点(优选列表)
     .map((node) => node.nodeConfig)
     .join("\n");
-  const 代理配置 = 生成节点(我的优选)
+  const 代理配置 = 生成节点(优选列表)
     .map((node) => node.proxyConfig)
     .join("\n");
   return `
