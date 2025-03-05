@@ -7,12 +7,10 @@ let 默认节点名称 = "节点";
 
 let 我的优选 = [
   "pages.dev#优选域名 1",
-  "pages.cloudflare.com#优选域名 2",
-  "www.wto.org#优选域名 3",
+  "www.wto.org#优选域名 2",
 ];
 let 我的优选TXT = [
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/HKG.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/KHH.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/NRT.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/LAX.txt",
   "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SEA.txt",
@@ -473,11 +471,26 @@ function clash配置文件(hostName) {
   const 代理配置 = 生成节点(我的优选)
     .map((node) => node.proxyConfig)
     .join("\n");
-
-  const { SOCKS5有效, 反代IP有效 } = 测试SOCKS5和反代IP();
-  const CF规则 = !SOCKS5有效 && !反代IP有效 ? '- GEOIP,cloudflare,🎯 直连规则' : '';
-
   return `
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 'tcp://94.140.14.15'    # AdGuard DNS over TCP
+    - 'tcp://94.140.15.16'    # AdGuard DNS over TCP
+  fallback:
+    - 'tcp://8.8.8.8'   # Google DNS over TLS
+    - 'tcp://1.1.1.1'    # Cloudflare DNS over TCP
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+  default-nameserver:
+    - 'tcp://223.5.5.5' # 阿里云DNS over TLS
+    - 'tcp://223.6.6.6' # 阿里云DNS over TLS
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
 proxies:
 ${节点配置}
 proxy-groups:
@@ -485,7 +498,6 @@ proxy-groups:
   type: select
   proxies:
     - ♻️ 延迟优选
-    - 🔯 故障转移
 ${代理配置}
 - name: 🎯 直连规则
   type: select
@@ -499,16 +511,7 @@ ${代理配置}
   tolerance: 100
   proxies:
 ${代理配置}
-- name: 🔯 故障转移
-  type: fallback
-  health-check:
-    enable: true
-    interval: 300
-    url: https://www.google.com/generate_204
-  proxies:
-${代理配置}
 rules:
-  ${CF规则}
   - GEOIP,lan,DIRECT
   - GEOIP,cn,🎯 直连规则
   - GEOSITE,cn,🎯 直连规则

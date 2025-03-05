@@ -32,7 +32,6 @@ jobs:
         run: |
           set -e
           ./CloudflareST -cfcolo HKG -sl 5 -n 800 -dn 5 -o HKG.csv
-          ./CloudflareST -cfcolo KHH -sl 5 -n 800 -dn 5 -o KHH.csv
           ./CloudflareST -cfcolo NRT -sl 5 -n 800 -dn 5 -o NRT.csv
           ./CloudflareST -cfcolo LAX -sl 5 -n 800 -dn 3 -o LAX.csv
           ./CloudflareST -cfcolo SEA -sl 5 -n 800 -dn 3 -o SEA.csv
