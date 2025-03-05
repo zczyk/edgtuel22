@@ -347,8 +347,7 @@ async function 获取SOCKS5账号(SOCKS5) {
 // 其它
 function 字符串转数组(str) {
   return str
-    .split('\n') // 使用换行符分割字符串
-    .filter(s => s !== ""); // 移除空字符串
+    .split('\n')
 }
 
 function 测试SOCKS5和反代IP() {
