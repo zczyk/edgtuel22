@@ -464,12 +464,15 @@ function clash配置文件(hostName) {
     .join("\n");
   return `
 dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  fake-ip-range: 198.18.0.1/16
+  use-hosts: true
   nameserver:
-    - 8.8.8.8 # Google
-    - 1.1.1.1 # Cloudflare
-  fallback:
-    - 223.5.5.5 # 阿里
-    - 223.6.6.6 # 阿里
+    - 1.1.1.1  # Cloudflare
+    - 8.8.8.8  # Google
+    - 223.5.5.5  # 阿里
 
 proxies:
 ${节点配置}
