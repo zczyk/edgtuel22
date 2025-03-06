@@ -18,19 +18,14 @@ let 伪装网页 = "";
 // 网页入口
 export default {
   async fetch(访问请求, env) {
-    订阅路径 = env.SUB_PATH || 订阅路径;
-    我的UUID = env.SUB_UUID || 我的UUID;
-    默认节点名称 = env.SUB_NAME || 默认节点名称;
+    订阅路径 = env.SUB_PATH ?? 订阅路径;
+    我的UUID = env.SUB_UUID ?? 我的UUID;
+    默认节点名称 = env.SUB_NAME ?? 默认节点名称;
     优选TXT = env.TXT_URL ? 字符串转数组(env.TXT_URL) : 优选TXT;
-    反代IP = env.PROXY_IP || 反代IP;
-    SOCKS5账号 = env.SOCKS5 || SOCKS5账号;
-    启用SOCKS5全局反代 =
-      env.SOCKS5_GLOBAL = "true"
-        ? true
-        : env.SOCKS5_GLOBAL = "false"
-        ? false
-        : 启用SOCKS5全局反代;
-    伪装网页 = env.FAKE_WEB || 伪装网页;
+    反代IP = env.PROXY_IP ?? 反代IP;
+    SOCKS5账号 = env.SOCKS5 ?? SOCKS5账号;
+    启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true";
+    伪装网页 = env.FAKE_WEB ?? 伪装网页;
 
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
@@ -411,16 +406,20 @@ body {
   );
 }
 
+function 解析地址端口(传入地址和端口) {
+  const 拆分地址端口 = 传入地址和端口.split(":");
+  const 地址 = 拆分地址端口.slice(0, -1).join(":").replace(/^\[(.+)\]$/, "$1"); // 支持 IPv6
+  const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+  return { 地址, 端口 };
+}
+
 function v2ray配置文件(hostName) {
   if (优选列表.length === 0) {
-    优选列表 = [`${hostName}:443`];
+    优选列表 = [`${hostName}`];
   }
   return 优选列表
-    .map((获取优选) => {
-      const [地址端口, 节点名字 = 默认节点名称] = 获取优选.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":");
+    .map(([地址端口字符串, 节点名字 = 默认节点名称]) => {
+      const { 地址, 端口 } = 解析地址端口(地址端口字符串);
       return `vless://${我的UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&fp=chrome&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
     })
     .join("\n");
@@ -428,15 +427,11 @@ function v2ray配置文件(hostName) {
 
 function clash配置文件(hostName) {
   if (优选列表.length === 0) {
-    优选列表 = [`${hostName}:443`];
+    优选列表 = [`${hostName}`];
   }
   const 生成节点 = (优选列表) => {
-    return 优选列表.map((获取优选, index) => {
-      const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] =
-        获取优选.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+    return 优选列表.map(( [地址端口字符串, 节点名字 = `${默认节点名称} ${index + 1}`], index) => {
+      const { 地址, 端口 } = 解析地址端口(地址端口字符串);
       return {
         nodeConfig: `- name: ${节点名字}
   type: vless
