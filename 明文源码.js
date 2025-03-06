@@ -409,32 +409,31 @@ body {
   );
 }
 
-function v2ray配置文件(hostName) {
+function 处理优选列表(优选列表, hostName) {
   if (优选列表.length === 0) {
     优选列表 = [`${hostName}`];
   }
-  return 优选列表
-    .map((获取优选) => {
-      const [地址端口, 节点名字 = 默认节点名称] = 获取优选.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":");
+  return 优选列表.map((获取优选, index) => {
+    const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] = 获取优选.split("#");
+    const 拆分地址端口 = 地址端口.split(":");
+    const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+    const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+    return { 地址, 端口, 节点名字 };
+  });
+}
+
+function v2ray配置文件(hostName) {
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+  return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
       return `vless://${我的UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&fp=chrome&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${节点名字}`;
     })
     .join("\n");
 }
 
 function clash配置文件(hostName) {
-  if (优选列表.length === 0) {
-    优选列表 = [`${hostName}`];
-  }
-  const 生成节点 = (优选列表) => {
-    return 优选列表.map((获取优选, index) => {
-      const [地址端口, 节点名字 = `${默认节点名称} ${index + 1}`] =
-        获取优选.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+  const 生成节点 = (节点列表) => {
+    return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
       return {
         nodeConfig: `- name: ${节点名字}
   type: vless
@@ -453,12 +452,14 @@ function clash配置文件(hostName) {
       };
     });
   };
-  const 节点配置 = 生成节点(优选列表)
+
+  const 节点配置 = 生成节点(节点列表)
     .map((node) => node.nodeConfig)
     .join("\n");
-  const 代理配置 = 生成节点(优选列表)
+  const 代理配置 = 生成节点(节点列表)
     .map((node) => node.proxyConfig)
     .join("\n");
+
   return `
 dns:
   use-hosts: true
