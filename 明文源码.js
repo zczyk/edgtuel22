@@ -34,12 +34,7 @@ export default {
 
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
-    if (伪装网页 && url.pathname === "/") {
-      url.hostname = 伪装网页;
-      url.protocol = 'https:';
-      访问请求 = new Request(url, 访问请求);
-      return fetch(访问请求);
-    } else if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
+    if (!读取我的请求标头 || 读取我的请求标头 !== "websocket") {
       if (优选TXT.length > 0) {
         优选列表 = [...new Set(
           (await Promise.all(
@@ -57,7 +52,8 @@ export default {
       }
 
       const 最终订阅路径 = encodeURIComponent(订阅路径);
-      if (url.pathname === `/${最终订阅路径}`) {
+      switch (url.pathname) {
+        case `/${最终订阅路径}`:
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
         const 配置生成器 = {
           v2ray: v2ray配置文件,
@@ -72,8 +68,15 @@ export default {
           status: 200,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
         });
-      } else {
-        return 生成项目介绍页面();
+        default:
+          if (伪装网页) {
+            url.hostname = 伪装网页;
+            url.protocol = 'https:';
+            访问请求 = new Request(url, 访问请求);
+            return fetch(访问请求);
+          } else {
+            return 生成项目介绍页面();
+          }
       }
     } else if (读取我的请求标头 === "websocket") {
       return await 升级WS请求(访问请求);
