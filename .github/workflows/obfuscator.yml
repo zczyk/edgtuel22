@@ -24,10 +24,10 @@ jobs:
         with:
           node-version: "16"
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: npm install -g javascript-obfuscator
 
-      - name: Obfuscate code
+      - name: 混淆代码
         run: |
           javascript-obfuscator 明文源码.js --output _worker.js \
           --compact true \
@@ -43,14 +43,14 @@ jobs:
           --transform-object-keys true \
           --unicode-escape-sequence true
 
-      - name: Commit changes
+      - name: 提交更改
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add _worker.js
           git commit -m "自动混淆" || echo "No changes to commit"
 
-      - name: Push changes
+      - name: 上传更改
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

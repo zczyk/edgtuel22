@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 拉取仓库代码
         uses: actions/checkout@v4
 
       - name: 下载 CloudFlare IP 列表
@@ -38,7 +38,7 @@ jobs:
           rm -f ip.txt
           python csv_to_txt.py
 
-      - name: Commit and push changes
+      - name: 提交并推送更改
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

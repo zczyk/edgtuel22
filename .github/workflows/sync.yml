@@ -8,14 +8,14 @@ on:
     - cron: '0 16 * * *'
   workflow_dispatch:
 
-jobs: # 任务
+jobs:
   sync_latest_from_upstream:
-    name: 从上游仓库同步最新提交
+    name: 条件判断
     runs-on: ubuntu-latest
-    if: ${{ github.event.repository.fork }} # 条件判断：只有当仓库是 Fork 的时候才运行
+    if: ${{ github.event.repository.fork }} # 只有当仓库是 Fork 的时候才运行
 
     steps:
-      - name: 检出目标仓库
+      - name: 拉取仓库代码
         uses: actions/checkout@v3
 
       - name: 同步上游更改
