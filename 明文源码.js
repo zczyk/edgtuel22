@@ -18,19 +18,14 @@ let 伪装网页 = "";
 // 网页入口
 export default {
   async fetch(访问请求, env) {
-    订阅路径 = env.SUB_PATH || 订阅路径;
-    我的UUID = env.SUB_UUID || 我的UUID;
-    默认节点名称 = env.SUB_NAME || 默认节点名称;
+    订阅路径 = env.SUB_PATH ?? 订阅路径;
+    我的UUID = env.SUB_UUID ?? 我的UUID;
+    默认节点名称 = env.SUB_NAME ?? 默认节点名称;
     优选TXT = env.TXT_URL ? 字符串转数组(env.TXT_URL) : 优选TXT;
-    反代IP = env.PROXY_IP || 反代IP;
-    SOCKS5账号 = env.SOCKS5 || SOCKS5账号;
-    启用SOCKS5全局反代 =
-      env.SOCKS5_GLOBAL = "true"
-        ? true
-        : env.SOCKS5_GLOBAL = "false"
-        ? false
-        : 启用SOCKS5全局反代;
-    伪装网页 = env.FAKE_WEB || 伪装网页;
+    反代IP = env.PROXY_IP ?? 反代IP;
+    SOCKS5账号 = env.SOCKS5 ?? SOCKS5账号;
+    启用SOCKS5全局反代 = env.SOCKS5_GLOBAL === "true";
+    伪装网页 = env.FAKE_WEB ?? 伪装网页;
 
     const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
     const url = new URL(访问请求.url);
