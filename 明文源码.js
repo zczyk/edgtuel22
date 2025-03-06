@@ -463,10 +463,6 @@ function clash配置文件(hostName) {
     .join("\n");
   return `
 dns:
-  enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: redir-host
-  fake-ip-range: 198.18.0.1/16
   use-hosts: true
   nameserver:
     - 1.1.1.1  # Cloudflare
