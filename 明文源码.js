@@ -411,7 +411,7 @@ body {
 
 function v2ray配置文件(hostName) {
   if (优选列表.length === 0) {
-    优选列表 = [`${hostName}:443`];
+    优选列表 = [`${hostName}`];
   }
   return 优选列表
     .map((获取优选) => {
@@ -426,7 +426,7 @@ function v2ray配置文件(hostName) {
 
 function clash配置文件(hostName) {
   if (优选列表.length === 0) {
-    优选列表 = [`${hostName}:443`];
+    优选列表 = [`${hostName}`];
   }
   const 生成节点 = (优选列表) => {
     return 优选列表.map((获取优选, index) => {
