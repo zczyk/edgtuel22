@@ -60,6 +60,7 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
+          surfboard: surfboard配置文件,
           default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
@@ -503,5 +504,31 @@ rules:
   - GEOSITE,cn,🎯 直连规则
   - DOMAIN-SUFFIX,cn,🎯 直连规则
   - MATCH,🚀 节点选择
+`;
+}
+
+function surfboard配置文件(hostName) {
+    const 节点列表 = 处理优选列表(优选列表, hostName);
+
+    const 生成节点 = (节点列表) => {
+        return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
+            return `\n${节点名字} = vless, ${地址}, ${端口}, uuid=${我的UUID}, tls=true, sni=${hostName}, ws=true, ws-path=/?ed=2560, ws-headers=Host:${hostName}|User-Agent:Chrome`;
+        }).join("");
+    };
+
+    const 节点配置 = 生成节点(节点列表);
+
+    return `
+[General]
+loglevel = 3
+
+[Proxy]${节点配置}
+
+[Proxy Group]
+ProxyGroup = select, ${节点列表.map(({ 节点名字 }) => 节点名字).join(", ")}, DIRECT
+
+[Rule]
+GEOIP,CN,DIRECT
+FINAL,ProxyGroup
 `;
 }
