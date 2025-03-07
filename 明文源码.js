@@ -59,6 +59,7 @@ export default {
         const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
         const 配置生成器 = {
           v2ray: v2ray配置文件,
+          v2box: v2ray配置文件,
           clash: clash配置文件,
           surfboard: surfboard配置文件,
           default: 提示界面,
