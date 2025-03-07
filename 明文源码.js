@@ -60,8 +60,8 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
-          "sing-box": 生成SingBox配置,
-          default: singBox配置文件,
+          "sing-box": singbox配置,
+          default: singbox配置,
           //default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
@@ -508,9 +508,22 @@ rules:
 `;
 }
 
-function singBox配置文件(hostName) {
-  const 节点列表 = 处理优选列表(优选列表, hostName);
+function singbox配置(hostName) {
+  // 处理优选列表
+  const 处理优选列表 = (优选列表, hostName) => {
+    if (优选列表.length === 0) {
+      优选列表 = [hostName];
+    }
+    return 优选列表.map((获取优选, index) => {
+      const [地址端口, 节点名字 = `节点 ${index + 1}`] = 获取优选.split("#");
+      const 拆分地址端口 = 地址端口.split(":");
+      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
+      return { 地址, 端口, 节点名字 };
+    });
+  };
 
+  // 生成节点配置
   const 生成节点 = (节点列表) => {
     return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
       return {
@@ -534,9 +547,14 @@ function singBox配置文件(hostName) {
     });
   };
 
+  // 处理优选列表
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+
+  // 生成节点配置
   const 节点配置 = 生成节点(节点列表);
 
-  return {
+  // 构建 sing-box 配置
+  const 配置 = {
     log: {
       level: "info",
     },
@@ -578,10 +596,5 @@ function singBox配置文件(hostName) {
       rules: [],
     },
   };
-}
-
-// 生成 sing-box 配置文件
-function 生成SingBox配置(hostName) {
-  const 配置 = singBox配置文件(hostName);
   return JSON.stringify(配置, null, 2);
 }
