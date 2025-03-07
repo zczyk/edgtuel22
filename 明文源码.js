@@ -60,9 +60,8 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
-          "sing-box": singbox配置,
-          default: singbox配置,
-          //default: 提示界面,
+          "sing-box": singbox配置文件,
+          default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
           用户代理.includes(工具)
@@ -508,8 +507,7 @@ rules:
 `;
 }
 
-function singbox配置(hostName) {
-  // 处理优选列表
+function singbox配置文件(hostName) {
   const 处理优选列表 = (优选列表, hostName) => {
     if (优选列表.length === 0) {
       优选列表 = [hostName];
@@ -523,7 +521,6 @@ function singbox配置(hostName) {
     });
   };
 
-  // 生成节点配置
   const 生成节点 = (节点列表) => {
     return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
       return {
@@ -547,22 +544,19 @@ function singbox配置(hostName) {
     });
   };
 
-  // 处理优选列表
   const 节点列表 = 处理优选列表(优选列表, hostName);
 
-  // 生成节点配置
   const 节点配置 = 生成节点(节点列表);
 
-  // 构建 sing-box 配置
   const 配置 = {
     log: {
       level: "info",
     },
     dns: {
       servers: [
-        { address: "1.1.1.1", tag: "cloudflare" }, // Cloudflare
-        { address: "8.8.8.8", tag: "google" }, // Google
-        { address: "223.5.5.5", tag: "ali" }, // 阿里
+        { address: "1.1.1.1", tag: "cloudflare" },
+        { address: "8.8.8.8", tag: "google" },
+        { address: "223.5.5.5", tag: "ali" },
       ],
     },
     inbounds: [
