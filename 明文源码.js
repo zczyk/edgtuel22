@@ -573,28 +573,7 @@ function singBox配置文件(hostName) {
       },
     ],
     route: {
-      rules: [
-        {
-          type: "field",
-          outbound: "direct",
-          domain: ["geosite:cn"],
-        },
-        {
-          type: "field",
-          outbound: "direct",
-          ip: ["geoip:cn", "geoip:private"],
-        },
-        {
-          type: "field",
-          outbound: "block",
-          domain: ["geosite:category-ads"],
-        },
-        {
-          type: "field",
-          outbound: "节点列表[0].tag", // 默认使用第一个节点
-          network: ["tcp", "udp"],
-        },
-      ],
+      rules: [],
     },
   };
 }
