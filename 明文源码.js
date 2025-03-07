@@ -60,7 +60,7 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
-          default: 提示界面,
+          default: 生成SingBox配置,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
           用户代理.includes(工具)
@@ -504,4 +504,104 @@ rules:
   - DOMAIN-SUFFIX,cn,🎯 直连规则
   - MATCH,🚀 节点选择
 `;
+}
+
+function singBox配置文件(hostName) {
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+
+  const 生成节点 = (节点列表) => {
+    return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
+      return {
+        type: "vless",
+        tag: 节点名字,
+        server: 地址,
+        server_port: 端口,
+        uuid: 我的UUID,
+        tls: {
+          enabled: true,
+          server_name: hostName,
+          fingerprint: "chrome",
+        },
+        transport: {
+          type: "ws",
+          path: "/?ed=2560",
+          headers: {
+            Host: hostName,
+          },
+        },
+      };
+    });
+  };
+
+  const 节点配置 = 生成节点(节点列表);
+
+  return {
+    log: {
+      level: "info",
+    },
+    dns: {
+      servers: [
+        { address: "1.1.1.1", tag: "cloudflare" }, // Cloudflare
+        { address: "8.8.8.8", tag: "google" }, // Google
+        { address: "223.5.5.5", tag: "ali" }, // 阿里
+      ],
+    },
+    inbounds: [
+      {
+        type: "socks",
+        tag: "socks-in",
+        listen: "127.0.0.1",
+        listen_port: 1080,
+        sniff: true,
+      },
+      {
+        type: "http",
+        tag: "http-in",
+        listen: "127.0.0.1",
+        listen_port: 1081,
+        sniff: true,
+      },
+    ],
+    outbounds: [
+      ...节点配置,
+      {
+        type: "direct",
+        tag: "direct",
+      },
+      {
+        type: "block",
+        tag: "block",
+      },
+    ],
+    route: {
+      rules: [
+        {
+          type: "field",
+          outbound: "direct",
+          domain: ["geosite:cn"],
+        },
+        {
+          type: "field",
+          outbound: "direct",
+          ip: ["geoip:cn", "geoip:private"],
+        },
+        {
+          type: "field",
+          outbound: "block",
+          domain: ["geosite:category-ads"],
+        },
+        {
+          type: "field",
+          outbound: "节点列表[0].tag", // 默认使用第一个节点
+          network: ["tcp", "udp"],
+        },
+      ],
+    },
+  };
+}
+
+// 生成 sing-box 配置文件
+function 生成SingBox配置(hostName) {
+  const 配置 = singBox配置文件(hostName);
+  return JSON.stringify(配置, null, 2);
 }
