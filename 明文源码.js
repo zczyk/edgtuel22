@@ -520,7 +520,6 @@ function singBox配置文件(hostName) {
         tls: {
           enabled: true,
           server_name: hostName,
-          fingerprint: "chrome",
         },
         transport: {
           type: "ws",
