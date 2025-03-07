@@ -60,6 +60,7 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
+          singbox: singbox配置文件,
           default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
@@ -504,4 +505,94 @@ rules:
   - DOMAIN-SUFFIX,cn,🎯 直连规则
   - MATCH,🚀 节点选择
 `;
+}
+
+function singbox配置文件(hostName) {
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+  const 生成节点 = (节点列表) => {
+    return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
+      return {
+        type: "vless",
+        tag: 节点名字,
+        server: 地址,
+        server_port: 端口,
+        uuid: 我的UUID,
+        tls: {
+          enabled: true,
+          server_name: hostName,
+        },
+        transport: {
+          type: "ws",
+          path: "/?ed=2560",
+          headers: {
+            Host: hostName,
+          },
+        },
+      };
+    });
+  };
+
+  const 节点配置 = 生成节点(节点列表);
+
+  return JSON.stringify(
+    {
+      log: {
+        level: "info",
+      },
+      dns: {
+        servers: [
+          "1.1.1.1", // Cloudflare
+          "8.8.8.8", // Google
+          "223.5.5.5", // 阿里
+        ],
+      },
+      inbounds: [
+        {
+          type: "http",
+          tag: "http-in",
+          listen: "127.0.0.1",
+          port: 1080,
+        },
+      ],
+      outbounds: [
+        {
+          type: "direct",
+          tag: "direct",
+        },
+        ...节点配置,
+      ],
+      routing: {
+        rules: [
+          {
+            type: "field",
+            ip: [
+              "geoip:private",
+              "geoip:cn",
+            ],
+            outboundTag: "direct",
+          },
+          {
+            type: "field",
+            domain: [
+              "geosite:cn",
+            ],
+            outboundTag: "direct",
+          },
+          {
+            type: "field",
+            domain_suffix: [
+              "cn",
+            ],
+            outboundTag: "direct",
+          },
+          {
+            type: "field",
+            outboundTag: "节点选择",
+          },
+        ],
+      },
+    },
+    null,
+    2
+  );
 }
