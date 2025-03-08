@@ -593,32 +593,7 @@ function singbox配置文件(hostName) {
       },
     ],
     route: {
-      rules: [
-        {
-          type: "geoip",
-          outbound: "direct",
-          country: ["cn"],
-        },
-        {
-          type: "geosite",
-          outbound: "direct",
-          domain: ["cn"],
-        },
-        {
-          type: "domain_suffix",
-          outbound: "direct",
-          domain: ["cn"],
-        },
-        {
-          type: "domain_suffix",
-          outbound: "direct",
-          domain: ["qq.com", "baidu.com", "taobao.com", "jd.com", "163.com", "weibo.com"],
-        },
-        {
-          type: "final",
-          outbound: "节点", // 默认使用第一个节点
-        },
-      ],
+      rules: [],
     },
   };
   return JSON.stringify(配置, null, 2);
