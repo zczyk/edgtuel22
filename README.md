@@ -87,20 +87,32 @@ Pages绑定自定义域名
 # 已适配客户端
 
 Windows
-- [v2rayN](https://github.com/2dust/v2rayN)
-- clash（[FlClash](https://github.com/chen08209/FlClash), [mihomo-party](https://github.com/mihomo-party-org/mihomo-party), [clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev), [Clash Nyanpasu](https://github.com/keiko233/clash-nyanpasu)）
+- v2ray
+- clash
+- hiddify
 
 安卓
-- [v2rayNG](https://github.com/2dust/v2rayNG)
-- [ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)
+- v2ray
+- clash
+- hiddify
+
+iOS
+- hiddify
 
 MacOS
-- [v2rayN](https://github.com/2dust/v2rayN)
-- clash（[FlClash](https://github.com/chen08209/FlClash), [mihomo-party](https://github.com/mihomo-party-org/mihomo-party)）
+- v2ray
+- clash
+- hiddify
+
+Linux
+- v2ray
+- clash
+- hiddify
 
 # 未来计划
 
 - 支持sing-box
+- 支持streisand(iOS)
 
 # 免责声明
 
