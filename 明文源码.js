@@ -458,10 +458,9 @@ ${代理配置}
 ${代理配置}
 
 rules:
-  - GEOIP,lan,DIRECT
-  - GEOIP,cn,🎯 直连规则
-  - GEOSITE,cn,🎯 直连规则
-  - DOMAIN-SUFFIX,cn,🎯 直连规则
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,🎯 直连规则
+  - GEOIP,CLOUDFLARE,🎯 直连规则
   - MATCH,🚀 节点选择
 `;
 }
