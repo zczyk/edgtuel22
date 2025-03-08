@@ -85,10 +85,7 @@ export default {
             访问请求 = new Request(url, 访问请求);
             return fetch(访问请求);
           } else {
-            return new Response(生成项目介绍页面(), {
-              status: 200,
-              headers: { "Content-Type": "text/html;charset=utf-8" },
-            });
+            生成项目介绍页面();
           }
       }
     } else if (读取我的请求标头 === "websocket") {
@@ -336,13 +333,9 @@ function 测试SOCKS5和反代IP() {
   return { SOCKS5有效, 反代IP有效 };
 }
 
-// 订阅页面
-function 提示界面() {
-  return `请把链接导入clash或v2ray`;
-}
-
 function 生成项目介绍页面() {
-  return `
+  return new Response(
+    `
 <title>项目介绍</title>
 <style>
 body {
@@ -355,7 +348,17 @@ body {
 这是一种基于CF Pages的免费代理方案
 <a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">点我跳转仓库</a>
 </pre>
-`
+    `,
+    {
+      status: 200,
+      headers: { "Content-Type": "text/html;charset=utf-8" },
+    }
+  );
+}
+
+// 订阅页面
+function 提示界面() {
+  return `请把链接导入clash或v2ray`;
 }
 
 function 处理优选列表(优选列表, hostName) {
