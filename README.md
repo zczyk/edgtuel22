@@ -86,29 +86,10 @@ Pages绑定自定义域名
 
 # 已适配客户端
 
-Windows
 - v2ray
 - clash
-- hiddify
-
-安卓
-- v2ray
-- clash
-- hiddify
-
-iOS
 - hiddify
 - streisand(需要手动填写配置)
-
-MacOS
-- v2ray
-- clash
-- hiddify
-
-Linux
-- v2ray
-- clash
-- hiddify
 
 # 未来计划
 
