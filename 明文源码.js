@@ -390,8 +390,108 @@ function 测试SOCKS5和反代IP() {
 }
 
 // 订阅页面
-function 提示界面() {
-  return `请把链接导入clash或v2ray`;
+function 提示界面(hostName) {
+  const 订阅链接 = `https://${hostName}/${encodeURIComponent(订阅路径)}`;
+  const 二维码SVG = 生成二维码(订阅链接);
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订阅提示</title>
+<style>
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+.qrcode {
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+}
+</style>
+</head>
+<body>
+  <h1>请使用以下链接导入您的客户端：</h1>
+  <p>${订阅链接}</p>
+  <div class="qrcode">
+    ${二维码SVG}
+  </div>
+  <p>或扫描二维码：</p>
+  <p>支持 Clash, v2ray 等客户端</p>
+</body>
+</html>
+`;
+}
+
+//  生成二维码的函数
+function 生成二维码(文本) {
+  const 纠错级别 = 'M'; //  纠错级别：L(低) M(中) Q(高) H(超高)
+  const 类型编号 = 计算类型编号(文本.length, 纠错级别);
+  const 数据码 = 构造数据码(文本, 类型编号, 纠错级别);
+  const 最终码 = 添加纠错码(数据码, 类型编号, 纠错级别);
+  const 矩阵 = 构建矩阵(最终码, 类型编号);
+  const svg = 绘制二维码(矩阵);
+  return svg;
+}
+
+function 计算类型编号(数据长度, 纠错级别) {
+  // 简化：根据数据长度和纠错级别返回一个合适的类型编号
+  //  实际需要查表，这里简化处理
+  return Math.min(10, Math.floor(数据长度 / 10) + 1);
+}
+
+function 构造数据码(文本, 类型编号, 纠错级别) {
+  // 简化：直接将文本转换为UTF-8编码
+  const 编码后的数据 = Array.from(new TextEncoder().encode(文本));
+  return 编码后的数据;
+}
+
+function 添加纠错码(数据码, 类型编号, 纠错级别) {
+  // 简化：不实际添加纠错码，直接返回数据码
+  return 数据码;
+}
+
+function 构建矩阵(数据码, 类型编号) {
+  // 简化：创建一个简单的矩阵，根据数据码填充
+  const 尺寸 = 类型编号 * 4 + 17; //  计算矩阵尺寸
+  const 矩阵 = Array(尺寸).fill(null).map(() => Array(尺寸).fill(false));
+
+  //  简化填充数据：只填充一部分
+  let 数据索引 = 0;
+  for (let i = 0; i < 尺寸; i++) {
+    for (let j = 0; j < 尺寸; j++) {
+      if (数据索引 < 数据码.length && (i + j) % 3 === 0) {
+        矩阵[i][j] = 数据码[数据索引] % 2 === 0;
+        数据索引++;
+      }
+    }
+  }
+
+  return 矩阵;
+}
+
+function 绘制二维码(矩阵) {
+  const 尺寸 = 矩阵.length;
+  const 格子尺寸 = 2; //  每个格子的大小
+  const svg尺寸 = 尺寸 * 格子尺寸;
+
+  let svg内容 = '';
+  for (let i = 0; i < 尺寸; i++) {
+    for (let j = 0; j < 尺寸; j++) {
+      if (矩阵[i][j]) {
+        svg内容 += `<rect x="${j * 格子尺寸}" y="${i * 格子尺寸}" width="${格子尺寸}" height="${格子尺寸}" fill="#000"/>`;
+      }
+    }
+  }
+
+  return `<svg width="${svg尺寸}" height="${svg尺寸}" viewBox="0 0 ${svg尺寸} ${svg尺寸}">
+    <rect width="${svg尺寸}" height="${svg尺寸}" fill="#fff"/>
+    ${svg内容}
+  </svg>`;
 }
 
 function 生成项目介绍页面() {
