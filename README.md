@@ -98,6 +98,7 @@ Windows
 
 iOS
 - hiddify
+- streisand(需要手动填写配置)
 
 MacOS
 - v2ray
@@ -112,7 +113,7 @@ Linux
 # 未来计划
 
 - 支持sing-box
-- 支持streisand(iOS)
+- 支持streisand订阅
 
 # 免责声明
 
