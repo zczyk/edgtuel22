@@ -444,6 +444,10 @@ dns:
   fallback:
     - 1.1.1.1                 # Cloudflare
     - 2606:4700:4700::1111    # Cloudflare
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - geoip:private
 
 proxies:
 ${节点配置}
@@ -469,7 +473,6 @@ ${代理配置}
 
 rules:
   - GEOIP,lan,DIRECT
-  - GEOIP,private,DIRECT
   - GEOIP,cn,🎯 直连规则
   - GEOSITE,cn,🎯 直连规则
   - DOMAIN-SUFFIX,cn,🎯 直连规则
