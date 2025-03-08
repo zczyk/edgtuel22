@@ -60,7 +60,7 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
-          "sing-box": singbox配置文件,
+          //"sing-box": singbox配置文件,
           default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
@@ -506,7 +506,7 @@ rules:
   - MATCH,🚀 节点选择
 `;
 }
-
+/*
 function singbox配置文件(hostName) {
   const 处理优选列表 = (优选列表, hostName) => {
     if (优选列表.length === 0) {
@@ -598,3 +598,4 @@ function singbox配置文件(hostName) {
   };
   return JSON.stringify(配置, null, 2);
 }
+*/
