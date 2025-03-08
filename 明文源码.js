@@ -460,6 +460,7 @@ ${代理配置}
 rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,🎯 直连规则
+  - GEOSITE,CN,🎯 直连规则
   - GEOIP,CLOUDFLARE,🎯 直连规则
   - MATCH,🚀 节点选择
 `;
