@@ -356,6 +356,55 @@ function 字符串转数组(str) {
     .split('\n')
 }
 
+// 二维码生成函数
+function 生成二维码(文本, 大小 = 200) {
+  const 二维码 = [];
+  const 数据 = 编码文本(文本);
+  const 版本 = 1;
+  const 模块数 = 版本 * 4 + 17;
+  const 模块大小 = 大小 / 模块数;
+
+  // 初始化二维码矩阵
+  for (let i = 0; i < 模块数; i++) {
+    二维码[i] = new Array(模块数).fill(0);
+  }
+
+  // 填充数据
+  let 数据索引 = 0;
+  for (let i = 0; i < 模块数; i++) {
+    for (let j = 0; j < 模块数; j++) {
+      if (数据[数据索引]) {
+        二维码[i][j] = 1;
+      }
+      数据索引++;
+    }
+  }
+
+  // 生成SVG
+  let svg = `<svg width="${大小}" height="${大小}" viewBox="0 0 ${模块数} ${模块数}" xmlns="http://www.w3.org/2000/svg">`;
+  for (let i = 0; i < 模块数; i++) {
+    for (let j = 0; j < 模块数; j++) {
+      if (二维码[i][j]) {
+        svg += `<rect x="${j}" y="${i}" width="1" height="1" fill="black"/>`;
+      }
+    }
+  }
+  svg += '</svg>';
+  return svg;
+}
+
+// 文本编码函数
+function 编码文本(文本) {
+  const 编码 = [];
+  for (let i = 0; i < 文本.length; i++) {
+    const 字符 = 文本.charCodeAt(i);
+    for (let j = 7; j >= 0; j--) {
+      编码.push((字符 >> j) & 1);
+    }
+  }
+  return 编码;
+}
+
 function 测试SOCKS5和反代IP() {
   let SOCKS5有效 = true;
   let 反代IP有效 = true;
@@ -390,8 +439,35 @@ function 测试SOCKS5和反代IP() {
 }
 
 // 订阅页面
-function 提示界面() {
-  return `请把链接导入clash或v2ray`;
+function 提示界面(hostName) {
+  const 订阅链接 = `https://${hostName}/${订阅路径}`;
+  const 二维码SVG = 生成二维码(订阅链接);
+
+  return `
+    <html>
+      <head>
+        <title>订阅链接</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+          }
+          .qrcode {
+            margin: 20px auto;
+            width: 200px;
+            height: 200px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>请使用以下链接或扫描二维码订阅</h1>
+        <p>订阅链接: <a href="${订阅链接}" target="_blank">${订阅链接}</a></p>
+        <div class="qrcode">${二维码SVG}</div>
+        <p>请把链接导入clash或v2ray</p>
+      </body>
+    </html>
+  `;
 }
 
 function 生成项目介绍页面() {
