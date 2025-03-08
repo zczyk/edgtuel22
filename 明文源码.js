@@ -391,7 +391,7 @@ function 测试SOCKS5和反代IP() {
 
 // 订阅页面
 function 提示界面(hostName) {
-  const 订阅链接 = `https://${hostName}/${encodeURIComponent(订阅路径)}`;
+  const 订阅链接 = `https://${hostName}/${订阅路径}`;
   const 二维码SVG = 生成二维码(订阅链接);
 
   const html = `
