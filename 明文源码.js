@@ -436,11 +436,14 @@ function clash配置文件(hostName) {
 
   return `
 dns:
-  use-hosts: true
+  enable: true
+  listen: 0.0.0.0:53
   nameserver:
-    - 1.1.1.1  # Cloudflare
-    - 8.8.8.8  # Google
-    - 223.5.5.5  # 阿里
+    - 94.140.14.15            # AdGuard
+    - 2a10:50c0::bad1:ff      # AdGuard
+  fallback:
+    - 1.1.1.1                 # Cloudflare
+    - 2606:4700:4700::1111    # Cloudflare
 
 proxies:
 ${节点配置}
@@ -466,6 +469,7 @@ ${代理配置}
 
 rules:
   - GEOIP,lan,DIRECT
+  - GEOIP,private,DIRECT
   - GEOIP,cn,🎯 直连规则
   - GEOSITE,cn,🎯 直连规则
   - DOMAIN-SUFFIX,cn,🎯 直连规则
