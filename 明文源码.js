@@ -435,16 +435,6 @@ function clash配置文件(hostName) {
     .join("\n");
 
   return `
-dns:
-  enable: true
-  listen: 0.0.0.0:53
-  nameserver:
-    - 94.140.14.15            # AdGuard
-    - 2a10:50c0::bad1:ff      # AdGuard
-  fallback:
-    - 1.1.1.1                 # Cloudflare
-    - 2606:4700:4700::1111    # Cloudflare
-
 proxies:
 ${节点配置}
 
