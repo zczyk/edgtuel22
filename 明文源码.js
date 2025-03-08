@@ -394,7 +394,7 @@ function 提示界面(hostName) {
   const 订阅链接 = `https://${hostName}/${encodeURIComponent(订阅路径)}`;
   const 二维码SVG = 生成二维码(订阅链接);
 
-  return `
+  const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -425,6 +425,11 @@ body {
 </body>
 </html>
 `;
+
+  return new Response(html, {
+    status: 200,
+    headers: { "Content-Type": "text/html;charset=utf-8" },
+  });
 }
 
 //  生成二维码的函数
