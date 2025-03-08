@@ -60,7 +60,7 @@ export default {
         const 配置生成器 = {
           v2ray: v2ray配置文件,
           clash: clash配置文件,
-          //"sing-box": singbox配置文件,
+          "sing-box": singbox配置文件,
           default: 提示界面,
         };
         const 工具 = Object.keys(配置生成器).find((工具) =>
@@ -558,6 +558,12 @@ function singbox配置文件(hostName) {
         { address: "8.8.8.8", tag: "google" },
         { address: "223.5.5.5", tag: "ali" },
       ],
+      rules: [
+        {
+          outbound: "direct",
+          server: "223.5.5.5",
+        },
+      ],
     },
     inbounds: [
       {
@@ -587,7 +593,32 @@ function singbox配置文件(hostName) {
       },
     ],
     route: {
-      rules: [],
+      rules: [
+        {
+          type: "geoip",
+          outbound: "direct",
+          country: ["cn"],
+        },
+        {
+          type: "geosite",
+          outbound: "direct",
+          domain: ["cn"],
+        },
+        {
+          type: "domain_suffix",
+          outbound: "direct",
+          domain: ["cn"],
+        },
+        {
+          type: "domain_suffix",
+          outbound: "direct",
+          domain: ["qq.com", "baidu.com", "taobao.com", "jd.com", "163.com", "weibo.com"],
+        },
+        {
+          type: "final",
+          outbound: "节点", // 默认使用第一个节点
+        },
+      ],
     },
   };
   return JSON.stringify(配置, null, 2);
