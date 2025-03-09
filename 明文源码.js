@@ -443,9 +443,20 @@ proxy-groups:
   proxies:
     - ♻️ 延迟优选
 ${代理配置}
-- name: 🎯 直连规则
+- name: 🎯 CN直连
   type: select
   proxies:
+    - DIRECT
+    - 🚀 节点选择
+- name: 🎯 CF规则
+  type: select
+  proxies:
+    - 🚀 节点选择
+    - DIRECT
+- name: 🛑 广告拦截
+  type: select
+  proxies:
+    - REJECT
     - DIRECT
     - 🚀 节点选择
 - name: ♻️ 延迟优选
@@ -473,11 +484,11 @@ rule-providers:
 
 rules:
   - GEOIP,LAN,DIRECT
-  - GEOIP,CN,🎯 直连规则
-  - GEOSITE,CN,🎯 直连规则
-  - GEOIP,CLOUDFLARE,🎯 直连规则
-  - RULE-SET,reject-domain,REJECT
-  - RULE-SET,reject-ip,REJECT
+  - GEOIP,CN,🎯 CN直连
+  - GEOSITE,CN,🎯 CN直连
+  - GEOIP,CLOUDFLARE,🎯 CF规则
+  - RULE-SET,reject-domain,🛑 广告拦截
+  - RULE-SET,reject-ip,🛑 广告拦截
   - MATCH,🚀 节点选择
 `;
 }
