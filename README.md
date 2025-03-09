@@ -121,4 +121,4 @@ Pages绑定自定义域名
 作者保留随时更新本免责声明的权利, 且不另行通知。最新版本的免责声明将发布在本项目的 GitHub 页面上。
 
 # 感谢
-[shulng](https://github.com/shulng), [XIU2](https://github.com/XIU2), [zizifn](https://github.com/zizifn), [cmliu](https://github.com/cmliu)
+[shulng](https://github.com/shulng), [XIU2](https://github.com/XIU2), [zizifn](https://github.com/zizifn), [cmliu](https://github.com/cmliu), [x0uid](https://github.com/x0uid)

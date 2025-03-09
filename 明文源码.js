@@ -69,7 +69,6 @@ export default {
           const 配置生成器 = {
             v2ray: v2ray配置文件,
             clash: clash配置文件,
-            //"sing-box": singbox配置文件,
             default: 提示界面,
           };
           const 工具 = Object.keys(配置生成器).find((工具) => 用户代理.includes(工具));
@@ -457,104 +456,28 @@ ${代理配置}
   proxies:
 ${代理配置}
 
+rule-providers:
+  reject-domain:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/ClashRuleSet/reject-domain.list"
+    path: ./ruleset/reject-domain.yaml
+    interval: 86400
+
+  reject-ip:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/ClashRuleSet/reject-ip.list"
+    path: ./ruleset/reject-ip.yaml
+    interval: 86400
+
 rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,🎯 直连规则
   - GEOSITE,CN,🎯 直连规则
   - GEOIP,CLOUDFLARE,🎯 直连规则
+  - RULE-SET,reject-domain,REJECT
+  - RULE-SET,reject-ip,REJECT
   - MATCH,🚀 节点选择
 `;
 }
-/*
-function singbox配置文件(hostName) {
-  const 处理优选列表 = (优选列表, hostName) => {
-    if (优选列表.length === 0) {
-      优选列表 = [hostName];
-    }
-    return 优选列表.map((获取优选, index) => {
-      const [地址端口, 节点名字 = `节点 ${index + 1}`] = 获取优选.split("#");
-      const 拆分地址端口 = 地址端口.split(":");
-      const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
-      const 地址 = 拆分地址端口.join(":").replace(/^\[(.+)\]$/, "$1");
-      return { 地址, 端口, 节点名字 };
-    });
-  };
-
-  const 生成节点 = (节点列表) => {
-    return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
-      return {
-        type: "vless",
-        tag: 节点名字,
-        server: 地址,
-        server_port: 端口,
-        uuid: 我的UUID,
-        tls: {
-          enabled: true,
-          server_name: hostName,
-        },
-        transport: {
-          type: "ws",
-          path: "/?ed=2560",
-          headers: {
-            Host: hostName,
-          },
-        },
-      };
-    });
-  };
-
-  const 节点列表 = 处理优选列表(优选列表, hostName);
-
-  const 节点配置 = 生成节点(节点列表);
-
-  const 配置 = {
-    log: {
-      level: "info",
-    },
-    dns: {
-      servers: [
-        { address: "1.1.1.1", tag: "cloudflare" },
-        { address: "8.8.8.8", tag: "google" },
-        { address: "223.5.5.5", tag: "ali" },
-      ],
-      rules: [
-        {
-          outbound: "direct",
-          server: "223.5.5.5",
-        },
-      ],
-    },
-    inbounds: [
-      {
-        type: "socks",
-        tag: "socks-in",
-        listen: "127.0.0.1",
-        listen_port: 2333,
-        sniff: true,
-      },
-      {
-        type: "http",
-        tag: "http-in",
-        listen: "127.0.0.1",
-        listen_port: 2334,
-        sniff: true,
-      },
-    ],
-    outbounds: [
-      ...节点配置,
-      {
-        type: "direct",
-        tag: "direct",
-      },
-      {
-        type: "block",
-        tag: "block",
-      },
-    ],
-    route: {
-      rules: [],
-    },
-  };
-  return JSON.stringify(配置, null, 2);
-}
-*/
