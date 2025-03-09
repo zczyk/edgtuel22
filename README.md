@@ -2,7 +2,7 @@
 
 这是一个基于CF Pages平台的JavaScript,在天书的基础上进行优化
 
-新增自用spotify广告屏蔽规则集
+新增自用spotify广告屏蔽规则集 (Clash)
 
 本人是初学者, 代码有问题欢迎指出
 
