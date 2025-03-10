@@ -1,4 +1,4 @@
-# edge-tunnel
+# Fork地址 https://github.com/ImLTHQ/edge-tunnel 
 
 这是一个基于CF Pages平台的JavaScript,在天书的基础上进行优化
 
