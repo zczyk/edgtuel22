@@ -39,13 +39,8 @@ jobs:
           rm -f ip.txt
           python csv_to_txt.py
 
-      - name: 提交并推送更改
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add *.txt
-          git commit -m "自动优选"
-          git push
+      - name: 提交更改
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "自动优选更新"
+          file_pattern: '*.txt'
