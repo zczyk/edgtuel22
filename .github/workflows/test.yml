@@ -15,6 +15,14 @@ jobs:
     steps:
       - name: 拉取仓库代码
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整的git历史
+
+      - name: 配置Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull origin main --rebase  # 使用rebase策略同步远程更改
 
       - name: 下载 CloudFlare IP 列表
         run: |
@@ -44,3 +52,4 @@ jobs:
         with:
           commit_message: "自动优选更新"
           file_pattern: '*.txt'
+          push_options: '--force'  # 如果需要强制推送
