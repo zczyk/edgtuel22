@@ -6,13 +6,13 @@ let 我的UUID = "550e8400-e29b-41d4-a716-446655440000";
 let 默认节点名称 = "节点";
 
 let 优选TXT = [
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/HKG.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/KHH.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/NRT.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/LAX.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SEA.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/SJC.txt",
-  "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/SpeedTest/LHR.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/HKG.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/KHH.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/NRT.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/LAX.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/SEA.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/SJC.txt",
+  "https://raw.githubusercontent.com/zczyk/edgtuel22/main/SpeedTest/LHR.txt",
 ];
 let 优选列表 = [];
 
@@ -367,7 +367,7 @@ body {
 <strong>edge-tunnel</strong>
 
 这是一种基于CF Pages的免费代理方案
-<a href="https://github.com/ImLTHQ/edge-tunnel" target="_blank">点我跳转仓库</a>
+<a href="https://github.com/zczyk/edgtuel22" target="_blank">点我跳转仓库</a>
 </pre>
     `,
     {
@@ -472,14 +472,14 @@ rule-providers:
   reject-domain:
     type: http
     behavior: domain
-    url: "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/ClashRuleSet/reject-domain.list"
+    url: "https://raw.githubusercontent.com/zczyk/edgtuel22/main/ClashRuleSet/reject-domain.list"
     path: ./ruleset/reject-domain.yaml
     interval: 86400
 
   reject-ip:
     type: http
     behavior: ipcidr
-    url: "https://raw.githubusercontent.com/ImLTHQ/edge-tunnel/main/ClashRuleSet/reject-ip.list"
+    url: "https://raw.githubusercontent.com/zczyk/edgtuel22/main/ClashRuleSet/reject-ip.list"
     path: ./ruleset/reject-ip.yaml
     interval: 86400
 
