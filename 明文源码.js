@@ -85,7 +85,9 @@ export default {
             访问请求 = new Request(url, 访问请求);
             return fetch(访问请求);
           } else {
-            return 生成项目介绍页面();
+            return new Response(生成项目介绍页面(),{
+              status: 200,
+              headers: { "Content-Type": "text/html;charset=utf-8" },});
           }
       }
     } else if (读取我的请求标头 === "websocket") {
@@ -355,8 +357,7 @@ function 测试SOCKS5和反代IP() {
 }
 
 function 生成项目介绍页面() {
-  return new Response(
-    `
+  return `
 <title>项目介绍</title>
 <style>
 body {
@@ -366,15 +367,15 @@ body {
 <pre>
 <strong>edge-tunnel</strong>
 
-这是一种基于CF Pages的免费代理方案
+这是一个基于CF Pages平台的JavaScript,在天书的基础上进行优化
 <a href="https://github.com/zczyk/edgtuel22" target="_blank">点我跳转仓库</a>
+
+不要想着嫖别人订阅啦, 自己部署一个不香吗?
+
+本项目仅供教育、研究和安全测试目的而设计和开发
+旨在为安全研究人员、学术界人士及技术爱好者提供一个探索和实践网络通信技术的工具
 </pre>
-    `,
-    {
-      status: 200,
-      headers: { "Content-Type": "text/html;charset=utf-8" },
-    }
-  );
+`
 }
 
 // 订阅页面
