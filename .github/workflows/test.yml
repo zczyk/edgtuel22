@@ -2,7 +2,7 @@ name: 自动测速
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
 
 permissions:
